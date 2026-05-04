@@ -8,7 +8,8 @@ Ouvre simplement `index.html` dans ton navigateur.
 
 ## Déploiement GitHub Pages (automatique)
 
-Le workflow `.github/workflows/deploy.yml` déploie le site à chaque `push` sur `main`.
+Le workflow poussée le site sur la branche **`gh-pages`** à chaque `push` sur `main`  
+(pas besoin du couple `configure-pages` / `deploy-pages`, souvent bloqué par les droits du `GITHUB_TOKEN`).
 
 ### 1) Créer le repo GitHub (si ce n'est pas déjà fait)
 
@@ -23,14 +24,17 @@ git remote add origin <TON_URL_GITHUB>
 git push -u origin main
 ```
 
-### 2) Activer GitHub Pages
+### 2) Activer GitHub Pages (à faire une fois)
 
-Dans le repo GitHub :
-- `Settings`
-- `Pages`
-- Source : `GitHub Actions`
+Dans le repo GitHub : **Settings → Pages**.
 
-Le site sera publié automatiquement sur l'URL Pages du repo.
+- **Build and deployment → Source** : **Deploy from a branch** (pas « GitHub Actions » pour ce projet).
+- **Branch** : `gh-pages`, dossier **`/ (root)`**.
+- Enregistrer.
+
+Laisse le workflow terminer après ton premier push sur `main` (il crée ou met à jour `gh-pages`), puis recharge la page **Settings → Pages** si besoin pour voir l’URL du site (souvent `https://TON_USER.github.io/Portfolio/`).
+
+**Workflow permissions** : **Settings → Actions → General**, en bas **Workflow permissions** : coche **Read and write** (pour que `GITHUB_TOKEN` puisse pousser sur `gh-pages`). Sans ça le job peut échouer avec « permission denied ».
 
 ## Personnalisation rapide
 
