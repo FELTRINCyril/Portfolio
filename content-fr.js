@@ -132,7 +132,7 @@ window.portfolioLocales.fr = {
           title: "Recreation d'un site type Vinted",
           text:
             "Travail en equipe (5 personnes) : modelisation (PowerAMC / MCD), PostgreSQL (pgAdmin), puis stack HTML / CSS / JavaScript / PHP et Laravel.",
-          image: "./assets/images/projects/vinted.jpg",
+          image: "./assets/images/PM_Vinted.png",
           links: [{ href: "https://github.com/FELTRINCyril", label: "Voir sur GitHub" }]
         },
         {

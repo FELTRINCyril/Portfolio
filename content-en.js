@@ -132,7 +132,7 @@ window.portfolioLocales.en = {
           title: "Vinted-like marketplace rebuild",
           text:
             "Team rebuild (5 people): data modeling (PowerAMC / MCD), PostgreSQL (pgAdmin), then HTML / CSS / JavaScript / PHP and Laravel.",
-          image: "./assets/images/projects/vinted.jpg",
+          image: "./assets/images/PM_Vinted.png",
           links: [{ href: "https://github.com/FELTRINCyril", label: "View on GitHub" }]
         },
         {
