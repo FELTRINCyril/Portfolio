@@ -33,7 +33,7 @@ window.portfolioLocales.fr = {
     socialGroupAria: "Profils externes",
     cvGroupAria: "Curriculum vitae PDF",
     cv: {
-      pdfPath: "./CV_Feltrin_Cyril.pdf",
+      pdfPath: "./assets/pdf/CV_Feltrin_Cyril.pdf",
       downloadFileName: "CV_Cyril_Feltrin.pdf",
       modeGroupAria: "Choisir : telecharger ou ouvrir le PDF",
       segmentDownload: "Telecharger",
@@ -48,6 +48,31 @@ window.portfolioLocales.fr = {
       title: "A propos",
       intro:
         "Mon parcours combine des experiences terrain (service, caisse, logistique, paysagisme) et un cursus technique en informatique. Cette base me donne de la rigueur, de l'adaptabilite et un bon sens du travail en equipe.",
+      interestsTitle: "Centres d'interet",
+      interestsAria: "Galerie : centres d'interet",
+      interestsCaption: "Passe ou place le curseur pour agrandir un panneau.",
+      interests: [
+        {
+          image: "./assets/images/interests/CI_Moto.jpg",
+          label: "Moto",
+          alt: "Moto cross et balades au guidon."
+        },
+        {
+          image: "./assets/images/interests/CI_Snowboard.jpg",
+          label: "Snowboard",
+          alt: "Glisse au snowboard dans les montagnes."
+        },
+        {
+          image: "./assets/images/interests/CI_Muscu.jpg",
+          label: "Musculation",
+          alt: "Seances de musculation en salle plusieurs fois par semaine."
+        },
+        {
+          image: "./assets/images/interests/CI_Cinema.jpeg",
+          label: "Cinema",
+          alt: "Cinema, surtout action et science-fiction."
+        }
+      ],
       cards: [
         {
           title: "Profil",
@@ -57,10 +82,6 @@ window.portfolioLocales.fr = {
             "Age : 19 ans",
             "Parcours : BUT Informatique - Gestion de projet"
           ]
-        },
-        {
-          title: "Centres d'interet",
-          list: ["Moto et snowboard", "Musculation (5x/semaine)", "Cinema (action / science-fiction)"]
         }
       ]
     },

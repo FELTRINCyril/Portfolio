@@ -284,20 +284,61 @@ const renderHero = () => {
 const renderAbout = () => {
   const section = getContent().sections.about;
   const el = document.querySelector(`#${section.id}`);
+  const interests = Array.isArray(section.interests) ? section.interests : [];
+  const interestsStrip =
+    interests.length > 0
+      ? `
+    <div class="about-interests">
+      <h3 class="about-interests-title">${escapeHtml(section.interestsTitle || "")}</h3>
+      ${
+        section.interestsCaption
+          ? `<p class="about-interests-caption">${escapeHtml(section.interestsCaption)}</p>`
+          : ""
+      }
+      <div class="interests-strip-wrap">
+        <div
+          class="interests-strip interests-strip--${interests.length}"
+          role="group"
+          aria-label="${escapeHtml(section.interestsAria || "")}"
+        >
+          ${interests
+            .map((item, i) => {
+              const label = item.label || "";
+              const alt = item.alt || label;
+              const style = `--img: url(${JSON.stringify(item.image)})`;
+              return `<div
+                class="interest-box box-${i + 1}"
+                style="${escapeHtml(style)}"
+                data-text="${escapeHtml(label)}"
+                role="img"
+                aria-label="${escapeHtml(alt)}"
+                tabindex="0"
+              ></div>`;
+            })
+            .join("")}
+        </div>
+      </div>
+    </div>
+  `
+      : "";
+
   el.innerHTML = `
     <h2 class="section-title-centered">${escapeHtml(section.title)}</h2>
-    <p>${escapeHtml(section.intro)}</p>
-    <div class="grid two-cols">
-      ${section.cards
-        .map(
-          (card) => `
-            <article class="card tilt-card">
+    <p class="about-intro">${escapeHtml(section.intro)}</p>
+    <div class="about-layout">
+      <div class="about-profile">
+        ${section.cards
+          .map(
+            (card) => `
+            <article class="card tilt-card about-profile-card">
               <h3>${escapeHtml(card.title)}</h3>
               <ul>${card.list.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
             </article>
           `
-        )
-        .join("")}
+          )
+          .join("")}
+      </div>
+      ${interestsStrip}
     </div>
   `;
 };

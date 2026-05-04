@@ -45,7 +45,8 @@ L’URL du site pour un dépôt nommé `Portfolio` est en général **`https://T
 - Texte **anglais** : `content-en.js` (traductions à maintenir à la main)
 - Design : `styles.css`
 - Logique (thème, carousel compétences, formulaire, etc.) : `script.js`
-- **CV PDF** : fichier `CV_Feltrin_Cyril.pdf` à la racine du dépôt (même chemin que dans `hero.cv.pdfPath` des fichiers de contenu). GitHub Pages sert les PDF comme n'importe quel fichier statique ; pense à bien **commit** le PDF.
+- **CV PDF** : fichier `assets/pdf/CV_Feltrin_Cyril.pdf` (même chemin que `hero.cv.pdfPath` dans les fichiers de contenu). GitHub Pages sert les PDF comme n’importe quel fichier statique ; pense à bien **commit** le PDF.
+- **Photos centres d’intérêt** : `assets/images/interests/` (`CI_*.jpg/jpeg`, noms ASCII pour les URL).
 
 ### Liens GitHub & LinkedIn
 

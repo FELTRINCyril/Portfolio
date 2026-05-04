@@ -33,7 +33,7 @@ window.portfolioLocales.en = {
     socialGroupAria: "Social profiles",
     cvGroupAria: "PDF resume",
     cv: {
-      pdfPath: "./CV_Feltrin_Cyril.pdf",
+      pdfPath: "./assets/pdf/CV_Feltrin_Cyril.pdf",
       downloadFileName: "CV_Cyril_Feltrin.pdf",
       modeGroupAria: "Choose: download or open the PDF",
       segmentDownload: "Download",
@@ -48,6 +48,31 @@ window.portfolioLocales.en = {
       title: "About",
       intro:
         "My background blends hands-on jobs (hospitality, cashier, logistics, landscaping) with a technical IT curriculum. That mix gives me discipline, adaptability, and solid teamwork.",
+      interestsTitle: "Interests",
+      interestsAria: "Image gallery — interests",
+      interestsCaption: "Hover or slide to expand a panel.",
+      interests: [
+        {
+          image: "./assets/images/interests/CI_Moto.jpg",
+          label: "Motorcycling",
+          alt: "Motorcycling and trail riding."
+        },
+        {
+          image: "./assets/images/interests/CI_Snowboard.jpg",
+          label: "Snowboarding",
+          alt: "Snowboarding in the mountains."
+        },
+        {
+          image: "./assets/images/interests/CI_Muscu.jpg",
+          label: "Strength training",
+          alt: "Gym workouts several times a week."
+        },
+        {
+          image: "./assets/images/interests/CI_Cinema.jpeg",
+          label: "Movies",
+          alt: "Action and science-fiction movies."
+        }
+      ],
       cards: [
         {
           title: "Profile",
@@ -57,10 +82,6 @@ window.portfolioLocales.en = {
             "Age: 19",
             "Track: BUT Computer Science — Project management"
           ]
-        },
-        {
-          title: "Interests",
-          list: ["Motorcycling and snowboarding", "Strength training (5x/week)", "Movies (action / sci-fi)"]
         }
       ]
     },
