@@ -8,8 +8,7 @@ Ouvre simplement `index.html` dans ton navigateur.
 
 ## Déploiement GitHub Pages (automatique)
 
-À chaque `push` sur **`main`**, le workflow déploie le site via l’API officielle GitHub Pages  
-(`configure-pages` → `upload-pages-artifact` → `deploy-pages`).
+À chaque `push` sur **`main`**, le workflow publie le site sur la branche **`gh-pages`**.
 
 Un fichier **`.nojekyll`** à la racine évite que Jekyll traite le site (recommandé pour du HTML brut).
 
@@ -30,14 +29,15 @@ git push -u origin main
 
 Dans le repo GitHub : **Settings → Pages**.
 
-- **Build and deployment → Source** : **GitHub Actions** (pas « Deploy from a branch » / `gh-pages` — l’ancien workflow utilisait la branche ; le flux actuel passe uniquement par Actions).
-- Enregistre. Le workflow **Deploy to GitHub Pages** doit apparaître comme source après un premier déploiement réussi.
+- **Build and deployment → Source** : **Deploy from a branch**.
+- **Branch** : `gh-pages` puis dossier **`/ (root)`**.
+- Enregistre.
 
 L’URL du site pour un dépôt nommé `Portfolio` est en général **`https://TON_USER.github.io/Portfolio/`** (avec le suffixe du nom du repo).
 
-**Workflow permissions** : **Settings → Actions → General** → **Workflow permissions** : laisse **Read and write permissions** (valeur par défaut sur beaucoup de dépôts) ou vérifie que les workflows peuvent utiliser le jeton avec les droits déclarés dans le fichier YAML (`pages: write`, `id-token: write`).
+**Workflow permissions** : **Settings → Actions → General** → **Workflow permissions** : active **Read and write permissions** (sinon l'action ne peut pas pousser vers `gh-pages`).
 
-**Si le site reste vide ou en erreur** : onglet **Actions** → ouvre le dernier run → lis le message d’erreur ; vérifie aussi que **Settings → Pages** pointe bien vers **GitHub Actions**, pas vers une branche obsolète `gh-pages`.
+**Si le site reste vide ou en erreur** : onglet **Actions** → ouvre le dernier run → lis le message d’erreur ; vérifie aussi que **Settings → Pages** pointe bien vers `gh-pages`.
 
 ## Personnalisation rapide
 
