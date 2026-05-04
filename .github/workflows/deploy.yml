@@ -1,8 +1,5 @@
-# Déploiement GitHub Pages via la branche gh-pages (évite configure-pages /
-# deploy-pages qui exigent souvent une activation manuelle + droits « Pages » API).
-#
-# Une fois configuré dans Settings → Pages (source : branche gh-pages),
-# chaque push sur main met à jour le site.
+# Déploiement GitHub Pages via l’API officielle (source : GitHub Actions dans
+# Settings → Pages). Compatible avec le jeton du workflow (pas de push sur gh-pages).
 
 name: Deploy to GitHub Pages
 
@@ -12,25 +9,41 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
-  group: gh-pages-deployment
+  group: pages
   cancel-in-progress: false
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Publier sur la branche gh-pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Préparer le dossier publié
+        run: |
+          mkdir -p _site
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='_site' \
+            ./ _site/
+
+      - name: Configurer Pages
+        uses: actions/configure-pages@v5
+
+      - name: Téléverser l’artefact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
-          # Ne pas exposer les workflows dans le dossier publié
-          exclude_assets: ".github"
-          force_orphan: true
-          commit_message: "deploy: ${{ github.sha }}"
+          path: _site
+
+      - name: Déployer
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -8,8 +8,10 @@ Ouvre simplement `index.html` dans ton navigateur.
 
 ## Déploiement GitHub Pages (automatique)
 
-Le workflow poussée le site sur la branche **`gh-pages`** à chaque `push` sur `main`  
-(pas besoin du couple `configure-pages` / `deploy-pages`, souvent bloqué par les droits du `GITHUB_TOKEN`).
+À chaque `push` sur **`main`**, le workflow déploie le site via l’API officielle GitHub Pages  
+(`configure-pages` → `upload-pages-artifact` → `deploy-pages`).
+
+Un fichier **`.nojekyll`** à la racine évite que Jekyll traite le site (recommandé pour du HTML brut).
 
 ### 1) Créer le repo GitHub (si ce n'est pas déjà fait)
 
@@ -28,13 +30,14 @@ git push -u origin main
 
 Dans le repo GitHub : **Settings → Pages**.
 
-- **Build and deployment → Source** : **Deploy from a branch** (pas « GitHub Actions » pour ce projet).
-- **Branch** : `gh-pages`, dossier **`/ (root)`**.
-- Enregistrer.
+- **Build and deployment → Source** : **GitHub Actions** (pas « Deploy from a branch » / `gh-pages` — l’ancien workflow utilisait la branche ; le flux actuel passe uniquement par Actions).
+- Enregistre. Le workflow **Deploy to GitHub Pages** doit apparaître comme source après un premier déploiement réussi.
 
-Laisse le workflow terminer après ton premier push sur `main` (il crée ou met à jour `gh-pages`), puis recharge la page **Settings → Pages** si besoin pour voir l’URL du site (souvent `https://TON_USER.github.io/Portfolio/`).
+L’URL du site pour un dépôt nommé `Portfolio` est en général **`https://TON_USER.github.io/Portfolio/`** (avec le suffixe du nom du repo).
 
-**Workflow permissions** : **Settings → Actions → General**, en bas **Workflow permissions** : coche **Read and write** (pour que `GITHUB_TOKEN` puisse pousser sur `gh-pages`). Sans ça le job peut échouer avec « permission denied ».
+**Workflow permissions** : **Settings → Actions → General** → **Workflow permissions** : laisse **Read and write permissions** (valeur par défaut sur beaucoup de dépôts) ou vérifie que les workflows peuvent utiliser le jeton avec les droits déclarés dans le fichier YAML (`pages: write`, `id-token: write`).
+
+**Si le site reste vide ou en erreur** : onglet **Actions** → ouvre le dernier run → lis le message d’erreur ; vérifie aussi que **Settings → Pages** pointe bien vers **GitHub Actions**, pas vers une branche obsolète `gh-pages`.
 
 ## Personnalisation rapide
 
