@@ -205,10 +205,9 @@ const wireHeroCv = () => {
   const pdf = h.cv.pdfPath;
   const modeButton = document.getElementById("cv-mode-toggle");
   const link = document.getElementById("cv-main-link");
-  const modeLabel = document.getElementById("cv-mode-label");
   const splitRoot = modeButton?.closest(".cv-split-btn");
 
-  if (!modeButton || !link || !modeLabel) {
+  if (!modeButton || !link || !splitRoot) {
     return;
   }
 
@@ -223,21 +222,17 @@ const wireHeroCv = () => {
       link.setAttribute("download", h.cv.downloadFileName || "CV.pdf");
       link.removeAttribute("target");
       link.removeAttribute("rel");
-      link.textContent = h.cv.ctaDownload;
-      modeLabel.textContent = h.cv.segmentDownload;
       modeButton.setAttribute("aria-label", h.cv.segmentOpen);
       modeButton.title = h.cv.segmentOpen;
     } else {
       link.removeAttribute("download");
       link.setAttribute("target", "_blank");
       link.setAttribute("rel", "noopener noreferrer");
-      link.textContent = h.cv.ctaOpen;
-      modeLabel.textContent = h.cv.segmentOpen;
       modeButton.setAttribute("aria-label", h.cv.segmentDownload);
       modeButton.title = h.cv.segmentDownload;
     }
-    modeButton.classList.toggle("is-open-mode", mode === "open");
-    splitRoot?.classList.toggle("is-view-mode", mode === "open");
+    splitRoot.setAttribute("data-cv-mode", mode);
+    modeButton.setAttribute("aria-pressed", mode === "open" ? "true" : "false");
   };
 
   modeButton.onclick = () => {
@@ -272,11 +267,19 @@ const renderHero = () => {
         </div>
       </div>
       <div class="hero-cv-block" aria-label="${escapeHtml(h.cvGroupAria || "")}">
-        <div class="cv-split-btn cv-split-btn--floating" role="group" aria-label="${escapeHtml(h.cv.modeGroupAria || "")}">
-          <a class="btn btn-ghost hero-cv-link" href="#" id="cv-main-link">CV</a>
+        <div class="cv-split-btn cv-split-btn--floating" role="group" aria-label="${escapeHtml(h.cv.modeGroupAria || "")}" data-cv-mode="download">
+          <a class="btn btn-ghost hero-cv-link" href="#" id="cv-main-link">
+            <span class="cv-link-stack">
+              <span class="cv-link-layer cv-link-layer--download">${escapeHtml(h.cv.ctaDownload)}</span>
+              <span class="cv-link-layer cv-link-layer--open">${escapeHtml(h.cv.ctaOpen)}</span>
+            </span>
+          </a>
           <span class="cv-divider" aria-hidden="true"></span>
-          <button type="button" class="cv-mode-toggle" id="cv-mode-toggle">
-            <span id="cv-mode-label"></span>
+          <button type="button" class="cv-mode-toggle" id="cv-mode-toggle" aria-pressed="false">
+            <span class="cv-mode-stack">
+              <span class="cv-mode-layer cv-mode-layer--download">${escapeHtml(h.cv.segmentDownload)}</span>
+              <span class="cv-mode-layer cv-mode-layer--open">${escapeHtml(h.cv.segmentOpen)}</span>
+            </span>
           </button>
         </div>
       </div>
