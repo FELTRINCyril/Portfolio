@@ -7,7 +7,7 @@ window.portfolioLocales.en = {
   nav: [
     { href: "#a-propos", label: "About" },
     { href: "#competences", label: "Skills" },
-    { href: "#projets", label: "Project" },
+    { href: "#projets", label: "Projects" },
     { href: "#experience", label: "Experience" },
     { href: "#formation", label: "Education" },
     { href: "#contact", label: "Contact" }
@@ -119,11 +119,43 @@ window.portfolioLocales.en = {
     },
     project: {
       id: "projets",
-      title: "Featured project",
-      date: "2024 - 2025 | University project (IUT Annecy)",
-      cardTitle: "Vinted-like marketplace rebuild",
-      text:
-        "Team project (5 people) to rebuild a full site: data modeling (PowerAMC / MCD), PostgreSQL database (pgAdmin), then the web stack with HTML, CSS, JavaScript, PHP, and the Laravel framework."
+      title: "Featured projects",
+      carouselAria: "Project picker",
+      carouselPrev: "Previous project",
+      carouselNext: "Next project",
+      dotAriaTpl: "Show project {num} of {total}",
+      items: [
+        {
+          hue: "a",
+          tag: "Web · team · IUT Annecy",
+          date: "2024 - 2025 | University course",
+          title: "Vinted-like marketplace rebuild",
+          text:
+            "Team rebuild (5 people): data modeling (PowerAMC / MCD), PostgreSQL (pgAdmin), then HTML / CSS / JavaScript / PHP and Laravel.",
+          image: "./assets/images/projects/vinted.jpg",
+          links: [{ href: "https://github.com/FELTRINCyril", label: "View on GitHub" }]
+        },
+        {
+          hue: "b",
+          tag: "UI · course work",
+          date: "2024 | Guided project",
+          title: "Accessible responsive client portal",
+          text:
+            "High-fidelity mockups, responsive layout, themed UI, client-side validated forms.",
+          image: "",
+          links: []
+        },
+        {
+          hue: "c",
+          tag: "This site",
+          date: "2025 | Portfolio",
+          title: "Static-first portfolio shell",
+          text:
+            "Vanilla HTML / CSS / JavaScript with bilingual UX, restrained motion, GitHub Actions to Pages.",
+          image: "",
+          links: [{ href: "https://github.com/FELTRINCyril/Portfolio", label: "Source code" }]
+        }
+      ]
     },
     experience: {
       id: "experience",

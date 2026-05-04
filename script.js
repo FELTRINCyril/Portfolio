@@ -2,6 +2,7 @@ const LANG_KEY = "portfolioLang";
 const CV_MODE_KEY = "portfolioCvMode";
 
 let skillsPageIndex = 0;
+let projectShowcaseIndex = 0;
 let currentLanguage = localStorage.getItem(LANG_KEY) || "fr";
 
 const navLinks = document.querySelector("#nav-links");
@@ -512,6 +513,69 @@ const renderSkillCards = () => {
   observeSkillAnimations(section.id);
 };
 
+function initProjectsDelegation() {
+  if (globalThis.portfolioProjectsDelegation) {
+    return;
+  }
+  globalThis.portfolioProjectsDelegation = true;
+  document.body.addEventListener("click", (e) => {
+    const root = document.getElementById("projets");
+    if (!root || !root.contains(e.target)) {
+      return;
+    }
+
+    const section = window.portfolioLocales?.[currentLanguage]?.sections?.project;
+    const items = normalizeProjectItems(section);
+    const n = items.length;
+    if (n <= 1) {
+      return;
+    }
+
+    const prevBtn = e.target.closest("[data-project-nav]");
+    if (prevBtn) {
+      const dir = parseInt(prevBtn.getAttribute("data-project-nav") || "0", 10);
+      projectShowcaseIndex = (projectShowcaseIndex + dir + n) % n;
+      renderProject();
+      return;
+    }
+
+    const dot = e.target.closest("[data-project-dot]");
+    if (dot && dot.hasAttribute("data-project-dot")) {
+      const ix = parseInt(dot.getAttribute("data-project-dot") || "0", 10);
+      if (!Number.isNaN(ix) && ix >= 0 && ix < n) {
+        projectShowcaseIndex = ix;
+        renderProject();
+      }
+    }
+  });
+}
+
+/** Prise en charge de l’ancien format projet unique (sans tableau items). */
+function normalizeProjectItems(section) {
+  if (!section) {
+    return [];
+  }
+  if (Array.isArray(section.items) && section.items.length) {
+    return section.items;
+  }
+  const title = section.cardTitle || section.titleLead || "";
+  const textBlock = section.text || "";
+  if (!title && !textBlock && !section.date) {
+    return [];
+  }
+  return [
+    {
+      hue: section.hue || "a",
+      tag: section.tag || "",
+      date: section.date || "",
+      title,
+      text: textBlock,
+      image: section.image || "",
+      links: []
+    }
+  ];
+}
+
 function initSkillsDelegation() {
   if (globalThis.portfolioSkillsDelegation) {
     return;
@@ -554,15 +618,177 @@ function initSkillsDelegation() {
 
 const renderProject = () => {
   const section = getContent().sections.project;
-  document.querySelector(`#${section.id}`).innerHTML = `
-    <h2 class="section-title-centered">${escapeHtml(section.title)}</h2>
-    <article class="card">
-      <span class="timeline-date">${escapeHtml(section.date)}</span>
-      <h3>${escapeHtml(section.cardTitle)}</h3>
-      <p>${escapeHtml(section.text)}</p>
-    </article>
+  const el = document.querySelector(`#${section.id}`);
+  const items = normalizeProjectItems(section);
+  const dotTpl = typeof section.dotAriaTpl === "string" ? section.dotAriaTpl : "Slide {num} / {total}";
+
+  if (!items.length) {
+    el.innerHTML = `<h2 class="section-title-centered">${escapeHtml(section.title)}</h2>`;
+    return;
+  }
+
+  const n = items.length;
+  projectShowcaseIndex = Math.max(0, Math.min(projectShowcaseIndex, n - 1));
+  const showControls = n > 1;
+  const idx = projectShowcaseIndex;
+
+  const slidesMarkup = items
+    .map((item, i) => {
+      const hueKey = /^[abc]$/.test(String(item.hue)) ? String(item.hue) : ["a", "b", "c"][i % 3];
+      const imgSrc = typeof item.image === "string" ? item.image.trim() : "";
+      const hasPhoto = Boolean(imgSrc);
+      const links = Array.isArray(item.links) ? item.links : [];
+
+      let photoLayer = "";
+      if (hasPhoto) {
+        const cssVar = `--project-photo:url(${JSON.stringify(imgSrc)})`;
+        photoLayer = `<div class="project-slide__photo" style="${escapeHtml(cssVar)}" aria-hidden="true"></div>`;
+      }
+
+      const linkRow =
+        links.length > 0
+          ? `
+        <div class="project-slide__links">
+          ${links
+            .filter((lnk) => lnk?.href && lnk?.label)
+            .map((lnk) => {
+              const h = escapeHtml(String(lnk.href));
+              const isMail = /^mailto:/i.test(lnk.href);
+              const blank = !isMail ? 'target="_blank" rel="noopener noreferrer"' : "";
+              return `<a class="project-slide__link btn btn-ghost" href="${h}" ${blank}>${escapeHtml(String(lnk.label))}</a>`;
+            })
+            .join("")}
+        </div>
+      `
+          : "";
+
+      const tagBlock = item.tag ? `<span class="project-slide__tag">${escapeHtml(item.tag)}</span>` : "";
+      const isActive = i === idx;
+
+      const asideMarkup =
+        showControls && isActive
+          ? `
+        <aside class="project-slide__aside" aria-label="${escapeHtml(section.carouselAria || "")}">
+          <nav class="project-showcase__controls">
+            <button type="button" class="project-nav-btn" data-project-nav="-1" aria-label="${escapeHtml(
+              section.carouselPrev || ""
+            )}">
+              &lsaquo;
+            </button>
+            <div class="project-dots">
+              ${items
+                .map((_, j) => {
+                  const lbl = dotTpl.replace("{num}", String(j + 1)).replace("{total}", String(n));
+                  const curSel = j === idx ? ' aria-current="true"' : "";
+                  return `<button type="button" data-project-dot="${j}" class="project-dot${j === idx ? " is-active" : ""}" aria-label="${escapeHtml(
+                    lbl
+                  )}"${curSel}><span class="project-dot__dot" aria-hidden="true"></span></button>`;
+                })
+                .join("")}
+            </div>
+            <button type="button" class="project-nav-btn" data-project-nav="1" aria-label="${escapeHtml(
+              section.carouselNext || ""
+            )}">
+              &rsaquo;
+            </button>
+          </nav>
+          <p class="project-showcase__count" aria-live="polite">${i + 1}<span aria-hidden="true">&nbsp;/&nbsp;</span>${n}</p>
+        </aside>
+          `
+          : "";
+
+      return `
+      <article
+        class="project-slide project-slide--hue-${hueKey} ${hasPhoto ? "project-slide--has-photo" : ""}${isActive ? " is-active" : ""}"
+        data-project-slide="${i}"
+        role="group"
+        aria-roledescription="slide"
+        aria-labelledby="project-slide-title-${i}"
+        aria-hidden="${isActive ? "false" : "true"}"
+      >
+        <div class="project-slide__mesh" aria-hidden="true"></div>
+        ${photoLayer}
+        <div class="project-slide__grain" aria-hidden="true"></div>
+        <div class="project-slide__scrim" aria-hidden="true"></div>
+        <div class="project-slide__rail">
+          <div class="project-slide__copy">
+            ${tagBlock}
+            ${item.date ? `<p class="project-slide__date" id="project-slide-date-${i}">${escapeHtml(item.date)}</p>` : ""}
+            <h3 class="project-slide__heading" id="project-slide-title-${i}">${escapeHtml(item.title || "")}</h3>
+            <p class="project-slide__lead">${escapeHtml(item.text || "")}</p>
+            ${linkRow}
+          </div>
+          ${asideMarkup}
+        </div>
+      </article>
+      `;
+    })
+    .join("");
+
+  el.innerHTML = `
+    <div class="project-section-head">
+      <h2 class="section-title-centered project-section-head__title">${escapeHtml(section.title)}</h2>
+    </div>
+    <div class="project-showcase" tabindex="0" aria-roledescription="carousel" aria-label="${escapeHtml(
+      section.carouselAria || ""
+    )}">
+      <div class="project-showcase__viewport">
+        ${slidesMarkup}
+      </div>
+    </div>
   `;
+
+  const cur = items[idx];
+  if (cur?.image && String(cur.image).trim()) {
+    preloadProjectPhoto(String(cur.image).trim());
+  }
 };
+
+let projectShowcaseArrowHandler = false;
+
+/** Flèches clavier depuis un élément focus à l'intérieur de #projets. */
+function ensureProjectCarouselKeyboardOnce() {
+  if (projectShowcaseArrowHandler) {
+    return;
+  }
+  projectShowcaseArrowHandler = true;
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      const root = document.getElementById("projets");
+      if (!root || !document.activeElement || !root.contains(document.activeElement)) {
+        return;
+      }
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+        return;
+      }
+      const section = window.portfolioLocales?.[currentLanguage]?.sections?.project;
+      const items = normalizeProjectItems(section);
+      const n = items.length;
+      if (n <= 1) {
+        return;
+      }
+      e.preventDefault();
+      if (e.key === "ArrowLeft") {
+        projectShowcaseIndex = (projectShowcaseIndex - 1 + n) % n;
+      } else {
+        projectShowcaseIndex = (projectShowcaseIndex + 1) % n;
+      }
+      renderProject();
+    },
+    true
+  );
+}
+
+/** Préchargement léger pour un flip d’image un peu plus net. */
+function preloadProjectPhoto(url) {
+  if (!url || !String(url).trim()) {
+    return;
+  }
+  const img = new Image();
+  img.decoding = "async";
+  img.src = url;
+}
 
 const renderTimelineSection = (sectionData) => {
   document.querySelector(`#${sectionData.id}`).innerHTML = `
@@ -789,6 +1015,8 @@ const renderAll = async () => {
   renderHero();
   renderAbout();
   initSkillsDelegation();
+  initProjectsDelegation();
+  ensureProjectCarouselKeyboardOnce();
   renderSkillCards();
   renderProject();
   renderTimelineSection(c.sections.experience);

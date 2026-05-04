@@ -7,7 +7,7 @@ window.portfolioLocales.fr = {
   nav: [
     { href: "#a-propos", label: "A propos" },
     { href: "#competences", label: "Competences" },
-    { href: "#projets", label: "Projet" },
+    { href: "#projets", label: "Projets" },
     { href: "#experience", label: "Experience" },
     { href: "#formation", label: "Formation" },
     { href: "#contact", label: "Contact" }
@@ -119,11 +119,43 @@ window.portfolioLocales.fr = {
     },
     project: {
       id: "projets",
-      title: "Projet marquant",
-      date: "2024 - 2025 | Projet universitaire (IUT Annecy)",
-      cardTitle: "Recreation d'un site type Vinted",
-      text:
-        "Travail d'equipe (5 personnes) pour reconstruire un site complet : modelisation des donnees (PowerAMC / MCD), base PostgreSQL (pgAdmin), puis developpement web avec HTML, CSS, JavaScript, PHP et framework Laravel."
+      title: "Projets marquants",
+      carouselAria: "Sélection d'un projet",
+      carouselPrev: "Projet precedent",
+      carouselNext: "Projet suivant",
+      dotAriaTpl: "Voir le projet {num} sur {total}",
+      items: [
+        {
+          hue: "a",
+          tag: "Web · equipe · IUT Annecy",
+          date: "2024 - 2025 | Projet universitaire",
+          title: "Recreation d'un site type Vinted",
+          text:
+            "Travail en equipe (5 personnes) : modelisation (PowerAMC / MCD), PostgreSQL (pgAdmin), puis stack HTML / CSS / JavaScript / PHP et Laravel.",
+          image: "./assets/images/projects/vinted.jpg",
+          links: [{ href: "https://github.com/FELTRINCyril", label: "Voir sur GitHub" }]
+        },
+        {
+          hue: "b",
+          tag: "Interface · cours",
+          date: "2024 | Projet pedagogique",
+          title: "Espace client responsive accessible",
+          text:
+            "Maquettes haute-fidelite puis integration responsive avec theming dynamique et formulaires verifies cote utilisateur.",
+          image: "",
+          links: []
+        },
+        {
+          hue: "c",
+          tag: "Ce site",
+          date: "2025 | Portfolio personnel",
+          title: "Portfolio en statique ultra leger",
+          text:
+            "HTML / CSS / JavaScript vanilla, bilangue avec stockage local, animations thematiques sobres et deploiement GitHub Actions sur Pages.",
+          image: "",
+          links: [{ href: "https://github.com/FELTRINCyril/Portfolio", label: "Code source" }]
+        }
+      ]
     },
     experience: {
       id: "experience",
