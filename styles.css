@@ -399,11 +399,12 @@ a.btn.btn-social .social-svg {
 .cv-split-btn {
   --cv-shimmer: rgba(255, 255, 255, 0.18);
   position: relative;
-  display: inline-flex;
+  display: flex;
+  flex-direction: row;
   align-items: stretch;
   width: 100%;
   max-width: 22rem;
-  min-width: min(100%, 19rem);
+  min-width: 0;
   border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
   border-radius: 999px;
   overflow: hidden;
@@ -518,17 +519,18 @@ a.btn.btn-social .social-svg {
 }
 
 .hero-cv-link {
-  flex: 1 1 auto;
-  display: inline-flex;
+  flex: 1 1 0%;
+  display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  min-width: 0;
   max-width: none;
   border: 0 !important;
-  border-radius: 0;
+  border-radius: 0 !important;
+  box-shadow: none !important;
   position: relative;
   z-index: 1;
-  padding: 0.78rem 1.1rem;
+  padding: 0.62rem 0.75rem !important;
   min-height: 2.75rem;
   letter-spacing: 0.02em;
   color: var(--text);
@@ -537,6 +539,7 @@ a.btn.btn-social .social-svg {
 
 .hero-cv-link:hover {
   background: color-mix(in srgb, var(--accent) 10%, transparent);
+  transform: none;
 }
 
 /* Glissement horizontal (volet double) — gauche ↔ droite */
@@ -544,15 +547,23 @@ a.btn.btn-social .social-svg {
 .cv-mode-stack {
   position: relative;
   overflow: hidden;
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
+  width: 100%;
   align-self: stretch;
   display: flex;
   align-items: center;
 }
 
+.cv-mode-stack {
+  box-sizing: border-box;
+  padding: 0.62rem 0.75rem;
+}
+
 .cv-link-slider,
 .cv-mode-slider {
+  position: relative;
+  z-index: 1;
   display: flex;
   width: 200%;
   will-change: transform;
@@ -598,7 +609,7 @@ a.btn.btn-social .social-svg {
   color: #161616;
 }
 
-/* Léger fondu sur les bords du volet principal (zone lien) */
+/* Dégradés d’angle : derrière le texte (le slider est au-dessus en z-index) */
 .cv-link-stack::before,
 .cv-link-stack::after {
   content: "";
@@ -606,9 +617,9 @@ a.btn.btn-social .social-svg {
   top: 0;
   bottom: 0;
   width: 12px;
-  z-index: 2;
+  z-index: 0;
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.45;
 }
 
 .cv-link-stack::before {
@@ -623,18 +634,19 @@ a.btn.btn-social .social-svg {
 
 html[data-theme="light"] .cv-link-stack::before,
 html[data-theme="light"] .cv-link-stack::after {
-  opacity: 0.32;
+  opacity: 0.28;
 }
 
 .cv-mode-toggle {
   position: relative;
   z-index: 1;
-  display: inline-flex;
+  display: flex;
   align-items: stretch;
   justify-content: center;
+  flex: 0 0 auto;
   border: 0;
-  min-width: 8.25rem;
-  padding: 0.78rem 0.65rem;
+  min-width: 7.25rem;
+  padding: 0;
   min-height: 2.75rem;
   font: inherit;
   cursor: pointer;
