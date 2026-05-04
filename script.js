@@ -23,6 +23,13 @@ const iconGithub =
 const iconLinkedin =
   '<svg class="social-svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.62 0 4.28 2.38 4.28 5.48v6.26ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.55V9h3.57v11.45Z"/></svg>';
 
+const cvIconDownload =
+  '<svg class="cv-icon" width="1.2em" height="1.2em" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+const cvIconOpen =
+  '<svg class="cv-icon" width="1.2em" height="1.2em" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+const cvIconSwitch =
+  '<svg class="cv-icon cv-icon--switch" width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>';
+
 const getContent = () => {
   const locales = window.portfolioLocales || {};
   return locales[currentLanguage] || locales.fr;
@@ -235,11 +242,19 @@ const wireHeroCv = () => {
     modeButton.setAttribute("aria-pressed", mode === "open" ? "true" : "false");
   };
 
-  modeButton.onclick = () => {
+  modeButton.onclick = (e) => {
+    e.preventDefault();
     mode = mode === "download" ? "open" : "download";
     localStorage.setItem(CV_MODE_KEY, mode);
     apply();
   };
+
+  splitRoot.onmousemove = (e) => {
+    const rect = splitRoot.getBoundingClientRect();
+    splitRoot.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+    splitRoot.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+  };
+
   apply();
 };
 
@@ -267,23 +282,20 @@ const renderHero = () => {
         </div>
       </div>
       <div class="hero-cv-block" aria-label="${escapeHtml(h.cvGroupAria || "")}">
-        <div class="cv-split-btn cv-split-btn--floating" role="group" aria-label="${escapeHtml(h.cv.modeGroupAria || "")}" data-cv-mode="download">
-          <a class="btn btn-ghost hero-cv-link" href="#" id="cv-main-link">
-            <span class="cv-link-stack">
-              <span class="cv-link-slider">
-                <span class="cv-link-pane"><span class="cv-link-text">${escapeHtml(h.cv.ctaDownload)}</span></span>
-                <span class="cv-link-pane"><span class="cv-link-text">${escapeHtml(h.cv.ctaOpen)}</span></span>
-              </span>
+        <div class="cv-split-btn" role="group" aria-label="${escapeHtml(h.cv.modeGroupAria || "")}" data-cv-mode="download">
+          <a class="hero-cv-link" href="#" id="cv-main-link">
+            <span class="cv-stack cv-text-main">
+              <span class="state-download">${cvIconDownload}<span class="cv-cta-text">${escapeHtml(h.cv.ctaDownload)}</span></span>
+              <span class="state-open">${cvIconOpen}<span class="cv-cta-text">${escapeHtml(h.cv.ctaOpen)}</span></span>
             </span>
           </a>
           <span class="cv-divider" aria-hidden="true"></span>
           <button type="button" class="cv-mode-toggle" id="cv-mode-toggle" aria-pressed="false">
-            <span class="cv-mode-stack">
-              <span class="cv-mode-slider">
-                <span class="cv-mode-pane"><span class="cv-mode-text">${escapeHtml(h.cv.segmentDownload)}</span></span>
-                <span class="cv-mode-pane"><span class="cv-mode-text">${escapeHtml(h.cv.segmentOpen)}</span></span>
-              </span>
+            <span class="cv-stack cv-text-sub">
+              <span class="state-download">${escapeHtml(h.cv.segmentOpen)}</span>
+              <span class="state-open">${escapeHtml(h.cv.segmentDownload)}</span>
             </span>
+            ${cvIconSwitch}
           </button>
         </div>
       </div>
@@ -820,6 +832,44 @@ function preloadProjectPhoto(url) {
   img.src = url;
 }
 
+/** Arêtes des cartes parcours : intensité selon la distance curseur ↔ bord (exp / formation). */
+const wireMilestoneCardProximity = () => {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+  const cards = document.querySelectorAll(".milestone-card");
+  if (!cards.length) {
+    return;
+  }
+
+  const setZero = (card) => {
+    card.style.setProperty("--hot-t", "0");
+    card.style.setProperty("--hot-r", "0");
+    card.style.setProperty("--hot-b", "0");
+    card.style.setProperty("--hot-l", "0");
+  };
+
+  const onMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const w = rect.width;
+    const h = rect.height;
+    const falloff = Math.max(36, Math.min(100, w * 0.26, h * 0.26));
+    card.style.setProperty("--hot-t", Math.max(0, 1 - y / falloff).toFixed(4));
+    card.style.setProperty("--hot-b", Math.max(0, 1 - (h - y) / falloff).toFixed(4));
+    card.style.setProperty("--hot-l", Math.max(0, 1 - x / falloff).toFixed(4));
+    card.style.setProperty("--hot-r", Math.max(0, 1 - (w - x) / falloff).toFixed(4));
+  };
+
+  cards.forEach((card) => {
+    setZero(card);
+    card.addEventListener("mousemove", onMove, { passive: true });
+    card.addEventListener("mouseleave", () => setZero(card));
+  });
+};
+
 const renderTimelineSection = (sectionData) => {
   const items = Array.isArray(sectionData.items) ? sectionData.items : [];
   const intro =
@@ -884,6 +934,7 @@ const renderTimelineSection = (sectionData) => {
       ${cardsHtml}
     </div>
   `;
+  wireMilestoneCardProximity();
 };
 
 const renderContact = () => {

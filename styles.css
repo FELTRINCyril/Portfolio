@@ -391,284 +391,244 @@ a.btn.btn-social .social-svg {
   justify-content: flex-end;
   align-items: flex-end;
   width: auto;
-  max-width: min(22rem, 100%);
+  max-width: min(24rem, 100%);
   justify-self: end;
   align-self: end;
 }
 
 .cv-split-btn {
-  --cv-shimmer: rgba(255, 255, 255, 0.18);
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: stretch;
   width: 100%;
-  max-width: 22rem;
+  max-width: 24rem;
   min-width: 0;
-  border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
+  padding: 4px;
   border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  background: linear-gradient(
-    155deg,
-    color-mix(in srgb, var(--surface) 96%, #fff 4%),
-    color-mix(in srgb, var(--accent) 11%, var(--surface))
-  );
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow:
-    0 10px 36px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  cursor: default;
   transition:
-    transform 520ms cubic-bezier(0.33, 1, 0.28, 1),
-    box-shadow 560ms cubic-bezier(0.33, 1, 0.28, 1),
-    border-color 420ms ease;
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
 }
 
-.cv-split-btn.cv-split-btn--floating:hover {
-  transform: translateY(-3px);
+.cv-split-btn:hover {
+  transform: translateY(-4px);
   box-shadow:
-    0 18px 44px rgba(0, 0, 0, 0.22),
-    0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 16px 48px rgba(0, 0, 0, 0.28),
+    0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .cv-split-btn::before {
   content: "";
   position: absolute;
-  inset: -2px;
+  inset: 0;
   background: radial-gradient(
-    620px circle at var(--cv-glow-x, 18%) var(--cv-glow-y, 8%),
-    color-mix(in srgb, var(--accent) 24%, transparent),
-    transparent 58%
+    120px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    color-mix(in srgb, var(--accent) 18%, transparent),
+    transparent 100%
   );
   opacity: 0;
-  transition: opacity 580ms cubic-bezier(0.33, 1, 0.28, 1);
+  transition: opacity 0.3s ease;
   pointer-events: none;
+  z-index: 0;
 }
 
 .cv-split-btn:hover::before {
   opacity: 1;
 }
 
-.cv-split-btn[data-cv-mode="open"] {
-  --cv-glow-x: 88%;
-  --cv-glow-y: 65%;
-}
-
-.cv-split-btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    115deg,
-    transparent 28%,
-    var(--cv-shimmer) 48%,
-    transparent 66%
-  );
-  transform: translateX(-115%);
-  animation: cv-shimmer 8s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes cv-shimmer {
-  0% {
-    transform: translateX(-120%);
-    opacity: 0;
-  }
-  12% {
-    opacity: 0.85;
-  }
-  38% {
-    transform: translateX(120%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(120%);
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cv-split-btn::after {
-    animation: none;
-  }
-
-  .cv-split-btn.cv-split-btn--floating:hover {
-    transform: none;
-  }
-
-  .cv-link-slider,
-  .cv-mode-slider {
-    transition-duration: 0.01ms !important;
-    transition-delay: 0ms !important;
-  }
-}
-
 .cv-divider {
   align-self: stretch;
   width: 1px;
   flex-shrink: 0;
+  margin: 0.45rem 0.2rem;
   background: linear-gradient(
     180deg,
     transparent,
-    color-mix(in srgb, var(--border), transparent 10%) 18%,
-    color-mix(in srgb, var(--border), transparent 10%) 82%,
+    color-mix(in srgb, var(--border), transparent 8%) 18%,
+    color-mix(in srgb, var(--border), transparent 8%) 82%,
     transparent
   );
-  opacity: 0.85;
+  opacity: 0.9;
+  z-index: 1;
 }
 
 .hero-cv-link {
   flex: 1 1 0%;
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   min-width: 0;
   max-width: none;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  position: relative;
-  z-index: 1;
-  padding: 0.62rem 0.75rem !important;
-  min-height: 2.75rem;
-  letter-spacing: 0.02em;
+  padding: 0.72rem 1.2rem;
+  min-height: 2.85rem;
+  border-radius: 999px;
+  text-decoration: none;
   color: var(--text);
-  transition: background 520ms cubic-bezier(0.33, 1, 0.28, 1);
+  letter-spacing: 0.02em;
+  transition: background 0.3s ease;
 }
 
 .hero-cv-link:hover {
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
-  transform: none;
+  background: color-mix(in srgb, var(--text) 6%, transparent);
 }
 
-/* Glissement horizontal (volet double) — gauche ↔ droite */
-.cv-link-stack,
-.cv-mode-stack {
-  position: relative;
-  overflow: hidden;
-  flex: 1 1 auto;
-  min-width: 0;
+.hero-cv-link:active {
+  transform: scale(0.98);
+}
+
+.cv-icon {
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cv-icon--switch {
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cv-split-btn[data-cv-mode="open"] .cv-icon--switch {
+  transform: rotate(180deg);
+}
+
+.cv-stack {
+  display: grid;
+  place-items: center;
   width: 100%;
-  align-self: stretch;
-  display: flex;
-  align-items: center;
 }
 
-.cv-mode-stack {
-  box-sizing: border-box;
-  padding: 0.62rem 0.75rem;
-}
-
-.cv-link-slider,
-.cv-mode-slider {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  width: 200%;
-  will-change: transform;
-  transition: transform 0.68s cubic-bezier(0.34, 1.02, 0.32, 1);
-}
-
-.cv-mode-slider {
-  transition: transform 0.68s cubic-bezier(0.34, 1.02, 0.32, 1) 0.06s;
-}
-
-.cv-split-btn[data-cv-mode="open"] .cv-link-slider,
-.cv-split-btn[data-cv-mode="open"] .cv-mode-slider {
-  transform: translateX(-50%);
-}
-
-.cv-link-pane,
-.cv-mode-pane {
-  flex: 0 0 50%;
-  width: 50%;
+.cv-stack > .state-download,
+.cv-stack > .state-open {
+  grid-area: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 0.35rem;
-  box-sizing: border-box;
-}
-
-.cv-link-text {
-  font-weight: 600;
-  font-size: 0.82rem;
-  letter-spacing: 0.04em;
+  gap: 0.55rem;
   white-space: nowrap;
-  line-height: 1.28;
-  color: var(--text);
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.5s ease,
+    filter 0.5s ease;
 }
 
-.cv-mode-text {
+.cv-text-main {
+  font-size: clamp(0.78rem, 1.9vw, 0.92rem);
   font-weight: 600;
+}
+
+.cv-text-sub {
   font-size: 0.72rem;
-  letter-spacing: 0.08em;
+  font-weight: 700;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
-  white-space: nowrap;
-  line-height: 1.25;
-  color: #161616;
 }
 
-/* Dégradés d’angle : derrière le texte (le slider est au-dessus en z-index) */
-.cv-link-stack::before,
-.cv-link-stack::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 12px;
-  z-index: 0;
+.cv-cta-text {
+  min-width: 0;
+}
+
+/* États inactifs : flou + léger décalage vertical opposé */
+.cv-split-btn .state-download,
+.cv-split-btn .state-open {
+  opacity: 0;
+  filter: blur(4px);
   pointer-events: none;
-  opacity: 0.45;
 }
 
-.cv-link-stack::before {
-  left: 0;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--surface) 90%, transparent), transparent);
+.cv-split-btn .state-download {
+  transform: translateY(14px) scale(0.95);
 }
 
-.cv-link-stack::after {
-  right: 0;
-  background: linear-gradient(270deg, color-mix(in srgb, var(--surface) 90%, transparent), transparent);
+.cv-split-btn .state-open {
+  transform: translateY(-14px) scale(0.95);
 }
 
-html[data-theme="light"] .cv-link-stack::before,
-html[data-theme="light"] .cv-link-stack::after {
-  opacity: 0.28;
+.cv-split-btn[data-cv-mode="download"] .state-download,
+.cv-split-btn[data-cv-mode="open"] .state-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  pointer-events: auto;
 }
 
 .cv-mode-toggle {
   position: relative;
   z-index: 1;
-  display: flex;
-  align-items: stretch;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
+  gap: 0.45rem;
   flex: 0 0 auto;
-  border: 0;
-  min-width: 7.25rem;
-  padding: 0;
-  min-height: 2.75rem;
+  border: none;
+  border-radius: 999px;
+  padding: 0.72rem 1rem;
+  min-height: 2.85rem;
+  min-width: 7.5rem;
   font: inherit;
   cursor: pointer;
-  background: linear-gradient(132deg, var(--accent), var(--accent-warm));
+  color: #141414;
+  background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 4px 14px color-mix(in srgb, var(--accent) 32%, transparent);
   transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.3s ease,
     background 0.65s cubic-bezier(0.33, 1, 0.28, 1),
-    filter 380ms ease,
-    transform 0.28s cubic-bezier(0.33, 1, 0.28, 1),
     box-shadow 0.55s cubic-bezier(0.33, 1, 0.28, 1);
 }
 
+.cv-mode-toggle .cv-stack {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .cv-mode-toggle:hover {
-  filter: brightness(1.05) saturate(1.04);
+  filter: brightness(1.08) saturate(1.12);
 }
 
 .cv-mode-toggle:active {
-  transform: scale(0.97);
+  transform: scale(0.94);
 }
 
 .cv-split-btn[data-cv-mode="open"] .cv-mode-toggle {
-  background: linear-gradient(132deg, var(--accent-warm), var(--accent));
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  background: linear-gradient(135deg, var(--accent-warm), var(--accent));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 4px 14px color-mix(in srgb, var(--accent-warm) 28%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cv-split-btn,
+  .cv-split-btn:hover {
+    transform: none;
+  }
+
+  .cv-split-btn .state-download,
+  .cv-split-btn .state-open,
+  .cv-icon--switch {
+    transition-duration: 0.01ms !important;
+  }
+
+  .cv-split-btn .state-download,
+  .cv-split-btn .state-open {
+    filter: none !important;
+  }
 }
 
 .btn {
@@ -1256,9 +1216,8 @@ html[data-theme="dark"] .about-profile-panel {
   gap: 1rem;
   width: min(800px, 100%);
   height: clamp(240px, 42vw, 500px);
-  transition:
-    grid-template-columns 1100ms cubic-bezier(0.25, 0.88, 0.15, 1),
-    gap 600ms cubic-bezier(0.33, 1, 0.28, 1);
+  /* Ne pas animer `gap` : avec des colonnes en `fr` qui bougent, ça casse la fluidité. */
+  transition: grid-template-columns 1100ms cubic-bezier(0.25, 0.88, 0.15, 1);
 }
 
 .interests-strip--4 {
@@ -1924,6 +1883,11 @@ html[data-theme="light"] .project-showcase__count {
 }
 
 .milestone-card {
+  --hot-t: 0;
+  --hot-r: 0;
+  --hot-b: 0;
+  --hot-l: 0;
+  --milestone-outer: 0 10px 36px rgba(0, 0, 0, 0.2);
   position: relative;
   display: grid;
   grid-template-columns: minmax(220px, 40%) minmax(0, 1fr);
@@ -1931,26 +1895,33 @@ html[data-theme="light"] .project-showcase__count {
   border-radius: 1.12rem;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--border), transparent 10%);
-  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    var(--milestone-outer),
+    inset 0 1px 0 0 color-mix(in srgb, var(--accent-warm) calc(82% * var(--hot-t, 0)), transparent),
+    inset 0 -1px 0 0 color-mix(in srgb, var(--accent-warm) calc(82% * var(--hot-b, 0)), transparent),
+    inset 1px 0 0 0 color-mix(in srgb, var(--accent-warm) calc(82% * var(--hot-l, 0)), transparent),
+    inset -1px 0 0 0 color-mix(in srgb, var(--accent-warm) calc(82% * var(--hot-r, 0)), transparent);
   background: linear-gradient(
     150deg,
     color-mix(in srgb, var(--surface) 95%, transparent),
     color-mix(in srgb, var(--surface) 78%, transparent) 100%
   );
   transition:
-    box-shadow 520ms cubic-bezier(0.33, 1, 0.28, 1),
-    transform 520ms cubic-bezier(0.33, 1, 0.28, 1),
-    border-color 380ms ease;
+    box-shadow 160ms linear,
+    transform 520ms cubic-bezier(0.33, 1, 0.28, 1);
 }
 
 html[data-theme="light"] .milestone-card {
-  box-shadow: var(--shadow);
+  --milestone-outer: var(--shadow);
 }
 
 @media (hover: hover) {
   .milestone-card:hover {
-    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.26);
-    border-color: color-mix(in srgb, var(--accent-warm), transparent 58%);
+    --milestone-outer: 0 16px 42px rgba(0, 0, 0, 0.26);
+  }
+
+  html[data-theme="light"] .milestone-card:hover {
+    --milestone-outer: 0 18px 40px rgba(43, 36, 20, 0.16);
   }
 }
 
@@ -2204,6 +2175,10 @@ html[data-theme="light"] .milestone-card {
 
   .cv-mode-toggle {
     min-width: 6.5rem;
+  }
+
+  .hero-cv-link {
+    padding: 0.75rem 0.95rem;
   }
 
   .nav-links {
