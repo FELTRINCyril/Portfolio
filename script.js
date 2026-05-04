@@ -270,15 +270,19 @@ const renderHero = () => {
         <div class="cv-split-btn cv-split-btn--floating" role="group" aria-label="${escapeHtml(h.cv.modeGroupAria || "")}" data-cv-mode="download">
           <a class="btn btn-ghost hero-cv-link" href="#" id="cv-main-link">
             <span class="cv-link-stack">
-              <span class="cv-link-layer cv-link-layer--download">${escapeHtml(h.cv.ctaDownload)}</span>
-              <span class="cv-link-layer cv-link-layer--open">${escapeHtml(h.cv.ctaOpen)}</span>
+              <span class="cv-link-slider">
+                <span class="cv-link-pane"><span class="cv-link-text">${escapeHtml(h.cv.ctaDownload)}</span></span>
+                <span class="cv-link-pane"><span class="cv-link-text">${escapeHtml(h.cv.ctaOpen)}</span></span>
+              </span>
             </span>
           </a>
           <span class="cv-divider" aria-hidden="true"></span>
           <button type="button" class="cv-mode-toggle" id="cv-mode-toggle" aria-pressed="false">
             <span class="cv-mode-stack">
-              <span class="cv-mode-layer cv-mode-layer--download">${escapeHtml(h.cv.segmentDownload)}</span>
-              <span class="cv-mode-layer cv-mode-layer--open">${escapeHtml(h.cv.segmentOpen)}</span>
+              <span class="cv-mode-slider">
+                <span class="cv-mode-pane"><span class="cv-mode-text">${escapeHtml(h.cv.segmentDownload)}</span></span>
+                <span class="cv-mode-pane"><span class="cv-mode-text">${escapeHtml(h.cv.segmentOpen)}</span></span>
+              </span>
             </span>
           </button>
         </div>

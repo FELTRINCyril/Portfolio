@@ -391,7 +391,7 @@ a.btn.btn-social .social-svg {
   justify-content: flex-end;
   align-items: flex-end;
   width: auto;
-  max-width: min(19.5rem, 100%);
+  max-width: min(22rem, 100%);
   justify-self: end;
   align-self: end;
 }
@@ -402,7 +402,8 @@ a.btn.btn-social .social-svg {
   display: inline-flex;
   align-items: stretch;
   width: 100%;
-  max-width: 19.5rem;
+  max-width: 22rem;
+  min-width: min(100%, 19rem);
   border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
   border-radius: 999px;
   overflow: hidden;
@@ -495,9 +496,10 @@ a.btn.btn-social .social-svg {
     transform: none;
   }
 
-  .cv-link-layer,
-  .cv-mode-layer {
+  .cv-link-slider,
+  .cv-mode-slider {
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
   }
 }
 
@@ -537,70 +539,102 @@ a.btn.btn-social .social-svg {
   background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
-/* Deux libellés superposés : largeur stable + fondu / slide fluide */
+/* Glissement horizontal (volet double) — gauche ↔ droite */
 .cv-link-stack,
 .cv-mode-stack {
-  display: grid;
-  place-items: center;
-  align-content: center;
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
 }
 
-.cv-link-layer,
-.cv-mode-layer {
-  grid-area: 1 / 1;
+.cv-link-slider,
+.cv-mode-slider {
+  display: flex;
+  width: 200%;
+  will-change: transform;
+  transition: transform 0.68s cubic-bezier(0.34, 1.02, 0.32, 1);
+}
+
+.cv-mode-slider {
+  transition: transform 0.68s cubic-bezier(0.34, 1.02, 0.32, 1) 0.06s;
+}
+
+.cv-split-btn[data-cv-mode="open"] .cv-link-slider,
+.cv-split-btn[data-cv-mode="open"] .cv-mode-slider {
+  transform: translateX(-50%);
+}
+
+.cv-link-pane,
+.cv-mode-pane {
+  flex: 0 0 50%;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.35rem;
+  box-sizing: border-box;
+}
+
+.cv-link-text {
   font-weight: 600;
   font-size: 0.82rem;
   letter-spacing: 0.04em;
   white-space: nowrap;
-  line-height: 1.25;
-  transition:
-    opacity 0.58s cubic-bezier(0.33, 1, 0.28, 1),
-    transform 0.58s cubic-bezier(0.33, 1, 0.28, 1);
+  line-height: 1.28;
+  color: var(--text);
 }
 
-.cv-mode-layer {
+.cv-mode-text {
+  font-weight: 600;
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-weight: 600;
+  white-space: nowrap;
+  line-height: 1.25;
   color: #161616;
 }
 
-.cv-split-btn[data-cv-mode="download"] .cv-link-layer--open,
-.cv-split-btn[data-cv-mode="open"] .cv-link-layer--download {
-  opacity: 0;
-  transform: translateY(0.5rem) scale(0.94);
+/* Léger fondu sur les bords du volet principal (zone lien) */
+.cv-link-stack::before,
+.cv-link-stack::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  z-index: 2;
   pointer-events: none;
+  opacity: 0.5;
 }
 
-.cv-split-btn[data-cv-mode="download"] .cv-link-layer--download,
-.cv-split-btn[data-cv-mode="open"] .cv-link-layer--open {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+.cv-link-stack::before {
+  left: 0;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--surface) 90%, transparent), transparent);
 }
 
-.cv-split-btn[data-cv-mode="download"] .cv-mode-layer--open,
-.cv-split-btn[data-cv-mode="open"] .cv-mode-layer--download {
-  opacity: 0;
-  transform: translateY(0.42rem) scale(0.94);
-  pointer-events: none;
+.cv-link-stack::after {
+  right: 0;
+  background: linear-gradient(270deg, color-mix(in srgb, var(--surface) 90%, transparent), transparent);
 }
 
-.cv-split-btn[data-cv-mode="download"] .cv-mode-layer--download,
-.cv-split-btn[data-cv-mode="open"] .cv-mode-layer--open {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+html[data-theme="light"] .cv-link-stack::before,
+html[data-theme="light"] .cv-link-stack::after {
+  opacity: 0.32;
 }
 
 .cv-mode-toggle {
   position: relative;
   z-index: 1;
   display: inline-flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   border: 0;
-  min-width: 7.5rem;
-  padding: 0.78rem 1rem;
+  min-width: 8.25rem;
+  padding: 0.78rem 0.65rem;
   min-height: 2.75rem;
   font: inherit;
   cursor: pointer;
@@ -2131,10 +2165,6 @@ html[data-theme="light"] .milestone-card {
     max-width: none;
   }
 
-  .cv-split-btn {
-    max-width: none;
-  }
-
   .two-cols,
   .three-cols,
   .contact-grid {
@@ -2156,10 +2186,12 @@ html[data-theme="light"] .milestone-card {
 
   .cv-split-btn {
     width: 100%;
+    min-width: 0;
+    max-width: none;
   }
 
   .cv-mode-toggle {
-    min-width: 6.8rem;
+    min-width: 6.5rem;
   }
 
   .nav-links {
