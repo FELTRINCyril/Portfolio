@@ -160,37 +160,61 @@ window.portfolioLocales.fr = {
     experience: {
       id: "experience",
       title: "Experiences professionnelles",
+      intro:
+        "Des missions en contact client et en equipe, en parallele de ma formation : rigueur, sens du service et polyvalence.",
       items: [
         {
-          date: "Ete 2023 & Ete 2024 (3 mois)",
-          title: "Intermarche - Les Villards-sur-Thones",
-          text: "Caissier et mise en rayon."
+          tag: "Grande distribution",
+          date: "Ete 2023 & Ete 2024 — 3 mois",
+          title: "Intermarche",
+          subtitle: "Les Villards-sur-Thones",
+          role: "Caissier · Mise en rayon",
+          text:
+            "Accueil et encaissement, reapprovisionnement des rayons, tenue de caisse et coordination avec l'equipe magasin.",
+          image: "./assets/images/EP_Intermarche.jpg"
         },
         {
-          date: "Ete 2022 (1,5 mois)",
-          title: "Niwaki Paysage - Thones",
-          text: "Paysagisme : tonte, taille, terrassement."
+          tag: "Paysagisme",
+          date: "Ete 2022 — 1,5 mois",
+          title: "Niwaki Paysage",
+          subtitle: "Thones",
+          role: "Operateur terrain",
+          text: "Tonte, taille et entretien des espaces verts, terrassement et utilisation d'outillage professionnel.",
+          variant: "nature"
         },
         {
-          date: "Ete 2021 (1,5 mois)",
-          title: "Le Colomban - Les Villards-sur-Thones",
-          text: "Service en salle et au bar, mise en place et debarrassage."
+          tag: "Restauration",
+          date: "Ete 2021 — 1,5 mois",
+          title: "Le Colomban",
+          subtitle: "Les Villards-sur-Thones",
+          role: "Service salle & bar",
+          text: "Service en salle et au bar, mise en place, encaissement et debarrassage en coordination avec la cuisine.",
+          variant: "hospitality"
         }
       ]
     },
     education: {
       id: "formation",
       title: "Formation",
+      intro:
+        "Parcours oriente developpement logiciel, gestion de projet et culture numerique — du baccalaureat technique au BUT Informatique.",
       items: [
         {
+          tag: "En cours",
           date: "2024 - 2025",
-          title: "IUT d'Annecy - Universite Savoie Mont Blanc",
-          text: "2e annee de BUT Informatique, parcours Gestion de projet."
+          title: "IUT d'Annecy — Universite Savoie Mont Blanc",
+          subtitle: "BUT Informatique — parcours Gestion de projet",
+          text:
+            "Developpement web et logiciel, bases de donnees, gestion de projet agile, travaux en equipe et conception d'interfaces.",
+          variant: "university"
         },
         {
+          tag: "Baccalaureat",
           date: "2023",
-          title: "Lycee Louis Lachenal - Argonay",
-          text: "BAC STI2D, option systeme d'information et numerique."
+          title: "Lycee Louis Lachenal",
+          subtitle: "Argonay — filiere STI2D",
+          text: "Baccalaureat STI2D, option systemes d'information et numerique (SIN).",
+          variant: "school"
         }
       ]
     },

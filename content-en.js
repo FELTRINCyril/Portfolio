@@ -160,37 +160,59 @@ window.portfolioLocales.en = {
     experience: {
       id: "experience",
       title: "Work experience",
+      intro:
+        "Customer-facing and field roles alongside my studies — discipline, teamwork, and service mindset.",
       items: [
         {
-          date: "Summer 2023 & 2024 (3 months)",
-          title: "Intermarche — Les Villards-sur-Thones",
-          text: "Cashier and shelf stocking."
+          tag: "Retail",
+          date: "Summer 2023 & 2024 — 3 months",
+          title: "Intermarche",
+          subtitle: "Les Villards-sur-Thones",
+          role: "Cashier · Shelf stocking",
+          text: "Checkout, shelf replenishment, cash handling, and close coordination with store teams.",
+          image: "./assets/images/EP_Intermarche.jpg"
         },
         {
-          date: "Summer 2022 (1.5 months)",
-          title: "Niwaki Paysage — Thones",
-          text: "Landscaping: mowing, trimming, earthworks."
+          tag: "Landscaping",
+          date: "Summer 2022 — 1.5 months",
+          title: "Niwaki Paysage",
+          subtitle: "Thones",
+          role: "Field operator",
+          text: "Mowing, trimming, grounds maintenance, earthworks, and safe use of professional tools.",
+          variant: "nature"
         },
         {
-          date: "Summer 2021 (1.5 months)",
-          title: "Le Colomban — Les Villards-sur-Thones",
-          text: "Waiter and bar service, setup and clearing."
+          tag: "Hospitality",
+          date: "Summer 2021 — 1.5 months",
+          title: "Le Colomban",
+          subtitle: "Les Villards-sur-Thones",
+          role: "Dining room & bar",
+          text: "Front-of-house service, setup, payments, and clearing in sync with the kitchen.",
+          variant: "hospitality"
         }
       ]
     },
     education: {
       id: "formation",
       title: "Education",
+      intro:
+        "From a technical high-school diploma to a BUT in Computer Science focused on software delivery and project practice.",
       items: [
         {
+          tag: "In progress",
           date: "2024 - 2025",
           title: "IUT Annecy — Universite Savoie Mont Blanc",
-          text: "Second year of BUT Computer Science, project management track."
+          subtitle: "BUT Computer Science — Project management track",
+          text: "Web and software development, databases, agile-style project work, teamwork, and UI design.",
+          variant: "university"
         },
         {
+          tag: "High school diploma",
           date: "2023",
-          title: "Louis Lachenal High School — Argonay",
-          text: "French baccalaureate STI2D, information systems option."
+          title: "Louis Lachenal High School",
+          subtitle: "Argonay — STI2D",
+          text: "French baccalaureate STI2D, Information Systems & Digital Science (SIN) option.",
+          variant: "school"
         }
       ]
     },

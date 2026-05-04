@@ -996,8 +996,8 @@ a.btn.btn-social .social-svg {
   width: min(800px, 100%);
   height: clamp(240px, 42vw, 500px);
   transition:
-    grid-template-columns 520ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 480ms cubic-bezier(0.25, 0.82, 0.2, 1);
+    grid-template-columns 780ms cubic-bezier(0.33, 1, 0.28, 1),
+    filter 640ms cubic-bezier(0.33, 1, 0.28, 1);
 }
 
 .interests-strip--4 {
@@ -1011,14 +1011,16 @@ a.btn.btn-social .social-svg {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 0.55rem;
+  border-radius: 0.62rem;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--border), transparent 20%);
   outline: none;
+  will-change: transform, filter;
   transition:
-    transform 420ms cubic-bezier(0.25, 0.82, 0.2, 1),
-    filter 400ms ease,
-    box-shadow 220ms ease;
+    transform 720ms cubic-bezier(0.33, 1, 0.28, 1),
+    filter 620ms cubic-bezier(0.33, 1, 0.28, 1),
+    box-shadow 520ms cubic-bezier(0.33, 1, 0.28, 1),
+    border-color 420ms ease;
 }
 
 .interest-box:focus-visible {
@@ -1033,6 +1035,16 @@ a.btn.btn-social .social-svg {
   .interests-strip .interest-box:hover {
     filter: grayscale(0%) opacity(1);
     z-index: 2;
+    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.34);
+    border-color: color-mix(in srgb, var(--accent-warm), transparent 55%);
+  }
+
+  .interest-box:nth-child(odd):hover {
+    transform: translateY(-16px) scale(1.024);
+  }
+
+  .interest-box:nth-child(even):hover {
+    transform: translateY(16px) scale(1.024);
   }
 
   .interests-strip--4:has(.box-1:hover) {
@@ -1065,6 +1077,16 @@ a.btn.btn-social .social-svg {
 .interests-strip .interest-box:focus-visible {
   filter: grayscale(0%) opacity(1);
   z-index: 3;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.3);
+  border-color: color-mix(in srgb, var(--accent-warm), transparent 50%);
+}
+
+.interest-box:nth-child(odd):focus-visible {
+  transform: translateY(-16px) scale(1.024);
+}
+
+.interest-box:nth-child(even):focus-visible {
+  transform: translateY(16px) scale(1.024);
 }
 
 .interests-strip--4:has(.box-1:focus-visible) {
@@ -1106,8 +1128,8 @@ a.btn.btn-social .social-svg {
   font-weight: 700;
   opacity: 0;
   transition:
-    transform 420ms cubic-bezier(0.25, 0.82, 0.2, 1),
-    opacity 380ms ease;
+    transform 640ms cubic-bezier(0.33, 1, 0.28, 1),
+    opacity 520ms cubic-bezier(0.33, 1, 0.28, 1);
   border-radius: 0.35rem;
   white-space: nowrap;
   pointer-events: none;
@@ -1567,6 +1589,254 @@ html[data-theme="light"] .project-showcase__count {
   .project-dot .project-dot__dot {
     transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;
+  }
+}
+
+/* Parcours pro & formation — cartes média */
+.milestone-intro {
+  text-align: center;
+  margin: 0 auto clamp(1.6rem, 3.5vw, 2.4rem);
+  max-width: 40rem;
+  color: color-mix(in srgb, var(--muted), var(--text) 20%);
+  font-size: 0.98rem;
+  line-height: 1.68;
+}
+
+.milestone-track {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.35rem, 3.2vw, 2.1rem);
+  max-width: min(900px, 100%);
+  margin-inline: auto;
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.milestone-track::before {
+  content: "";
+  position: absolute;
+  left: 0.12rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--accent) 32%, transparent) 12%,
+    color-mix(in srgb, var(--accent) 32%, transparent) 88%,
+    transparent
+  );
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+@media (max-width: 780px) {
+  .milestone-track {
+    padding-left: 0;
+  }
+
+  .milestone-track::before {
+    display: none;
+  }
+}
+
+.milestone-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(220px, 40%) minmax(0, 1fr);
+  align-items: stretch;
+  border-radius: 1.12rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border), transparent 10%);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--surface) 95%, transparent),
+    color-mix(in srgb, var(--surface) 78%, transparent) 100%
+  );
+  transition:
+    box-shadow 520ms cubic-bezier(0.33, 1, 0.28, 1),
+    transform 520ms cubic-bezier(0.33, 1, 0.28, 1),
+    border-color 380ms ease;
+}
+
+html[data-theme="light"] .milestone-card {
+  box-shadow: var(--shadow);
+}
+
+@media (hover: hover) {
+  .milestone-card:hover {
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.26);
+    border-color: color-mix(in srgb, var(--accent-warm), transparent 58%);
+  }
+}
+
+.milestone-card__media {
+  grid-column: 1;
+  grid-row: 1;
+  min-height: clamp(200px, 28vw, 280px);
+  position: relative;
+}
+
+.milestone-card__media--photo {
+  background-image: var(--milestone-photo);
+  background-size: cover;
+  background-position: center;
+}
+
+.milestone-card__media--photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(12, 14, 18, 0.15) 0%, transparent 52%);
+  pointer-events: none;
+}
+
+.milestone-card__media--mesh {
+  overflow: hidden;
+}
+
+.milestone-card__mesh--default {
+  background:
+    radial-gradient(ellipse 85% 95% at 15% 85%, rgba(130, 130, 150, 0.28) 0%, transparent 58%),
+    linear-gradient(145deg, #1c2129 0%, #12161c 100%);
+}
+
+.milestone-card__mesh--nature {
+  background:
+    radial-gradient(ellipse 110% 90% at 12% 92%, rgba(56, 145, 104, 0.42) 0%, transparent 58%),
+    radial-gradient(ellipse 70% 60% at 96% 8%, rgba(94, 170, 130, 0.22) 0%, transparent 55%),
+    linear-gradient(148deg, #131c17 0%, #0e1512 100%);
+}
+
+.milestone-card__mesh--hospitality {
+  background:
+    radial-gradient(ellipse 100% 95% at 10% 88%, rgba(195, 132, 72, 0.38) 0%, transparent 56%),
+    radial-gradient(ellipse 65% 55% at 94% 18%, rgba(160, 92, 54, 0.22) 0%, transparent 52%),
+    linear-gradient(138deg, #1f1814 0%, #14110e 100%);
+}
+
+.milestone-card__mesh--university {
+  background:
+    radial-gradient(ellipse 95% 88% at 18% 18%, rgba(84, 132, 205, 0.42) 0%, transparent 56%),
+    radial-gradient(ellipse 75% 70% at 92% 82%, rgba(58, 105, 155, 0.26) 0%, transparent 52%),
+    linear-gradient(155deg, #141c28 0%, #0e141f 100%);
+}
+
+.milestone-card__mesh--school {
+  background:
+    radial-gradient(ellipse 90% 95% at 18% 82%, rgba(130, 104, 185, 0.34) 0%, transparent 58%),
+    linear-gradient(142deg, #1b1728 0%, #12101c 100%);
+}
+
+.milestone-card__body {
+  grid-column: 2;
+  grid-row: 1;
+  padding: clamp(1.28rem, 3.2vw, 2.1rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.28rem;
+}
+
+.milestone-card--reverse .milestone-card__media {
+  grid-column: 2;
+}
+
+.milestone-card--reverse .milestone-card__body {
+  grid-column: 1;
+}
+
+.milestone-card__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.55rem 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.milestone-card__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.62rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent-warm), transparent 45%);
+  color: color-mix(in srgb, var(--accent-warm), var(--text) 35%);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.milestone-card__period {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.milestone-card__title {
+  margin: 0.35rem 0 0.15rem;
+  font-size: clamp(1.12rem, 2.4vw, 1.45rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.22;
+}
+
+.milestone-card__subtitle {
+  margin: 0 0 0.35rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--muted), var(--text) 35%);
+}
+
+.milestone-card__role {
+  margin: 0 0 0.48rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-warm);
+}
+
+.milestone-card__text {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.68;
+  color: color-mix(in srgb, var(--text), var(--muted) 22%);
+}
+
+.milestone-track--edu .milestone-card__tag {
+  border-color: color-mix(in srgb, var(--accent), transparent 52%);
+  color: color-mix(in srgb, var(--accent), var(--text) 38%);
+}
+
+@media (max-width: 780px) {
+  .milestone-card,
+  .milestone-card--reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .milestone-card__media,
+  .milestone-card--reverse .milestone-card__media {
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 210px;
+  }
+
+  .milestone-card__body,
+  .milestone-card--reverse .milestone-card__body {
+    grid-column: 1;
+    grid-row: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .milestone-card {
+    transition-duration: 0.01ms !important;
   }
 }
 

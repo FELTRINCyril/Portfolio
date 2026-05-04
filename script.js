@@ -791,20 +791,67 @@ function preloadProjectPhoto(url) {
 }
 
 const renderTimelineSection = (sectionData) => {
+  const items = Array.isArray(sectionData.items) ? sectionData.items : [];
+  const intro =
+    typeof sectionData.intro === "string" && sectionData.intro.trim()
+      ? `<p class="milestone-intro">${escapeHtml(sectionData.intro)}</p>`
+      : "";
+  const trackKind = sectionData.id === "experience" ? "exp" : "edu";
+
+  const cardsHtml = items
+    .map((item, i) => {
+      const imgSrc = typeof item.image === "string" ? item.image.trim() : "";
+      const hasPhoto = Boolean(imgSrc);
+      const rawV = String(item.variant || "default")
+        .toLowerCase()
+        .replace(/[^a-z0-9-]/g, "");
+      const variant = rawV || "default";
+      const reverseClass = i % 2 === 1 ? " milestone-card--reverse" : "";
+
+      let mediaHtml;
+      if (hasPhoto) {
+        const cssVar = `--milestone-photo:url(${JSON.stringify(imgSrc)})`;
+        mediaHtml = `<div class="milestone-card__media milestone-card__media--photo" style="${escapeHtml(cssVar)}" role="presentation"></div>`;
+      } else {
+        mediaHtml = `<div class="milestone-card__media milestone-card__media--mesh milestone-card__mesh--${variant}" role="presentation" aria-hidden="true"></div>`;
+      }
+
+      const tagBlock =
+        item.tag && String(item.tag).trim()
+          ? `<span class="milestone-card__tag">${escapeHtml(String(item.tag).trim())}</span>`
+          : "";
+      const roleBlock =
+        item.role && String(item.role).trim()
+          ? `<p class="milestone-card__role">${escapeHtml(String(item.role).trim())}</p>`
+          : "";
+      const subtitleBlock =
+        item.subtitle && String(item.subtitle).trim()
+          ? `<p class="milestone-card__subtitle">${escapeHtml(String(item.subtitle).trim())}</p>`
+          : "";
+
+      return `
+        <article class="milestone-card${hasPhoto ? " milestone-card--has-photo" : ""}${reverseClass}">
+          ${mediaHtml}
+          <div class="milestone-card__body">
+            <div class="milestone-card__top">
+              ${tagBlock}
+              <p class="milestone-card__period">${escapeHtml(item.date || "")}</p>
+            </div>
+            <h3 class="milestone-card__title">${escapeHtml(item.title || "")}</h3>
+            ${subtitleBlock}
+            ${roleBlock}
+            <p class="milestone-card__text">${escapeHtml(item.text || "")}</p>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
   document.querySelector(`#${sectionData.id}`).innerHTML = `
     <h2 class="section-title-centered">${escapeHtml(sectionData.title)}</h2>
-    <div class="timeline">
-      ${sectionData.items
-        .map(
-          (item) => `
-            <article class="timeline-item card">
-              <span class="timeline-date">${escapeHtml(item.date)}</span>
-              <h3>${escapeHtml(item.title)}</h3>
-              <p>${escapeHtml(item.text)}</p>
-            </article>
-          `
-        )
-        .join("")}
+    ${intro}
+    <div class="milestone-track milestone-track--${trackKind}" role="list">
+      ${cardsHtml}
     </div>
   `;
 };
