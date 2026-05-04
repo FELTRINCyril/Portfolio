@@ -21,7 +21,7 @@ window.portfolioLocales.fr = {
     social: [
       {
         id: "github",
-        url: "https://github.com/TON_COMPTE_GITHUB",
+        url: "https://github.com/FELTRINCyril",
         ariaLabel: "Profil GitHub"
       },
       {
