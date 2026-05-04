@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Portfolio de Cyril Feltrin - Étudiant en BUT Informatique, développement web et gestion de projet."
+    />
+    <title>Cyril Feltrin — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("theme");
+          document.documentElement.setAttribute(
+            "data-theme",
+            saved === "light" ? "light" : "dark"
+          );
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="noise-overlay" aria-hidden="true"></div>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="brand" href="#top" id="brand-short">CF</a>
+        <ul class="nav-links" id="nav-links"></ul>
+        <div class="nav-actions">
+          <div class="segmented segmented-lang" role="group" aria-label="Langue">
+            <button type="button" class="segment-btn is-active" id="lang-fr" aria-pressed="true">FR</button>
+            <button type="button" class="segment-btn" id="lang-en" aria-pressed="false">EN</button>
+          </div>
+          <button class="theme-icon-btn" id="theme-toggle" type="button" aria-label="Basculer le theme"></button>
+          <button class="menu-toggle" type="button" id="menu-btn" aria-label="Menu"></button>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero container section panel reveal" id="accueil">
+        <p class="kicker" id="hero-kicker"></p>
+        <h1 id="hero-title"></h1>
+        <p class="hero-text" id="hero-text"></p>
+        <div class="hero-actions" id="hero-actions"></div>
+      </section>
+
+      <section id="a-propos" class="section panel container reveal"></section>
+
+      <section id="competences" class="section panel container reveal"></section>
+
+      <section id="projets" class="section panel container reveal"></section>
+
+      <section id="experience" class="section panel container reveal"></section>
+
+      <section id="formation" class="section panel container reveal"></section>
+
+      <section id="contact" class="section panel container reveal"></section>
+    </main>
+
+    <footer class="footer">
+      <p id="footer-text"></p>
+    </footer>
+
+    <button type="button" class="scroll-top-btn" id="scroll-top-btn" aria-label="Remonter en haut" title="Remonter en haut"></button>
+
+    <script src="./content-fr.js"></script>
+    <script src="./content-en.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
