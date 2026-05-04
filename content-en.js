@@ -76,11 +76,11 @@ window.portfolioLocales.en = {
       cards: [
         {
           title: "Profile",
-          list: [
-            "Name: Cyril Feltrin",
-            "Location: Les Villards-sur-Thones (74)",
-            "Age: 19",
-            "Track: BUT Computer Science — Project management"
+          rows: [
+            { key: "Name", value: "Cyril Feltrin" },
+            { key: "Location", value: "Les Villards-sur-Thones (74)" },
+            { key: "Age", value: "19" },
+            { key: "Focus", value: "BUT Computer Science — Project management" }
           ]
         }
       ]

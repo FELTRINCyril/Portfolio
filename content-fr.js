@@ -76,11 +76,11 @@ window.portfolioLocales.fr = {
       cards: [
         {
           title: "Profil",
-          list: [
-            "Nom : Cyril Feltrin",
-            "Localisation : Les Villards-sur-Thones (74)",
-            "Age : 19 ans",
-            "Parcours : BUT Informatique - Gestion de projet"
+          rows: [
+            { key: "Nom", value: "Cyril Feltrin" },
+            { key: "Localisation", value: "Les Villards-sur-Thones (74)" },
+            { key: "Age", value: "19 ans" },
+            { key: "Parcours", value: "BUT Informatique - Gestion de projet" }
           ]
         }
       ]

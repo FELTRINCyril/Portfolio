@@ -265,13 +265,16 @@ const renderHero = () => {
   const contact = h.contactCta;
   document.querySelector("#hero-actions").innerHTML = `
     <div class="hero-actions-inner">
-      <a class="btn btn-primary" href="${escapeHtml(contact.href)}">${escapeHtml(contact.label)}</a>
-      <div class="hero-social-row" aria-label="${escapeHtml(h.socialGroupAria || "")}">
-        ${socialHtml}
+      <div class="hero-actions-main">
+        <a class="btn btn-primary" href="${escapeHtml(contact.href)}">${escapeHtml(contact.label)}</a>
+        <div class="hero-social-row" aria-label="${escapeHtml(h.socialGroupAria || "")}">
+          ${socialHtml}
+        </div>
       </div>
       <div class="hero-cv-block" aria-label="${escapeHtml(h.cvGroupAria || "")}">
-        <div class="cv-split-btn" role="group" aria-label="${escapeHtml(h.cv.modeGroupAria || "")}">
+        <div class="cv-split-btn cv-split-btn--floating" role="group" aria-label="${escapeHtml(h.cv.modeGroupAria || "")}">
           <a class="btn btn-ghost hero-cv-link" href="#" id="cv-main-link">CV</a>
+          <span class="cv-divider" aria-hidden="true"></span>
           <button type="button" class="cv-mode-toggle" id="cv-mode-toggle">
             <span id="cv-mode-label"></span>
           </button>
@@ -329,14 +332,34 @@ const renderAbout = () => {
     <div class="about-layout">
       <div class="about-profile">
         ${section.cards
-          .map(
-            (card) => `
-            <article class="card tilt-card about-profile-card">
-              <h3>${escapeHtml(card.title)}</h3>
-              <ul>${card.list.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+          .map((card) => {
+            const rowsHtml = Array.isArray(card.rows)
+              ? card.rows
+                  .map(
+                    (row) => `
+              <div class="about-profile-row">
+                <span class="about-profile-row__key">${escapeHtml(row.key)}</span>
+                <span class="about-profile-row__value">${escapeHtml(row.value)}</span>
+              </div>
+            `
+                  )
+                  .join("")
+              : `<ul class="about-profile-fallback">${(card.list || [])
+                  .map((item) => `<li>${escapeHtml(item)}</li>`)
+                  .join("")}</ul>`;
+
+            return `
+            <article class="about-profile-panel about-profile-card tilt-card">
+              <header class="about-profile-panel__head">
+                <span class="about-profile-panel__eyebrow"></span>
+                <h3 class="about-profile-panel__title">${escapeHtml(card.title)}</h3>
+              </header>
+              <div class="about-profile-panel__body">
+                ${rowsHtml}
+              </div>
             </article>
-          `
-          )
+            `;
+          })
           .join("")}
       </div>
       ${interestsStrip}
