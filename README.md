@@ -1,85 +1,84 @@
 # Portfolio - Cyril Feltrin
 
-Portfolio statique (HTML/CSS/JS) au style moderne, sobre et dynamique.
+Portfolio statique (HTML / CSS / JavaScript vanilla), bilingue FR/EN, thème clair/sombre,
+déployé automatiquement sur GitHub Pages.
 
 ## Lancer en local
 
-Ouvre simplement `index.html` dans ton navigateur.
+Ouvre `index.html` dans ton navigateur. (Les images/CV se chargent via des chemins relatifs ;
+si un navigateur bloque quelque chose en `file://`, sers le dossier avec
+`python3 -m http.server` puis ouvre `http://localhost:8000`.)
+
+## Modifier le contenu : un seul fichier
+
+Tout le contenu du site vit dans **`data.js`**. C'est la seule source à éditer.
+
+Principe : la structure est écrite **une seule fois**. Seul le texte à traduire est un objet
+`{ fr: "...", en: "..." }`. Le reste (URLs, images, dates, valeurs %) est écrit une fois.
+
+```js
+skills: {
+  categories: [
+    { label: { fr: "ERP", en: "ERP" },
+      items: [ { label: "Odoo", value: 70 } ] }
+  ]
+}
+```
+
+- Ajouter une expérience / un projet / une compétence : copier un bloc existant dans la liste
+  correspondante et adapter.
+- Une traduction manquante saute aux yeux : `fr` et `en` sont côte à côte.
+- L'**âge** est calculé automatiquement depuis `identity.birthdate` (rien à mettre à jour).
+- Le token `{age}` dans un texte est remplacé par l'âge calculé.
+
+Fichiers :
+
+- `data.js` : **contenu** (FR + EN), la seule chose à éditer au quotidien.
+- `styles.css` : design (design system par variables CSS).
+- `script.js` : logique (rendu depuis `data.js`, langue, thème, radar, formulaire).
+- `assets/` : images (`.webp`) et CV PDF (voir `assets/README.md`).
+
+## Langue
+
+Le choix FR/EN est mémorisé dans le navigateur (`localStorage`, clé `portfolioLang`).
+Pas d'API : tout le texte vient de `data.js`.
+
+## Thème et couleur d'accent
+
+- Thème clair par défaut, bouton lune/soleil pour le sombre (`localStorage`, clé `theme`).
+- Couleur d'accent gérée par une seule variable CSS `--accent` (bloc `ACCENT` dans `styles.css`).
+- **Bouton « Test couleur »** (temporaire) : bascule l'accent slate <-> violet pour comparer le
+  rendu. Pour figer une couleur définitivement et retirer ce test :
+  1. supprimer le bouton `#accent-test` dans `index.html`,
+  2. supprimer le listener `accent-test` et l'entrée `accentTest` (dans `script.js` / `data.js`),
+  3. dans `styles.css`, ne garder que la palette voulue dans le bloc `ACCENT`.
+
+## Compétences (barres + radar)
+
+Les barres (à gauche, groupées par catégorie) et le radar (à droite, toutes les compétences)
+sont générés à partir de `sections.skills.categories` dans `data.js`. Modifier une valeur `value`
+(0-100) met à jour les deux.
+
+## Formulaire de contact
+
+Par défaut (`sections.contact.formActionUrl` vide), le formulaire ouvre un **mailto** prérempli.
+Pour un envoi fiable sans serveur, utilise **Formspree** (offre gratuite) :
+
+1. Créer un formulaire sur https://formspree.io
+2. Récupérer l'URL `https://formspree.io/f/xxxxxxxx`
+3. La coller dans `sections.contact.formActionUrl` (dans `data.js`)
+4. Déployer.
 
 ## Déploiement GitHub Pages (automatique)
 
-À chaque `push` sur **`main`**, le workflow publie le site sur la branche **`gh-pages`**.
+À chaque `push` sur **`main`**, le workflow (`.github/workflows/deploy.yml`) publie le site sur la
+branche **`gh-pages`**. Un fichier `.nojekyll` évite le traitement Jekyll.
 
-Un fichier **`.nojekyll`** à la racine évite que Jekyll traite le site (recommandé pour du HTML brut).
+Activation (une fois) : **Settings -> Pages -> Deploy from a branch -> `gh-pages` / `(root)`**.
+Vérifier aussi **Settings -> Actions -> General -> Workflow permissions -> Read and write**.
 
-### 1) Créer le repo GitHub (si ce n'est pas déjà fait)
+URL du site : `https://FELTRINCyril.github.io/Portfolio/`.
 
-Crée un repository, puis dans ce dossier :
+## Sauvegarde
 
-```bash
-git init
-git add .
-git commit -m "Initial portfolio"
-git branch -M main
-git remote add origin <TON_URL_GITHUB>
-git push -u origin main
-```
-
-### 2) Activer GitHub Pages (à faire une fois)
-
-Dans le repo GitHub : **Settings → Pages**.
-
-- **Build and deployment → Source** : **Deploy from a branch**.
-- **Branch** : `gh-pages` puis dossier **`/ (root)`**.
-- Enregistre.
-
-L’URL du site pour un dépôt nommé `Portfolio` est en général **`https://TON_USER.github.io/Portfolio/`** (avec le suffixe du nom du repo).
-
-**Workflow permissions** : **Settings → Actions → General** → **Workflow permissions** : active **Read and write permissions** (sinon l'action ne peut pas pousser vers `gh-pages`).
-
-**Si le site reste vide ou en erreur** : onglet **Actions** → ouvre le dernier run → lis le message d’erreur ; vérifie aussi que **Settings → Pages** pointe bien vers `gh-pages`.
-
-## Personnalisation rapide
-
-- Texte **français** : `content-fr.js`
-- Texte **anglais** : `content-en.js` (traductions à maintenir à la main)
-- Design : `styles.css`
-- Logique (thème, carousel compétences, formulaire, etc.) : `script.js`
-- **CV PDF** : fichier `assets/pdf/CV_Feltrin_Cyril.pdf` (même chemin que `hero.cv.pdfPath` dans les fichiers de contenu). GitHub Pages sert les PDF comme n’importe quel fichier statique ; pense à bien **commit** le PDF.
-- **Photos centres d’intérêt** : `assets/images/interests/` (`CI_*.jpg/jpeg`, noms ASCII pour les URL).
-
-### Liens GitHub & LinkedIn
-
-Dans **`content-fr.js`** et **`content-en.js`**, section `hero.social`, remplace les deux URL factices :
-
-- `https://github.com/TON_COMPTE_GITHUB` → ton profil ou dépôt
-- `https://www.linkedin.com/in/TON_PROFIL_LINKEDIN/` → ton profil LinkedIn
-
-Garde les **deux** fichiers synchronisés (même URL des deux côtés), seuls les libellés / aria-label peuvent différer.
-
-### Langue du site
-
-Le choix FR/EN est mémorisé dans le navigateur (`localStorage`, clé `portfolioLang`). Pas d’API de traduction : tout le texte vient des deux fichiers de contenu.
-
-### Compétences (barres + radar)
-
-Les deux colonnes utilisent **exactement la même liste** pour la page affichée : `sections.skills.pages[i].items` (`label`, `value` pour les deux). Tu peux ajouter ou retirer des entrées dans chaque page, ou ajouter une **nouvelle entrée dans `pages`** pour un groupe de compétences (carousel avec précédent/suivant et points).
-
-### Notes sur les autres fonctions
-
-- Chaque section vise au minimum une hauteur d’écran sur desktop (`min-height: 100vh`).
-- Thème sombre par défaut ; bouton rond soleil/lune pour le clair.
-- Contrôle FR | EN avec largeurs fixes sur les segments.
-
-### Formulaire de contact (gratuit sur site statique / GitHub Pages)
-
-Par défaut, si `formActionUrl` est vide dans **`content-fr.js`** et **`content-en.js`**, le formulaire ouvre un **mailto** prérempli.
-
-Pour un envoi fiable, utilise **Formspree** (offre gratuite limitée, suffisante pour un portfolio) :
-
-1. Créer un formulaire sur [https://formspree.io](https://formspree.io).
-2. Récupérer l’URL `https://formspree.io/f/xxxxxxxx`.
-3. Coller la même URL dans les deux fichiers : `sections.contact.formActionUrl`.
-4. Déployer.
-
-Alternatives gratuites possibles : **Web3Forms**, **Getform**, Google Form en iframe.
+L'ancienne version du portfolio est conservée sur la branche **`backup-old-portfolio`**.

@@ -5,76 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Portfolio de Cyril Feltrin - Étudiant en BUT Informatique, développement web et gestion de projet."
+      content="Portfolio de Cyril Feltrin - developpeur Odoo et web, en alternance chez Kreaddis."
     />
-    <title>Cyril Feltrin — Portfolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <title>Cyril Feltrin - Portfolio</title>
+
+    <!-- Theme + accent appliques avant le rendu pour eviter tout flash -->
     <script>
       (function () {
         try {
-          var saved = localStorage.getItem("theme");
-          document.documentElement.setAttribute(
-            "data-theme",
-            saved === "light" ? "light" : "dark"
-          );
+          var t = localStorage.getItem("theme");
+          document.documentElement.setAttribute("data-theme", t === "dark" ? "dark" : "light");
+          var a = localStorage.getItem("accent");
+          document.documentElement.setAttribute("data-accent", a === "violet" ? "violet" : "slate");
         } catch (e) {
-          document.documentElement.setAttribute("data-theme", "dark");
+          document.documentElement.setAttribute("data-theme", "light");
+          document.documentElement.setAttribute("data-accent", "slate");
         }
       })();
     </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./styles.css" />
   </head>
+
   <body>
-    <div class="noise-overlay" aria-hidden="true"></div>
-    <header class="site-header">
-      <nav class="nav container">
-        <a class="brand" href="#top" id="brand-short">CF</a>
+    <a class="skip-link" href="#accueil">Aller au contenu</a>
+
+    <header class="site-header" id="site-header">
+      <nav class="nav container" aria-label="Navigation principale">
+        <a class="brand" href="#accueil" id="brand"></a>
+
         <ul class="nav-links" id="nav-links"></ul>
+
         <div class="nav-actions">
-          <div class="segmented segmented-lang" role="group" aria-label="Langue">
-            <button type="button" class="segment-btn is-active" id="lang-fr" aria-pressed="true">FR</button>
-            <button type="button" class="segment-btn" id="lang-en" aria-pressed="false">EN</button>
+          <!-- TEMP : bascule couleur d'accent (a supprimer apres validation) -->
+          <button type="button" class="accent-test" id="accent-test" title="Test couleur d'accent">
+            <span class="accent-test-dot" aria-hidden="true"></span>
+            <span id="accent-test-label">Test couleur</span>
+          </button>
+
+          <div class="segmented" role="group" id="lang-group" aria-label="Langue">
+            <button type="button" class="segment is-active" id="lang-fr" aria-pressed="true">FR</button>
+            <button type="button" class="segment" id="lang-en" aria-pressed="false">EN</button>
           </div>
-          <button class="theme-icon-btn" id="theme-toggle" type="button" aria-label="Basculer le theme"></button>
-          <button class="menu-toggle" type="button" id="menu-btn" aria-label="Menu"></button>
+
+          <button class="icon-btn" id="theme-toggle" type="button" aria-label="Basculer le theme"></button>
+          <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-label="Menu" aria-expanded="false"></button>
         </div>
       </nav>
     </header>
 
-    <main id="top">
-      <section class="hero container section panel reveal" id="accueil">
-        <p class="kicker" id="hero-kicker"></p>
-        <h1 id="hero-title"></h1>
-        <p class="hero-text" id="hero-text"></p>
-        <div class="hero-actions" id="hero-actions"></div>
+    <main>
+      <section class="hero container" id="accueil">
+        <div class="hero-text reveal">
+          <p class="kicker" id="hero-kicker"></p>
+          <h1 class="hero-title" id="hero-title"></h1>
+          <p class="hero-lead" id="hero-lead"></p>
+          <div class="hero-actions" id="hero-actions"></div>
+          <div class="hero-social" id="hero-social"></div>
+        </div>
+        <div class="hero-media reveal">
+          <div class="hero-photo-frame">
+            <img id="hero-photo" alt="" width="813" height="1400" />
+          </div>
+        </div>
       </section>
 
-      <section id="a-propos" class="section panel container reveal"></section>
-
-      <section id="competences" class="section panel container reveal"></section>
-
-      <section id="projets" class="section panel container reveal"></section>
-
-      <section id="experience" class="section panel container reveal"></section>
-
-      <section id="formation" class="section panel container reveal"></section>
-
-      <section id="contact" class="section panel container reveal"></section>
+      <section class="section container reveal" id="a-propos" aria-labelledby="a-propos-title"></section>
+      <section class="section container reveal" id="competences" aria-labelledby="competences-title"></section>
+      <section class="section container reveal" id="projets" aria-labelledby="projets-title"></section>
+      <section class="section container reveal" id="experience" aria-labelledby="experience-title"></section>
+      <section class="section container reveal" id="formation" aria-labelledby="formation-title"></section>
+      <section class="section container reveal" id="contact" aria-labelledby="contact-title"></section>
     </main>
 
     <footer class="footer">
-      <p id="footer-text"></p>
+      <div class="container footer-inner">
+        <span class="brand-sm" id="footer-brand"></span>
+        <p id="footer-text"></p>
+      </div>
     </footer>
 
-    <button type="button" class="scroll-top-btn" id="scroll-top-btn" aria-label="Remonter en haut" title="Remonter en haut"></button>
+    <button type="button" class="to-top" id="to-top" aria-label="Remonter en haut"></button>
 
-    <script src="./content-fr.js"></script>
-    <script src="./content-en.js"></script>
+    <script src="./data.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>

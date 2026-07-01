@@ -1,8 +1,10 @@
 # Dossier assets
 
 - `pdf/` : CV en PDF servi par GitHub Pages (`CV_Feltrin_Cyril.pdf`).
-- `images/interests/` : images de la section « Centres d’intérêt » (`CI_*.jpg`, `CI_Cinema.jpeg`).
-- `images/projects/` : illustrations des cartes projet (chemins `./assets/images/projects/*.jpg`), optionnel tant que fond dégradé seul suffit.
-- `images/EP_Intermarche.jpg` : photo liée à l’expérience Intermarché (affichage grande carte). La variante `EP_Intermarché.jpg` (nom accentué) est un doublon ; le site utilise l’URL ASCII.
+- `images/profil.webp` : photo de profil (hero).
+- `images/interests/` : images de la section « Centres d'intérêt » (`moto.webp`, `snowboard.webp`, `muscu.webp`). Le parachute n'a pas d'image : une tuile générée automatiquement s'affiche à la place.
+- `images/vinted.webp` : capture du projet « Site type Vinted ».
+- `images/intermarche.webp` : photo liée à l'expérience Intermarché.
+- `images/projects/` : illustrations optionnelles des cartes projet.
 
-Chemins relatifs depuis la racine du dépôt : `./assets/...`.
+Toutes les images sont optimisées en `.webp`. Chemins relatifs depuis la racine du dépôt : `./assets/...`.
