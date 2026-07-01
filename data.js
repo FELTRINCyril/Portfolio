@@ -71,12 +71,13 @@ window.portfolioData = {
       },
       photo: "./assets/images/profil.webp",
       photoAlt: { fr: "Portrait de Cyril Feltrin", en: "Portrait of Cyril Feltrin" },
-      profileTitle: { fr: "En bref", en: "At a glance" },
-      profile: [
-        { key: { fr: "Nom", en: "Name" }, value: { fr: "Cyril Feltrin", en: "Cyril Feltrin" } },
-        { key: { fr: "Localisation", en: "Location" }, value: { fr: "Les Villards-sur-Thones (74)", en: "Les Villards-sur-Thones (74), FR" } },
-        { key: { fr: "Age", en: "Age" }, value: { fr: "{age} ans", en: "{age} years old" } },
-        { key: { fr: "Statut", en: "Status" }, value: { fr: "Alternant, bientot en CDI (Kreaddis)", en: "Apprentice, soon permanent (Kreaddis)" } }
+      available: { fr: "Disponible", en: "Available" },
+      // "highlights" : petites cartes (icone + titre + sous-titre)
+      highlights: [
+        { icon: "erp", title: "Odoo", sub: { fr: "ERP, ~1 an", en: "ERP, ~1 year" } },
+        { icon: "code", title: { fr: "Web", en: "Web" }, sub: { fr: "HTML/CSS/JS, Laravel", en: "HTML/CSS/JS, Laravel" } },
+        { icon: "db", title: { fr: "Donnees", en: "Data" }, sub: { fr: "PostgreSQL, MongoDB", en: "PostgreSQL, MongoDB" } },
+        { icon: "cap", title: { fr: "BUT Info", en: "CS degree" }, sub: { fr: "IUT d'Annecy", en: "IUT of Annecy" } }
       ],
       interestsTitle: { fr: "En dehors du code", en: "Beyond the code" },
       interests: [
@@ -105,6 +106,7 @@ window.portfolioData = {
             fr: "Alternance de 3e annee de BUT Informatique (ex-Kreatys). Developpement et parametrage Odoo, web, en equipe.",
             en: "Third-year apprenticeship, BUT Computer Science (formerly Kreatys). Odoo development and configuration, web work, in a team."
           },
+          tech: ["Odoo", "Python", "XML", "JavaScript"],
           current: true
         },
         {
@@ -115,7 +117,8 @@ window.portfolioData = {
           text: {
             fr: "Mission de developpement d'un mois chez Kreaddis (ex-Kreatys) entre deux annees de formation.",
             en: "One-month development assignment at Kreaddis (formerly Kreatys) between two academic years."
-          }
+          },
+          tech: ["Odoo", "Python"]
         },
         {
           date: { fr: "2025 · Stage 2 mois", en: "2025 · 2-month internship" },
@@ -125,7 +128,8 @@ window.portfolioData = {
           text: {
             fr: "Stage de 2e annee de BUT Informatique chez Kreaddis (ex-Kreatys) : premiere immersion sur Odoo et le developpement en entreprise.",
             en: "Second-year internship (BUT Computer Science) at Kreaddis (formerly Kreatys): first immersion in Odoo and professional development."
-          }
+          },
+          tech: ["Odoo", "XML"]
         },
         {
           date: { fr: "Ete 2024 · 1,5 mois", en: "Summer 2024 · 1.5 months" },
