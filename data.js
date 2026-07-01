@@ -41,8 +41,8 @@ window.portfolioData = {
     name: "Cyril Feltrin",
     // Titres qui defilent (type animation) dans le hero
     titles: {
-      fr: ["Developpeur Odoo", "Developpeur web", "Integrateur ERP", "Etudiant en BUT Informatique"],
-      en: ["Odoo developer", "Web developer", "ERP integrator", "Computer Science student"]
+      fr: ["Developpeur Odoo", "Developpeur web", "Integrateur ERP", "Etudiant en BUT Info"],
+      en: ["Odoo developer", "Web developer", "ERP integrator", "CS student"]
     },
     tagline: {
       fr: "Etudiant en 3e annee de BUT Informatique, en alternance chez Kreaddis (Annecy). Je concois et j'integre des solutions Odoo et web - et je poursuis en CDI l'an prochain.",
@@ -71,7 +71,7 @@ window.portfolioData = {
       },
       photo: "./assets/images/profil.webp",
       photoAlt: { fr: "Portrait de Cyril Feltrin", en: "Portrait of Cyril Feltrin" },
-      available: { fr: "Disponible", en: "Available" },
+      available: { fr: "En alternance", en: "Apprenticeship" },
       // "highlights" : petites cartes (icone + titre + sous-titre)
       highlights: [
         { icon: "erp", title: "Odoo", sub: { fr: "ERP, ~1 an", en: "ERP, ~1 year" } },
@@ -326,7 +326,8 @@ window.portfolioData = {
     phone: { fr: "Telephone", en: "Phone" },
     location: { fr: "Localisation", en: "Location" },
     footerRights: { fr: "Concu et code par", en: "Designed and coded by" },
-    cvDownload: { fr: "Telecharger le CV", en: "Download CV" },
+    cvDownload: { fr: "Telecharger", en: "Download" },
+    cvView: { fr: "Voir le CV", en: "View CV" },
     cvPath: "./assets/pdf/CV_Feltrin_Cyril.pdf",
     cvFileName: "CV_Cyril_Feltrin.pdf"
   }

@@ -26,8 +26,8 @@
     if (html != null) e.innerHTML = html;
     return e;
   }
-  // Marque un element pour le reveal scroll-linked
-  function sr(node, variant) { node.classList.add("sr"); node.setAttribute("data-sr", variant || "fade-up"); node.style.opacity = "0"; return node; }
+  // Marque un element pour le reveal (one-shot ; le CSS gere l'etat initial)
+  function sr(node, variant) { node.classList.add("sr"); node.setAttribute("data-sr", variant || "fade-up"); return node; }
 
   var ICON = {
     github: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.8 18.3 5.1 18.3 5.1c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>',
@@ -164,7 +164,8 @@
     body.appendChild(hls);
 
     var acts = sr(el("div", { class: "about-actions" }), "fade-up");
-    acts.appendChild(el("a", { class: "btn btn-primary magnetic", href: D.ui.cvPath, download: D.ui.cvFileName }, ICON.download + "<span>" + esc(t(D.ui.cvDownload)) + "</span>"));
+    acts.appendChild(el("a", { class: "btn btn-primary magnetic", href: D.ui.cvPath, target: "_blank", rel: "noopener" }, ICON.eye + "<span>" + esc(t(D.ui.cvView)) + "</span>"));
+    acts.appendChild(el("a", { class: "btn btn-ghost magnetic", href: D.ui.cvPath, download: D.ui.cvFileName }, ICON.download + "<span>" + esc(t(D.ui.cvDownload)) + "</span>"));
     acts.appendChild(el("a", { class: "btn btn-ghost magnetic", href: "#contact" }, ICON.mail + "<span>" + (lang === "en" ? "Contact me" : "Me contacter") + "</span>"));
     body.appendChild(acts);
 
@@ -172,7 +173,8 @@
     grid.appendChild(body);
     sec.appendChild(grid);
 
-    sec.appendChild(sr(el("p", { class: "interests-title" }, esc(t(s.interestsTitle))), "fade-up"));
+    var block = el("div", { class: "interests-block" });
+    block.appendChild(sr(el("h3", { class: "interests-title" }, esc(t(s.interestsTitle))), "fade-up"));
     var gal = sr(el("div", { class: "interests" }), "fade-up");
     s.interests.forEach(function (it) {
       var cell;
@@ -180,7 +182,8 @@
       else { cell = el("div", { class: "interest no-image" }); var cap = el("div", { class: "interest-cap" }); cap.appendChild(el("span", { class: "interest-emoji" }, it.emoji || "★")); var lab = el("div", null, esc(t(it.label))); if (it.note) lab.appendChild(el("small", null, esc(t(it.note)))); cap.appendChild(lab); cell.appendChild(cap); }
       gal.appendChild(cell);
     });
-    sec.appendChild(gal);
+    block.appendChild(gal);
+    sec.appendChild(block);
   }
   function glow(e) { var r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", (e.clientX - r.left) + "px"); e.currentTarget.style.setProperty("--my", (e.clientY - r.top) + "px"); }
 
@@ -201,6 +204,7 @@
     railEl = el("div", { class: "xp-rail", id: "xp-rail", "aria-hidden": "true" });
     tl.appendChild(railEl);
     var ol = el("ol", { class: "xp-items" });
+    var mobileTl = window.matchMedia("(max-width: 960px)").matches;
     s.items.forEach(function (x, i) {
       var side = i % 2 === 0 ? "left" : "right";
       var li = el("li", { class: "xp-item " + side });
@@ -212,8 +216,8 @@
       content.appendChild(el("p", { class: "xp-desc" }, esc(t(x.text))));
       if (x.tech && x.tech.length) { var tc = el("div", { class: "xp-tech" }); x.tech.forEach(function (tg) { tc.appendChild(el("span", { class: "chip" }, esc(tg))); }); content.appendChild(tc); }
       content.addEventListener("mousemove", glow);
-      // reveal : glisse depuis le cote du bloc
-      sr(cw, side === "left" ? "slide-left" : "slide-right");
+      // reveal : glisse depuis le cote du bloc (toujours depuis la droite en mobile)
+      sr(cw, mobileTl ? "slide-right" : side === "left" ? "slide-left" : "slide-right");
       cw.appendChild(content);
       li.appendChild(cw);
       var dot = el("div", { class: "xp-dot", "aria-hidden": "true" }, esc(initials(x.org)));
@@ -274,30 +278,36 @@
     sec.appendChild(head(s, true));
     var grid = el("div", { class: "skills-grid" });
     var left = sr(el("div"), "slide-left");
-    left.appendChild(el("p", { class: "skill-cat-label" }, esc(t(s.barsCaption))));
-    var all = [];
+    var all = [], rows = [];
     s.categories.forEach(function (cat) {
       var block = el("div", { class: "skill-cat" });
       block.appendChild(el("p", { class: "skill-cat-label" }, esc(t(cat.label))));
       cat.items.forEach(function (item) {
-        all.push(item);
-        var bar = el("div", { class: "bar" });
-        var bh = el("div", { class: "bar-head" });
-        bh.appendChild(el("span", { class: "name" }, esc(item.label)));
-        bh.appendChild(el("span", { class: "val" }, item.value + "%"));
-        bar.appendChild(bh);
-        var track = el("div", { class: "bar-track" });
-        var fillEl = el("div", { class: "bar-fill" }); fillEl.setAttribute("data-val", item.value); track.appendChild(fillEl);
-        bar.appendChild(track);
-        block.appendChild(bar);
+        var idx = all.length; all.push(item);
+        var row = el("div", { class: "skill-row" });
+        row.appendChild(el("span", { class: "name" }, esc(item.label)));
+        var dots = el("span", { class: "dots" });
+        var filled = Math.round(item.value / 20); // 0..5
+        for (var d = 0; d < 5; d++) dots.appendChild(el("span", { class: "dot-lvl" + (d < filled ? " on" : "") }));
+        row.appendChild(dots);
+        block.appendChild(row);
+        rows[idx] = row;
       });
       left.appendChild(block);
     });
     var right = sr(el("div", { class: "radar-wrap" }), "slide-right");
     right.appendChild(el("p", { class: "cap" }, esc(t(s.radarCaption))));
-    right.appendChild(buildRadar(all));
+    var svg = buildRadar(all);
+    right.appendChild(svg);
     grid.appendChild(left); grid.appendChild(right);
     sec.appendChild(grid);
+
+    // Survol d'une competence -> met en avant, assombrit les autres (liste + radar)
+    var rdots = svg.querySelectorAll(".radar-dot"), rlabels = svg.querySelectorAll(".radar-label");
+    rows.forEach(function (row, i) {
+      row.addEventListener("mouseenter", function () { grid.classList.add("sk-dim"); row.classList.add("hi"); if (rdots[i]) rdots[i].classList.add("hi"); if (rlabels[i]) rlabels[i].classList.add("hi"); });
+      row.addEventListener("mouseleave", function () { grid.classList.remove("sk-dim"); row.classList.remove("hi"); if (rdots[i]) rdots[i].classList.remove("hi"); if (rlabels[i]) rlabels[i].classList.remove("hi"); });
+    });
   }
   function buildRadar(items) {
     var n = items.length, size = 260, c = size / 2, R = 88, ns = "http://www.w3.org/2000/svg";
@@ -397,11 +407,26 @@
   }
   function setLang(l) { if (l === lang) return; lang = l; try { localStorage.setItem(LANG_KEY, l); } catch (e) {} renderAll(); }
   function setTheme(th) { document.documentElement.setAttribute("data-theme", th); try { localStorage.setItem(THEME_KEY, th); } catch (e) {} updateLabels(); }
+  // Bascule de theme avec une vague circulaire depuis le bouton
+  function toggleTheme() {
+    var next = currentTheme() === "light" ? "dark" : "light";
+    if (reduceMotion || !document.startViewTransition) { setTheme(next); return; }
+    var b = document.getElementById("theme-toggle").getBoundingClientRect();
+    var x = b.left + b.width / 2, y = b.top + b.height / 2;
+    var r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    var vt = document.startViewTransition(function () { setTheme(next); });
+    vt.ready.then(function () {
+      document.documentElement.animate(
+        { clipPath: ["circle(0px at " + x + "px " + y + "px)", "circle(" + r + "px at " + x + "px " + y + "px)"] },
+        { duration: 620, easing: "ease-in-out", pseudoElement: "::view-transition-new(root)" }
+      );
+    });
+  }
 
   function setupControls() {
     document.getElementById("lang-fr").addEventListener("click", function () { setLang("fr"); });
     document.getElementById("lang-en").addEventListener("click", function () { setLang("en"); });
-    document.getElementById("theme-toggle").addEventListener("click", function () { setTheme(currentTheme() === "light" ? "dark" : "light"); });
+    document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
 
     var menuBtn = document.getElementById("menu-btn"), menu = document.getElementById("mobile-menu"), backdrop = document.getElementById("mobile-backdrop");
     function closeMenu() { menu.classList.remove("open"); backdrop.classList.remove("show"); menuBtn.setAttribute("aria-expanded", "false"); menu.setAttribute("aria-hidden", "true"); }
@@ -417,7 +442,12 @@
 
   /* ---------- Scroll engine (progress, scan, header, reveal, rail, spy) ---------- */
   var lastY = 0, ticking = false, navLinksMap = {};
-  function collectSr() { srNodes = [].slice.call(document.querySelectorAll(".sr")); }
+  function setupReveal() {
+    srNodes = [].slice.call(document.querySelectorAll(".sr"));
+    if (reduceMotion || !("IntersectionObserver" in window)) { srNodes.forEach(function (n) { n.classList.add("in"); }); return; }
+    var io = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }); }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    srNodes.forEach(function (n) { io.observe(n); });
+  }
   function onScrollFrame() {
     ticking = false;
     var y = window.scrollY, vh = window.innerHeight;
@@ -430,20 +460,6 @@
     header.classList.toggle("hide", y > 160 && y > lastY);
     lastY = y;
     document.getElementById("to-top").classList.toggle("show", y > 600);
-
-    // reveal scroll-linked
-    for (var i = 0; i < srNodes.length; i++) {
-      var n = srNodes[i], r = n.getBoundingClientRect();
-      var p = (vh - r.top) / (vh * 0.45);
-      p = p < 0 ? 0 : p > 1 ? 1 : p;
-      n.style.opacity = p;
-      var v = n.getAttribute("data-sr"), tf = "";
-      if (v === "slide-left") tf = "translateX(" + ((1 - p) * -70).toFixed(1) + "px)";
-      else if (v === "slide-right") tf = "translateX(" + ((1 - p) * 70).toFixed(1) + "px)";
-      else if (v === "scale") tf = "scale(" + (0.9 + p * 0.1).toFixed(3) + ")";
-      else tf = "translateY(" + ((1 - p) * 60).toFixed(1) + "px)";
-      n.style.transform = tf;
-    }
 
     // rail fill
     if (railEl) { var rr = railEl.getBoundingClientRect(); var anchor = vh * 0.6; var rp = ((anchor - rr.top) / rr.height) * 100; rp = rp < 0 ? 0 : rp > 100 ? 100 : rp; railEl.style.setProperty("--rail-fill", rp.toFixed(1) + "%"); }
@@ -500,7 +516,7 @@
     updateLabels();
     navLinksMap = {};
     document.querySelectorAll("#nav-links a, #mobile-links a").forEach(function (a) { var h = a.getAttribute("href"); (navLinksMap[h] = navLinksMap[h] || []).push(a); });
-    collectSr();
+    setupReveal();
     setupBars();
     setupMagnetic();
     onScrollFrame();
