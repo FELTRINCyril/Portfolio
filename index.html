@@ -5,21 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Portfolio de Cyril Feltrin - developpeur Odoo et web, en alternance chez Kreaddis."
+      content="Portfolio de Cyril Feltrin - developpeur Odoo et web, en alternance chez Kreaddis (Annecy)."
     />
-    <title>Cyril Feltrin - Portfolio</title>
+    <title>Cyril Feltrin - Developpeur Odoo & web</title>
 
-    <!-- Theme + accent appliques avant le rendu pour eviter tout flash -->
     <script>
       (function () {
         try {
           var t = localStorage.getItem("theme");
-          document.documentElement.setAttribute("data-theme", t === "dark" ? "dark" : "light");
-          var a = localStorage.getItem("accent");
-          document.documentElement.setAttribute("data-accent", a === "violet" ? "violet" : "slate");
+          document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark");
         } catch (e) {
-          document.documentElement.setAttribute("data-theme", "light");
-          document.documentElement.setAttribute("data-accent", "slate");
+          document.documentElement.setAttribute("data-theme", "dark");
         }
       })();
     </script>
@@ -27,7 +23,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
@@ -36,51 +32,63 @@
   <body>
     <a class="skip-link" href="#accueil">Aller au contenu</a>
 
-    <header class="site-header" id="site-header">
-      <nav class="nav container" aria-label="Navigation principale">
-        <a class="brand" href="#accueil" id="brand"></a>
+    <!-- Calques de fond -->
+    <div class="bg-layers" aria-hidden="true">
+      <div class="bg-grid"></div>
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <canvas id="particles"></canvas>
+      <div class="grain"></div>
+    </div>
 
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <nav class="nav-pill" aria-label="Navigation principale">
+        <a class="brand" href="#accueil" id="brand" aria-label="Accueil">
+          <span class="brand-icon">&lt;/&gt;</span>
+        </a>
         <ul class="nav-links" id="nav-links"></ul>
-
         <div class="nav-actions">
-          <!-- TEMP : bascule couleur d'accent (a supprimer apres validation) -->
-          <button type="button" class="accent-test" id="accent-test" title="Test couleur d'accent">
-            <span class="accent-test-dot" aria-hidden="true"></span>
-            <span id="accent-test-label">Test couleur</span>
-          </button>
-
           <div class="segmented" role="group" id="lang-group" aria-label="Langue">
             <button type="button" class="segment is-active" id="lang-fr" aria-pressed="true">FR</button>
             <button type="button" class="segment" id="lang-en" aria-pressed="false">EN</button>
           </div>
-
-          <button class="icon-btn" id="theme-toggle" type="button" aria-label="Basculer le theme"></button>
+          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Basculer le theme">
+            <span class="theme-knob"></span>
+          </button>
           <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-label="Menu" aria-expanded="false"></button>
         </div>
       </nav>
     </header>
 
     <main>
-      <section class="hero container" id="accueil">
-        <div class="hero-text reveal">
-          <p class="kicker" id="hero-kicker"></p>
-          <h1 class="hero-title" id="hero-title"></h1>
-          <p class="hero-lead" id="hero-lead"></p>
-          <div class="hero-actions" id="hero-actions"></div>
-          <div class="hero-social" id="hero-social"></div>
+      <!-- HERO -->
+      <section class="hero" id="accueil">
+        <div class="container hero-inner">
+          <p class="status-pill" id="home-status"><span class="dot"></span><span id="home-status-text"></span></p>
+          <p class="hero-kicker" id="home-kicker"></p>
+          <h1 class="hero-name" id="home-name"></h1>
+          <p class="hero-role"><span id="home-role" class="type-target"></span><span class="caret" aria-hidden="true"></span></p>
+          <p class="hero-tagline" id="home-tagline"></p>
+          <div class="hero-actions" id="home-actions"></div>
         </div>
-        <div class="hero-media reveal">
-          <div class="hero-photo-frame">
-            <img id="hero-photo" alt="" width="813" height="1400" />
-          </div>
-        </div>
+        <a class="scroll-cue" href="#stats" id="scroll-cue" aria-hidden="true">
+          <span id="scroll-cue-text"></span>
+          <span class="chev"></span>
+        </a>
+      </section>
+
+      <!-- STATS -->
+      <section class="stats-strip" id="stats" aria-label="Chiffres cles">
+        <div class="container stats-grid" id="stats-grid"></div>
       </section>
 
       <section class="section container reveal" id="a-propos" aria-labelledby="a-propos-title"></section>
-      <section class="section container reveal" id="competences" aria-labelledby="competences-title"></section>
-      <section class="section container reveal" id="projets" aria-labelledby="projets-title"></section>
       <section class="section container reveal" id="experience" aria-labelledby="experience-title"></section>
-      <section class="section container reveal" id="formation" aria-labelledby="formation-title"></section>
+      <section class="section container reveal" id="projets" aria-labelledby="projets-title"></section>
+      <section class="section container reveal" id="competences" aria-labelledby="competences-title"></section>
       <section class="section container reveal" id="contact" aria-labelledby="contact-title"></section>
     </main>
 
@@ -88,6 +96,7 @@
       <div class="container footer-inner">
         <span class="brand-sm" id="footer-brand"></span>
         <p id="footer-text"></p>
+        <div class="footer-social" id="footer-social"></div>
       </div>
     </footer>
 
