@@ -46,7 +46,9 @@
     code: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13 5l-2 14"/></svg>',
     db: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>',
     cap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1 2.7 3 6 3s6-2 6-3v-5"/></svg>',
-    flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22V4m0 0 2.5 1.5H16l-1.5 4L16 13H6.5L4 11.5"/></svg>'
+    flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22V4m0 0 2.5 1.5H16l-1.5 4L16 13H6.5L4 11.5"/></svg>',
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    building: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16M15 21V9h3a1 1 0 0 1 1 1v11"/><path d="M8 7h1m-1 4h1m-1 4h1"/></svg>'
   };
 
   /* ---------- Header + nav ---------- */
@@ -172,9 +174,12 @@
     grid.appendChild(media);
     grid.appendChild(body);
     sec.appendChild(grid);
+  }
 
-    var block = el("div", { class: "interests-block" });
-    block.appendChild(sr(el("h3", { class: "interests-title" }, esc(t(s.interestsTitle))), "fade-up"));
+  function renderInterests() {
+    var s = D.sections.about, sec = document.getElementById("interets");
+    sec.innerHTML = "";
+    sec.appendChild(sr(el("h3", { class: "interests-title", id: "interets-title" }, esc(t(s.interestsTitle))), "fade-up"));
     var gal = sr(el("div", { class: "interests" }), "fade-up");
     s.interests.forEach(function (it) {
       var cell;
@@ -182,8 +187,7 @@
       else { cell = el("div", { class: "interest no-image" }); var cap = el("div", { class: "interest-cap" }); cap.appendChild(el("span", { class: "interest-emoji" }, it.emoji || "★")); var lab = el("div", null, esc(t(it.label))); if (it.note) lab.appendChild(el("small", null, esc(t(it.note)))); cap.appendChild(lab); cell.appendChild(cap); }
       gal.appendChild(cell);
     });
-    block.appendChild(gal);
-    sec.appendChild(block);
+    sec.appendChild(gal);
   }
   function glow(e) { var r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", (e.clientX - r.left) + "px"); e.currentTarget.style.setProperty("--my", (e.clientY - r.top) + "px"); }
 
@@ -204,7 +208,6 @@
     railEl = el("div", { class: "xp-rail", id: "xp-rail", "aria-hidden": "true" });
     tl.appendChild(railEl);
     var ol = el("ol", { class: "xp-items" });
-    var mobileTl = window.matchMedia("(max-width: 960px)").matches;
     s.items.forEach(function (x, i) {
       var side = i % 2 === 0 ? "left" : "right";
       var li = el("li", { class: "xp-item " + side });
@@ -215,9 +218,16 @@
       content.appendChild(el("p", { class: "xp-co" }, esc(x.org) + (x.place ? " · " + esc(t(x.place)) : "")));
       content.appendChild(el("p", { class: "xp-desc" }, esc(t(x.text))));
       if (x.tech && x.tech.length) { var tc = el("div", { class: "xp-tech" }); x.tech.forEach(function (tg) { tc.appendChild(el("span", { class: "chip" }, esc(tg))); }); content.appendChild(tc); }
+      content.appendChild(el("span", { class: "xp-more", html: "<span>" + esc(t(D.ui.xpDetails)) + "</span>" + ICON.arrowRight }));
+      content.setAttribute("role", "button");
+      content.setAttribute("tabindex", "0");
       content.addEventListener("mousemove", glow);
-      // reveal : glisse depuis le cote du bloc (toujours depuis la droite en mobile)
-      sr(cw, mobileTl ? "slide-right" : side === "left" ? "slide-left" : "slide-right");
+      (function (item) {
+        content.addEventListener("click", function () { openXpModal(item); });
+        content.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openXpModal(item); } });
+      })(x);
+      // reveal : glisse depuis le cote du bloc (le CSS force "depuis la droite" en mobile)
+      sr(cw, side === "left" ? "slide-left" : "slide-right");
       cw.appendChild(content);
       li.appendChild(cw);
       var dot = el("div", { class: "xp-dot", "aria-hidden": "true" }, esc(initials(x.org)));
@@ -309,14 +319,15 @@
       row.addEventListener("mouseleave", function () { grid.classList.remove("sk-dim"); row.classList.remove("hi"); if (rdots[i]) rdots[i].classList.remove("hi"); if (rlabels[i]) rlabels[i].classList.remove("hi"); });
     });
   }
+  function shortLabel(l) { return String(l).replace(/ \/ /g, "/").replace(" (Figma)", ""); }
   function buildRadar(items) {
-    var n = items.length, size = 260, c = size / 2, R = 88, ns = "http://www.w3.org/2000/svg";
-    var svg = document.createElementNS(ns, "svg"); svg.setAttribute("viewBox", "0 0 " + size + " " + size); svg.setAttribute("role", "img");
-    function pt(i, r) { var a = (Math.PI * 2 * i) / n - Math.PI / 2; return [c + r * Math.cos(a), c + r * Math.sin(a)]; }
+    var n = items.length, W = 360, H = 320, cx = W / 2, cy = 162, R = 96, ns = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(ns, "svg"); svg.setAttribute("viewBox", "0 0 " + W + " " + H); svg.setAttribute("role", "img");
+    function pt(i, r) { var a = (Math.PI * 2 * i) / n - Math.PI / 2; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
     [0.25, 0.5, 0.75, 1].forEach(function (f) { var p = []; for (var i = 0; i < n; i++) { var q = pt(i, R * f); p.push(q[0].toFixed(1) + "," + q[1].toFixed(1)); } var poly = document.createElementNS(ns, "polygon"); poly.setAttribute("points", p.join(" ")); poly.setAttribute("class", "radar-grid"); svg.appendChild(poly); });
     for (var i = 0; i < n; i++) {
-      var e = pt(i, R), line = document.createElementNS(ns, "line"); line.setAttribute("x1", c); line.setAttribute("y1", c); line.setAttribute("x2", e[0].toFixed(1)); line.setAttribute("y2", e[1].toFixed(1)); line.setAttribute("class", "radar-axis"); svg.appendChild(line);
-      var lp = pt(i, R + 16), lb = document.createElementNS(ns, "text"); lb.setAttribute("x", lp[0].toFixed(1)); lb.setAttribute("y", lp[1].toFixed(1)); lb.setAttribute("class", "radar-label"); lb.setAttribute("dominant-baseline", "middle"); lb.setAttribute("text-anchor", lp[0] > c + 6 ? "start" : lp[0] < c - 6 ? "end" : "middle"); lb.textContent = items[i].label; svg.appendChild(lb);
+      var e = pt(i, R), line = document.createElementNS(ns, "line"); line.setAttribute("x1", cx); line.setAttribute("y1", cy); line.setAttribute("x2", e[0].toFixed(1)); line.setAttribute("y2", e[1].toFixed(1)); line.setAttribute("class", "radar-axis"); svg.appendChild(line);
+      var lp = pt(i, R + 14), lb = document.createElementNS(ns, "text"); lb.setAttribute("x", lp[0].toFixed(1)); lb.setAttribute("y", lp[1].toFixed(1)); lb.setAttribute("class", "radar-label"); lb.setAttribute("dominant-baseline", "middle"); lb.setAttribute("text-anchor", lp[0] > cx + 6 ? "start" : lp[0] < cx - 6 ? "end" : "middle"); lb.textContent = shortLabel(items[i].label); svg.appendChild(lb);
     }
     var dp = [], dots = []; for (var j = 0; j < n; j++) { var p = pt(j, R * (items[j].value / 100)); dp.push(p[0].toFixed(1) + "," + p[1].toFixed(1)); dots.push(p); }
     var area = document.createElementNS(ns, "polygon"); area.setAttribute("points", dp.join(" ")); area.setAttribute("class", "radar-area"); svg.appendChild(area);
@@ -334,7 +345,8 @@
     var links = sr(el("div", { class: "contact-links" }), "slide-left");
     links.appendChild(cl(ICON.mail, t(D.ui.email), D.identity.email, "mailto:" + D.identity.email));
     links.appendChild(cl(ICON.phone, t(D.ui.phone), D.identity.phoneDisplay, D.identity.phoneHref));
-    links.appendChild(cl(ICON.pin, t(D.ui.location), t(D.identity.location), "https://www.google.com/maps/search/?api=1&query=Annecy"));
+    links.appendChild(cl(ICON.building, t(D.ui.office), D.identity.workName + " · " + t(D.identity.workAddress), D.identity.workMaps));
+    links.appendChild(cl(ICON.pin, t(D.ui.location), t(D.identity.location), "https://www.google.com/maps/search/?api=1&query=Chavanod"));
     links.appendChild(cl(ICON.github, "GitHub", "@FELTRINCyril", D.identity.github));
     links.appendChild(cl(ICON.linkedin, "LinkedIn", "Cyril Feltrin", D.identity.linkedin));
     grid.appendChild(links);
@@ -394,6 +406,28 @@
     soc.appendChild(el("a", { href: D.identity.linkedin, target: "_blank", rel: "noopener", "aria-label": t(D.ui.socialLinkedin), html: ICON.linkedin }));
   }
 
+  /* ---------- Modal experience ---------- */
+  function openXpModal(x) {
+    var body = document.getElementById("xp-modal-body");
+    body.innerHTML = "";
+    body.appendChild(el("div", { class: "xpm-icon" }, esc(initials(x.org))));
+    body.appendChild(el("p", { class: "xpm-date" }, esc(t(x.date))));
+    body.appendChild(el("h3", { class: "xpm-role" }, esc(t(x.role))));
+    body.appendChild(el("p", { class: "xpm-co", html: "<b>" + esc(x.org) + "</b>" }));
+    if (x.place) body.appendChild(el("p", { class: "xpm-place" }, esc(t(x.place))));
+    body.appendChild(el("p", { class: "xpm-text" }, esc(t(x.text))));
+    if (x.tech && x.tech.length) { var tc = el("div", { class: "xpm-tech" }); x.tech.forEach(function (tg) { tc.appendChild(el("span", { class: "chip" }, esc(tg))); }); body.appendChild(tc); }
+    var modal = document.getElementById("xp-modal");
+    modal.classList.add("open"); modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    document.getElementById("xp-modal-close").focus();
+  }
+  function closeXpModal() {
+    var modal = document.getElementById("xp-modal");
+    modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
   /* ---------- Controls ---------- */
   function currentTheme() { return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark"; }
   function updateLabels() {
@@ -434,7 +468,11 @@
     menuBtn.addEventListener("click", function () { menu.classList.contains("open") ? closeMenu() : openMenu(); });
     backdrop.addEventListener("click", closeMenu);
     menu.addEventListener("click", function (e) { if (e.target.closest("a")) closeMenu(); });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMenu(); });
+
+    var xpClose = document.getElementById("xp-modal-close"); xpClose.innerHTML = ICON.close;
+    xpClose.addEventListener("click", closeXpModal);
+    document.getElementById("xp-modal-backdrop").addEventListener("click", closeXpModal);
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeMenu(); closeXpModal(); } });
 
     document.getElementById("to-top").innerHTML = ICON.up;
     document.getElementById("to-top").addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
@@ -512,7 +550,7 @@
   function renderAll() {
     document.documentElement.lang = lang;
     renderHeader(); renderHero(); renderStats();
-    renderAbout(); renderExperience(); renderProjects(); renderSkills(); renderContact(); renderFooter();
+    renderAbout(); renderInterests(); renderExperience(); renderProjects(); renderSkills(); renderContact(); renderFooter();
     updateLabels();
     navLinksMap = {};
     document.querySelectorAll("#nav-links a, #mobile-links a").forEach(function (a) { var h = a.getAttribute("href"); (navLinksMap[h] = navLinksMap[h] || []).push(a); });

@@ -133,6 +133,7 @@
       </section>
 
       <section class="section container" id="a-propos" aria-labelledby="a-propos-title"></section>
+      <section class="section container" id="interets" aria-labelledby="interets-title"></section>
       <section class="section container" id="experience" aria-labelledby="experience-title"></section>
       <section class="section container" id="projets" aria-labelledby="projets-title"></section>
       <section class="section container" id="competences" aria-labelledby="competences-title"></section>
@@ -148,6 +149,15 @@
     </footer>
 
     <button type="button" class="to-top" id="to-top" aria-label="Remonter en haut"></button>
+
+    <!-- Modal detail experience -->
+    <div class="modal" id="xp-modal" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal-backdrop" id="xp-modal-backdrop"></div>
+      <div class="modal-panel" id="xp-modal-panel" role="document">
+        <button type="button" class="modal-close" id="xp-modal-close" aria-label="Fermer"></button>
+        <div id="xp-modal-body"></div>
+      </div>
+    </div>
 
     <script src="./data.js"></script>
     <script src="./script.js"></script>
