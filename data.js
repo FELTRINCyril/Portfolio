@@ -73,6 +73,11 @@ window.portfolioData = {
         fr: "Salut, moi c'est Cyril. Mon parcours mele des experiences de terrain (service, caisse, logistique, paysagisme) et un cursus technique en informatique. J'y ai gagne de la rigueur, de la polyvalence et le sens du travail en equipe - des qualites que j'applique aujourd'hui au developpement Odoo et web chez Kreaddis.",
         en: "Hi, I'm Cyril. My background blends hands-on jobs (hospitality, checkout, logistics, landscaping) with a technical degree in computer science. It gave me rigor, versatility and a real team spirit - qualities I now bring to Odoo and web development at Kreaddis."
       },
+      // Bio riche (HTML autorise : <b> = mot-cle mis en accent)
+      bio: {
+        fr: "<p><b>Salut, moi c'est Cyril</b> - etudiant en <b>3e annee de BUT Informatique</b> a l'IUT d'Annecy, aujourd'hui a 100% en entreprise.</p><p>Je suis en <b>alternance chez Kreaddis</b> (ex-Kreatys), ou je concois et j'integre des solutions <b>Odoo</b> et <b>web</b> : parametrage de modules, developpement Python/XML, interfaces et bases de donnees.</p><p>Avant l'informatique, plusieurs saisons sur le terrain (service, caisse, logistique, paysagisme) m'ont donne de la <b>rigueur</b> et le <b>sens du travail en equipe</b>. Je poursuis l'aventure en <b>CDI</b> l'an prochain, dans la meme equipe.</p>",
+        en: "<p><b>Hi, I'm Cyril</b> - a <b>third-year Computer Science student</b> at IUT of Annecy, now working full-time.</p><p>I'm an <b>apprentice at Kreaddis</b> (formerly Kreatys), where I design and integrate <b>Odoo</b> and <b>web</b> solutions: module configuration, Python/XML development, interfaces and databases.</p><p>Before tech, several seasons of hands-on work (hospitality, checkout, logistics, landscaping) gave me <b>rigor</b> and a real <b>team spirit</b>. I continue the journey on a <b>permanent contract</b> next year, with the same team.</p>"
+      },
       photo: "./assets/images/profil.webp",
       photoAlt: { fr: "Portrait de Cyril Feltrin", en: "Portrait of Cyril Feltrin" },
       available: { fr: "En alternance", en: "Apprenticeship" },
@@ -255,31 +260,54 @@ window.portfolioData = {
         fr: "Niveaux estimes, forcement subjectifs. Odoo par exemple : presque un an de pratique quotidienne, mais l'ecosysteme est immense. A prendre comme des reperes, pas comme une note.",
         en: "Self-estimated levels, necessarily subjective. Odoo for instance: nearly a year of daily practice, yet the ecosystem is huge. Read them as landmarks, not grades."
       },
-      barsCaption: { fr: "Niveaux par domaine", en: "Levels by area" },
-      radarCaption: { fr: "Vue d'ensemble", en: "Overview" },
+      graphsCaption: { fr: "Vue par domaine", en: "By area" },
+      // icon = nom Iconify (charge via api.iconify.design). value = niveau 0-100.
       categories: [
         {
-          label: { fr: "ERP", en: "ERP" },
+          key: "dev", icon: "ph:code-bold", label: { fr: "Developpement", en: "Development" },
           items: [
-            { label: "Odoo", value: 70 },
-            { label: "Dynamics", value: 35 }
+            { label: "HTML", icon: "logos:html-5", value: 82 },
+            { label: "CSS", icon: "logos:css-3", value: 80 },
+            { label: "JavaScript", icon: "logos:javascript", value: 68 },
+            { label: "Bootstrap", icon: "logos:bootstrap", value: 66 },
+            { label: "Python", icon: "logos:python", value: 52 },
+            { label: "XML", icon: "vscode-icons:file-type-xml", value: 75 }
           ]
         },
         {
-          label: { fr: "Developpement & design", en: "Development & design" },
+          key: "erp", icon: "ph:buildings-bold", label: { fr: "ERP", en: "ERP" },
           items: [
-            { label: "HTML / CSS / JS", value: 78 },
-            { label: "XML", value: 75 },
-            { label: "Python", value: 50 },
-            { label: "UX/UI (Figma)", value: 62 }
+            { label: "Odoo", icon: "simple-icons:odoo", value: 72 },
+            { label: "Dynamics", icon: "logos:microsoft-icon", value: 35 }
           ]
         },
         {
-          label: { fr: "Bases de donnees", en: "Databases" },
+          key: "data", icon: "ph:database-bold", label: { fr: "Bases de donnees", en: "Databases" },
           items: [
-            { label: "PostgreSQL", value: 62 },
-            { label: "pgAdmin", value: 65 },
-            { label: "MongoDB", value: 45 }
+            { label: "PostgreSQL", icon: "logos:postgresql", value: 63 },
+            { label: "pgAdmin", icon: "devicon:postgresql", value: 66 },
+            { label: "MongoDB", icon: "logos:mongodb-icon", value: 46 }
+          ]
+        },
+        {
+          key: "tools", icon: "ph:wrench-bold", label: { fr: "Outils & IA", en: "Tools & AI" },
+          items: [
+            { label: "Git", icon: "logos:git-icon", value: 68 },
+            { label: "Docker", icon: "logos:docker-icon", value: 55 },
+            { label: "Figma", icon: "logos:figma", value: 64 },
+            { label: "Notion", icon: "logos:notion-icon", value: 72 },
+            { label: "Cursor", icon: "simple-icons:cursor", value: 70 },
+            { label: "Claude AI", icon: "simple-icons:anthropic", value: 82 },
+            { label: "Gemini", icon: "logos:google-gemini", value: 68 }
+          ]
+        },
+        {
+          key: "env", icon: "ph:desktop-bold", label: { fr: "Environnements", en: "Environments" },
+          items: [
+            { label: "macOS", icon: "logos:apple", value: 75 },
+            { label: "Linux", icon: "logos:linux-tux", value: 55 },
+            { label: "Windows", icon: "logos:microsoft-windows-icon", value: 80 },
+            { label: "Excel", icon: "logos:microsoft-excel", value: 70 }
           ]
         }
       ]

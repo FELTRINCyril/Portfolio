@@ -52,13 +52,11 @@
         <ul class="nav-links" id="nav-links"></ul>
 
         <div class="nav-actions">
-          <div class="segmented" role="group" id="lang-group" aria-label="Langue">
-            <button type="button" class="segment is-active" id="lang-fr" aria-pressed="true">FR</button>
-            <button type="button" class="segment" id="lang-en" aria-pressed="false">EN</button>
-          </div>
-          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Basculer le theme">
-            <span class="theme-knob"></span>
+          <button type="button" class="lang-toggle" id="lang-toggle" aria-label="Changer de langue">
+            <span class="lseg is-active" id="lseg-fr">FR</span>
+            <span class="lseg" id="lseg-en">EN</span>
           </button>
+          <button class="theme-btn" id="theme-toggle" type="button" aria-label="Basculer le theme"></button>
           <button class="hamburger" id="menu-btn" type="button" aria-label="Menu" aria-expanded="false">
             <span></span><span></span><span></span>
           </button>
