@@ -23,8 +23,9 @@ window.portfolioData = {
     phoneDisplay: "06 41 80 24 77",
     phoneHref: "tel:+33641802477",
     workName: "Kreaddis",
-    workAddress: { fr: "5 rue Andre Ampere, Chavanod", en: "5 rue Andre Ampere, Chavanod" },
+    workAddress: { fr: "5 rue Andre Ampere, Chavanod (74)", en: "5 rue Andre Ampere, Chavanod (74)" },
     workMaps: "https://www.google.com/maps/search/?api=1&query=Kreaddis+5+rue+Andre+Ampere+Chavanod",
+    mapEmbed: "https://www.openstreetmap.org/export/embed.html?bbox=6.0480%2C45.8720%2C6.1020%2C45.8960&layer=mapnik&marker=45.8840%2C6.0750",
     github: "https://github.com/FELTRINCyril",
     linkedin: "https://www.linkedin.com/in/cyril-feltrin/"
   },

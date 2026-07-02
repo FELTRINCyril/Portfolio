@@ -76,6 +76,7 @@
     document.getElementById("name-stroke").textContent = h.name;
     document.getElementById("name-fill").textContent = h.name;
     document.getElementById("home-name-sr").textContent = h.name;
+    fitNameSvg();
     document.getElementById("home-tagline").textContent = fill(t(h.tagline));
     document.getElementById("scroll-cue-text").textContent = t(h.scroll);
 
@@ -86,6 +87,17 @@
 
     startTyping(h.titles[lang] || h.titles.fr);
   }
+  // Ajuste le viewBox du nom SVG a la largeur reelle du texte (evite tout debordement)
+  function fitNameSvg() {
+    var svg = document.getElementById("hero-name-svg"), f = document.getElementById("name-fill"), s = document.getElementById("name-stroke");
+    if (!svg || !f) return;
+    [f, s].forEach(function (n) { n.removeAttribute("textLength"); n.removeAttribute("lengthAdjust"); });
+    try {
+      var w = f.getComputedTextLength();
+      if (w > 0) svg.setAttribute("viewBox", "0 0 " + Math.ceil(w + 6) + " 172");
+    } catch (e) {}
+  }
+
   function startTyping(titles) {
     var target = document.getElementById("home-role");
     if (typeTimer) { clearTimeout(typeTimer); typeTimer = null; }
@@ -166,8 +178,7 @@
     body.appendChild(hls);
 
     var acts = sr(el("div", { class: "about-actions" }), "fade-up");
-    acts.appendChild(el("a", { class: "btn btn-primary magnetic", href: D.ui.cvPath, target: "_blank", rel: "noopener" }, ICON.eye + "<span>" + esc(t(D.ui.cvView)) + "</span>"));
-    acts.appendChild(el("a", { class: "btn btn-ghost magnetic", href: D.ui.cvPath, download: D.ui.cvFileName }, ICON.download + "<span>" + esc(t(D.ui.cvDownload)) + "</span>"));
+    acts.appendChild(buildCvToggle());
     acts.appendChild(el("a", { class: "btn btn-ghost magnetic", href: "#contact" }, ICON.mail + "<span>" + (lang === "en" ? "Contact me" : "Me contacter") + "</span>"));
     body.appendChild(acts);
 
@@ -190,6 +201,26 @@
     sec.appendChild(gal);
   }
   function glow(e) { var r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", (e.clientX - r.left) + "px"); e.currentTarget.style.setProperty("--my", (e.clientY - r.top) + "px"); }
+
+  // Bouton CV unique : bascule Voir <-> Telecharger (gagne de la place)
+  function buildCvToggle() {
+    var mode = "view";
+    var group = el("div", { class: "cv-group magnetic" });
+    var main = el("button", { type: "button", class: "cv-main" });
+    var sw = el("button", { type: "button", class: "cv-switch" });
+    function paint() {
+      if (mode === "view") { main.innerHTML = ICON.eye + "<span>" + esc(t(D.ui.cvView)) + "</span>"; sw.innerHTML = ICON.download; sw.title = t(D.ui.cvDownload); sw.setAttribute("aria-label", t(D.ui.cvDownload)); }
+      else { main.innerHTML = ICON.download + "<span>" + esc(t(D.ui.cvDownload)) + "</span>"; sw.innerHTML = ICON.eye; sw.title = t(D.ui.cvView); sw.setAttribute("aria-label", t(D.ui.cvView)); }
+    }
+    main.addEventListener("click", function () {
+      if (mode === "view") { window.open(D.ui.cvPath, "_blank", "noopener"); }
+      else { var a = el("a", { href: D.ui.cvPath, download: D.ui.cvFileName }); document.body.appendChild(a); a.click(); a.remove(); }
+    });
+    sw.addEventListener("click", function () { mode = mode === "view" ? "download" : "view"; paint(); });
+    paint();
+    group.appendChild(main); group.appendChild(sw);
+    return group;
+  }
 
   function initials(org) {
     var parts = String(org).trim().split(/\s+/);
@@ -346,9 +377,12 @@
     links.appendChild(cl(ICON.mail, t(D.ui.email), D.identity.email, "mailto:" + D.identity.email));
     links.appendChild(cl(ICON.phone, t(D.ui.phone), D.identity.phoneDisplay, D.identity.phoneHref));
     links.appendChild(cl(ICON.building, t(D.ui.office), D.identity.workName + " · " + t(D.identity.workAddress), D.identity.workMaps));
-    links.appendChild(cl(ICON.pin, t(D.ui.location), t(D.identity.location), "https://www.google.com/maps/search/?api=1&query=Chavanod"));
     links.appendChild(cl(ICON.github, "GitHub", "@FELTRINCyril", D.identity.github));
     links.appendChild(cl(ICON.linkedin, "LinkedIn", "Cyril Feltrin", D.identity.linkedin));
+    var map = el("div", { class: "contact-map" });
+    map.appendChild(el("iframe", { src: D.identity.mapEmbed, title: t(D.ui.office), loading: "lazy" }));
+    map.appendChild(el("a", { class: "contact-map-label", href: D.identity.workMaps, target: "_blank", rel: "noopener", html: ICON.pin + "<span>" + esc(D.identity.workName + " · Chavanod") + "</span>" }));
+    links.appendChild(map);
     grid.appendChild(links);
 
     var form = sr(el("form", { class: "contact-form", novalidate: "novalidate" }), "slide-right");
@@ -564,8 +598,10 @@
     renderAll();
     setupControls();
     setupParticles();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitNameSvg);
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    var rzt;
+    window.addEventListener("resize", function () { onScroll(); clearTimeout(rzt); rzt = setTimeout(fitNameSvg, 150); }, { passive: true });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
