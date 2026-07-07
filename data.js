@@ -18,14 +18,14 @@ window.portfolioData = {
     shortBrand: "CF",
     fullName: "Cyril Feltrin",
     birthdate: "2005-09-05",
-    location: { fr: "Chavanod (74), France", en: "Chavanod (74), France" },
+    location: { fr: "Annecy (74), France", en: "Annecy (74), France" },
     email: "cyril@kreaddis.com",
     phoneDisplay: "06 41 80 24 77",
     phoneHref: "tel:+33641802477",
     workName: "Kreaddis",
-    workAddress: { fr: "5 rue Andre Ampere, Chavanod (74)", en: "5 rue Andre Ampere, Chavanod (74)" },
-    workMaps: "https://www.google.com/maps/search/?api=1&query=Kreaddis+5+rue+Andre+Ampere+Chavanod",
-    mapEmbed: "https://www.openstreetmap.org/export/embed.html?bbox=6.0480%2C45.8720%2C6.1020%2C45.8960&layer=mapnik&marker=45.8840%2C6.0750",
+    workAddress: { fr: "6 rue Andre Ampere, Z.I. des Cesardes, Seynod - 74600 Annecy", en: "6 rue Andre Ampere, Z.I. des Cesardes, Seynod - 74600 Annecy, FR" },
+    workMaps: "https://www.google.com/maps/search/?api=1&query=Kreaddis+6+rue+Andre+Ampere+Seynod+Annecy",
+    mapEmbed: "https://www.openstreetmap.org/export/embed.html?bbox=6.0500%2C45.8750%2C6.1030%2C45.8990&layer=mapnik&marker=45.8871%2C6.0764",
     github: "https://github.com/FELTRINCyril",
     linkedin: "https://www.linkedin.com/in/cyril-feltrin/"
   },
@@ -45,12 +45,12 @@ window.portfolioData = {
     name: "Cyril Feltrin",
     // Titres qui defilent (type animation) dans le hero
     titles: {
-      fr: ["Developpeur Odoo", "Developpeur web", "Integrateur ERP", "Etudiant en BUT Info"],
-      en: ["Odoo developer", "Web developer", "ERP integrator", "CS student"]
+      fr: ["Business Analyst", "Developpeur Odoo", "Integrateur ERP", "Etudiant en BUT Info"],
+      en: ["Business Analyst", "Odoo developer", "ERP integrator", "CS student"]
     },
     tagline: {
-      fr: "Etudiant en 3e annee de BUT Informatique, en alternance chez Kreaddis (Annecy). Je concois et j'integre des solutions Odoo et web - et je poursuis en CDI l'an prochain.",
-      en: "Third-year Computer Science student, apprentice at Kreaddis (Annecy). I design and integrate Odoo and web solutions - and I continue on a permanent contract next year."
+      fr: "Etudiant en 3e annee de BUT Informatique, en alternance chez Kreaddis (Annecy) comme Business Analyst / Developpeur Odoo. J'analyse, je parametre et je developpe des solutions Odoo - et je poursuis en CDI l'an prochain.",
+      en: "Third-year Computer Science student, apprentice at Kreaddis (Annecy) as Business Analyst / Odoo developer. I analyze, configure and develop Odoo solutions - and I continue on a permanent contract next year."
     },
     ctaPrimary: { href: "#a-propos", label: { fr: "A propos", en: "About me" } },
     ctaSecondary: { href: "#projets", label: { fr: "Voir mes projets", en: "View my work" } },
@@ -70,13 +70,13 @@ window.portfolioData = {
       eyebrow: { fr: "// a propos", en: "// about" },
       title: { fr: "Faire connaissance", en: "Get to know me" },
       intro: {
-        fr: "Salut, moi c'est Cyril. Mon parcours mele des experiences de terrain (service, caisse, logistique, paysagisme) et un cursus technique en informatique. J'y ai gagne de la rigueur, de la polyvalence et le sens du travail en equipe - des qualites que j'applique aujourd'hui au developpement Odoo et web chez Kreaddis.",
-        en: "Hi, I'm Cyril. My background blends hands-on jobs (hospitality, checkout, logistics, landscaping) with a technical degree in computer science. It gave me rigor, versatility and a real team spirit - qualities I now bring to Odoo and web development at Kreaddis."
+        fr: "Salut, moi c'est Cyril. Mon parcours mele des experiences de terrain (service, caisse, logistique, paysagisme) et un cursus technique en informatique. J'y ai gagne de la rigueur, de la polyvalence et le sens du travail en equipe - des qualites que j'applique aujourd'hui comme Business Analyst / Developpeur Odoo chez Kreaddis.",
+        en: "Hi, I'm Cyril. My background blends hands-on jobs (hospitality, checkout, logistics, landscaping) with a technical degree in computer science. It gave me rigor, versatility and a real team spirit - qualities I now bring as Business Analyst / Odoo developer at Kreaddis."
       },
       // Bio riche (HTML autorise : <b> = mot-cle mis en accent)
       bio: {
-        fr: "<p><b>Salut, moi c'est Cyril</b> - etudiant en <b>3e annee de BUT Informatique</b> a l'IUT d'Annecy, aujourd'hui a 100% en entreprise.</p><p>Je suis en <b>alternance chez Kreaddis</b> (ex-Kreatys), ou je concois et j'integre des solutions <b>Odoo</b> et <b>web</b> : parametrage de modules, developpement Python/XML, interfaces et bases de donnees.</p><p>Avant l'informatique, plusieurs saisons sur le terrain (service, caisse, logistique, paysagisme) m'ont donne de la <b>rigueur</b> et le <b>sens du travail en equipe</b>. Je poursuis l'aventure en <b>CDI</b> l'an prochain, dans la meme equipe.</p>",
-        en: "<p><b>Hi, I'm Cyril</b> - a <b>third-year Computer Science student</b> at IUT of Annecy, now working full-time.</p><p>I'm an <b>apprentice at Kreaddis</b> (formerly Kreatys), where I design and integrate <b>Odoo</b> and <b>web</b> solutions: module configuration, Python/XML development, interfaces and databases.</p><p>Before tech, several seasons of hands-on work (hospitality, checkout, logistics, landscaping) gave me <b>rigor</b> and a real <b>team spirit</b>. I continue the journey on a <b>permanent contract</b> next year, with the same team.</p>"
+        fr: "<p><b>Salut, moi c'est Cyril</b> - etudiant en <b>3e annee de BUT Informatique</b> a l'IUT d'Annecy, aujourd'hui a 100% en entreprise.</p><p>Je suis en <b>alternance chez Kreaddis</b> (ex-Kreatys) comme <b>Business Analyst / Developpeur Odoo</b> : analyse des besoins clients, parametrage de modules et developpement Python/XML sur <b>Odoo</b>.</p><p>Avant l'informatique, plusieurs saisons sur le terrain (service, caisse, logistique, paysagisme) m'ont donne de la <b>rigueur</b> et le <b>sens du travail en equipe</b>. Je poursuis l'aventure en <b>CDI</b> l'an prochain, dans la meme equipe.</p>",
+        en: "<p><b>Hi, I'm Cyril</b> - a <b>third-year Computer Science student</b> at IUT of Annecy, now working full-time.</p><p>I'm an <b>apprentice at Kreaddis</b> (formerly Kreatys) as <b>Business Analyst / Odoo developer</b>: client needs analysis, module configuration and Python/XML development on <b>Odoo</b>.</p><p>Before tech, several seasons of hands-on work (hospitality, checkout, logistics, landscaping) gave me <b>rigor</b> and a real <b>team spirit</b>. I continue the journey on a <b>permanent contract</b> next year, with the same team.</p>"
       },
       photo: "./assets/images/profil.webp",
       photoAlt: { fr: "Portrait de Cyril Feltrin", en: "Portrait of Cyril Feltrin" },
@@ -85,7 +85,7 @@ window.portfolioData = {
       highlights: [
         { icon: "erp", title: "Odoo", sub: { fr: "ERP, ~1 an", en: "ERP, ~1 year" } },
         { icon: "code", title: { fr: "Web", en: "Web" }, sub: { fr: "HTML/CSS/JS, Laravel", en: "HTML/CSS/JS, Laravel" } },
-        { icon: "db", title: { fr: "Donnees", en: "Data" }, sub: { fr: "PostgreSQL, MongoDB", en: "PostgreSQL, MongoDB" } },
+        { icon: "ai", title: { fr: "Outils IA", en: "AI tools" }, sub: { fr: "Claude Code, Cursor, Gemini", en: "Claude Code, Cursor, Gemini" } },
         { icon: "cap", title: { fr: "BUT Info", en: "CS degree" }, sub: { fr: "IUT d'Annecy", en: "IUT of Annecy" } }
       ],
       interestsTitle: { fr: "En dehors du code", en: "Beyond the code" },
@@ -108,12 +108,12 @@ window.portfolioData = {
       items: [
         {
           date: { fr: "2025 - 2026 · Alternance", en: "2025 - 2026 · Apprenticeship" },
-          role: { fr: "Developpeur Odoo & web", en: "Odoo & web developer" },
+          role: { fr: "Business Analyst / Developpeur Odoo", en: "Business Analyst / Odoo developer" },
           org: "Kreaddis",
           place: { fr: "Chavanod", en: "Chavanod, FR" },
           text: {
-            fr: "Alternance de 3e annee de BUT Informatique (ex-Kreatys). Developpement et parametrage Odoo, web, en equipe.",
-            en: "Third-year apprenticeship, BUT Computer Science (formerly Kreatys). Odoo development and configuration, web work, in a team."
+            fr: "Alternance de 3e annee de BUT Informatique (ex-Kreatys). Developpement et parametrage Odoo, projets clients, en equipe.",
+            en: "Third-year apprenticeship, BUT Computer Science (formerly Kreatys). Odoo development and configuration, client projects, in a team."
           },
           tech: ["Odoo", "Python", "XML", "JavaScript"],
           current: true
@@ -228,8 +228,8 @@ window.portfolioData = {
           link: { href: "https://github.com/FELTRINCyril", label: { fr: "GitHub", en: "GitHub" } }
         },
         {
-          tags: ["Odoo", "Python", "XML"],
-          date: "2025",
+          tags: ["Odoo", "Python", "XML", "JavaScript", "Cursor AI"],
+          date: "2025 - 2026",
           title: { fr: "Parametrage & dev Odoo (CYNIA)", en: "Odoo configuration & dev (CYNIA)" },
           text: {
             fr: "Parametrage fonctionnel et developpement sur Odoo : configuration de modules et personnalisations pour un cas d'usage metier.",
@@ -239,8 +239,8 @@ window.portfolioData = {
           link: { href: "https://github.com/FELTRINCyril/CYNIA", label: { fr: "Voir le depot", en: "View repo" } }
         },
         {
-          tags: ["HTML", "CSS", "JavaScript"],
-          date: "2025",
+          tags: ["HTML", "CSS", "JavaScript", "Claude Code"],
+          date: "2026",
           title: { fr: "Ce portfolio", en: "This portfolio" },
           text: {
             fr: "Site statique en HTML / CSS / JavaScript vanilla, bilingue (FR/EN), contenu centralise dans un seul fichier de donnees et deploiement automatique sur GitHub Pages.",
@@ -266,48 +266,48 @@ window.portfolioData = {
         {
           key: "dev", icon: "ph:code-bold", label: { fr: "Developpement", en: "Development" },
           items: [
-            { label: "HTML", icon: "logos:html-5", value: 82 },
+            { label: "HTML", icon: "logos:html-5", value: 80 },
             { label: "CSS", icon: "logos:css-3", value: 80 },
-            { label: "JavaScript", icon: "logos:javascript", value: 68 },
-            { label: "Bootstrap", icon: "logos:bootstrap", value: 66 },
-            { label: "Python", icon: "logos:python", value: 52 },
-            { label: "XML", icon: "vscode-icons:file-type-xml", value: 75 }
+            { label: "JavaScript", icon: "logos:javascript", value: 80 },
+            { label: "Bootstrap", icon: "logos:bootstrap", value: 80 },
+            { label: "Python", icon: "logos:python", value: 60 },
+            { label: "XML", icon: "vscode-icons:file-type-xml", value: 80 }
           ]
         },
         {
           key: "erp", icon: "ph:buildings-bold", label: { fr: "ERP", en: "ERP" },
           items: [
-            { label: "Odoo", icon: "simple-icons:odoo", value: 72 },
-            { label: "Dynamics", icon: "logos:microsoft-icon", value: 35 }
+            { label: "Odoo", icon: "simple-icons:odoo", value: 80 },
+            { label: "Dynamics", icon: "simple-icons:dynamics365", value: 60 }
           ]
         },
         {
           key: "data", icon: "ph:database-bold", label: { fr: "Bases de donnees", en: "Databases" },
           items: [
             { label: "PostgreSQL", icon: "logos:postgresql", value: 63 },
-            { label: "pgAdmin", icon: "devicon:postgresql", value: 66 },
-            { label: "MongoDB", icon: "logos:mongodb-icon", value: 46 }
+            { label: "pgAdmin", icon: "devicon:postgresql", value: 40 },
+            { label: "MongoDB", icon: "logos:mongodb-icon", value: 60 }
           ]
         },
         {
           key: "tools", icon: "ph:wrench-bold", label: { fr: "Outils & IA", en: "Tools & AI" },
           items: [
             { label: "Git", icon: "logos:git-icon", value: 68 },
-            { label: "Docker", icon: "logos:docker-icon", value: 55 },
-            { label: "Figma", icon: "logos:figma", value: 64 },
-            { label: "Notion", icon: "logos:notion-icon", value: 72 },
-            { label: "Cursor", icon: "simple-icons:cursor", value: 70 },
-            { label: "Claude AI", icon: "simple-icons:anthropic", value: 82 },
-            { label: "Gemini", icon: "logos:google-gemini", value: 68 }
+            { label: "Docker", icon: "logos:docker-icon", value: 60 },
+            { label: "Figma", icon: "logos:figma", value: 60 },
+            { label: "Notion", icon: "logos:notion-icon", value: 60 },
+            { label: "Cursor", icon: "simple-icons:cursor", value: 80 },
+            { label: "Claude AI", icon: "logos:claude-icon", value: 100 },
+            { label: "Gemini", icon: "logos:google-gemini", value: 80 }
           ]
         },
         {
           key: "env", icon: "ph:desktop-bold", label: { fr: "Environnements", en: "Environments" },
           items: [
-            { label: "macOS", icon: "logos:apple", value: 75 },
-            { label: "Linux", icon: "logos:linux-tux", value: 55 },
+            { label: "macOS", icon: "logos:apple", value: 100 },
+            { label: "Linux", icon: "logos:linux-tux", value: 60 },
             { label: "Windows", icon: "logos:microsoft-windows-icon", value: 80 },
-            { label: "Excel", icon: "logos:microsoft-excel", value: 70 }
+            { label: "Excel", icon: "vscode-icons:file-type-excel", value: 70 }
           ]
         }
       ]
@@ -318,8 +318,8 @@ window.portfolioData = {
       eyebrow: { fr: "// prendre contact", en: "// get in touch" },
       title: { fr: "Travaillons ensemble", en: "Let's work together" },
       intro: {
-        fr: "Une question, un projet Odoo ou web, une opportunite ? Ecrivez-moi, je reponds rapidement.",
-        en: "A question, an Odoo or web project, an opportunity? Send me a message, I reply quickly."
+        fr: "Une question, un projet Odoo, une opportunite ? Ecrivez-moi, je reponds rapidement.",
+        en: "A question, an Odoo project, an opportunity? Send me a message, I reply quickly."
       },
       formActionUrl: "",
       mailtoBodyIntro: {
@@ -351,6 +351,8 @@ window.portfolioData = {
     menu: { fr: "Menu", en: "Menu" },
     themeToLight: { fr: "Passer au theme clair", en: "Switch to light theme" },
     themeToDark: { fr: "Passer au theme sombre", en: "Switch to dark theme" },
+    paletteToViolet: { fr: "Passer a la palette violette", en: "Switch to the purple palette" },
+    paletteToKreaddis: { fr: "Passer a la palette Kreaddis", en: "Switch to the Kreaddis palette" },
     scrollTop: { fr: "Remonter en haut", en: "Back to top" },
     socialGithub: { fr: "Profil GitHub", en: "GitHub profile" },
     socialLinkedin: { fr: "Profil LinkedIn", en: "LinkedIn profile" },

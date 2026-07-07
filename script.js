@@ -9,6 +9,7 @@
   var D = window.portfolioData;
   var LANG_KEY = "portfolioLang";
   var THEME_KEY = "theme";
+  var PALETTE_KEY = "palette";
   var lang = getLang();
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var typeTimer = null;
@@ -50,7 +51,9 @@
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
     building: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16M15 21V9h3a1 1 0 0 1 1 1v11"/><path d="M8 7h1m-1 4h1m-1 4h1"/></svg>',
     sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.5 4.5l1.4 1.4M18.1 18.1l1.4 1.4M2.5 12h2M19.5 12h2M4.5 19.5l1.4-1.4M18.1 5.9l1.4-1.4"/></svg>',
-    moon: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8Z"/></svg>'
+    moon: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8Z"/></svg>',
+    palette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21a9 9 0 1 1 9-9c0 1.9-1.4 3-3 3h-1.6a2 2 0 0 0-1.5 3.3c.3.4.5.8.5 1.2 0 .8-.6 1.5-1.4 1.5H12Z"/><circle cx="7.5" cy="11.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="10.5" cy="7.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="15.2" cy="8" r="1.1" fill="currentColor" stroke="none"/></svg>',
+    ai: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.5 12.7 9l4.5 1.7-4.5 1.7L11 16.9l-1.7-4.5L4.8 10.7 9.3 9 11 4.5Z"/><path d="M18.5 14.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"/></svg>'
   };
 
   /* ---------- Header + nav ---------- */
@@ -84,8 +87,8 @@
 
     var actions = document.getElementById("home-actions");
     actions.innerHTML = "";
-    actions.appendChild(el("a", { class: "btn btn-primary magnetic", href: h.ctaPrimary.href }, ICON.user + "<span>" + esc(t(h.ctaPrimary.label)) + "</span>"));
-    actions.appendChild(el("a", { class: "btn btn-ghost magnetic", href: h.ctaSecondary.href }, ICON.eye + "<span>" + esc(t(h.ctaSecondary.label)) + "</span>"));
+    actions.appendChild(el("a", { class: "btn btn-primary", href: h.ctaPrimary.href }, ICON.user + "<span>" + esc(t(h.ctaPrimary.label)) + "</span>"));
+    actions.appendChild(el("a", { class: "btn btn-ghost", href: h.ctaSecondary.href }, ICON.eye + "<span>" + esc(t(h.ctaSecondary.label)) + "</span>"));
 
     startTyping(h.titles[lang] || h.titles.fr);
   }
@@ -181,7 +184,7 @@
 
     var acts = sr(el("div", { class: "about-actions" }), "fade-up");
     acts.appendChild(buildCvToggle());
-    acts.appendChild(el("a", { class: "btn btn-ghost magnetic", href: "#contact" }, ICON.mail + "<span>" + (lang === "en" ? "Contact me" : "Me contacter") + "</span>"));
+    acts.appendChild(el("a", { class: "btn btn-ghost", href: "#contact" }, ICON.mail + "<span>" + (lang === "en" ? "Contact me" : "Me contacter") + "</span>"));
     body.appendChild(acts);
 
     grid.appendChild(media);
@@ -207,7 +210,7 @@
   // Bouton CV unique : bascule Voir <-> Telecharger (gagne de la place)
   function buildCvToggle() {
     var mode = "view";
-    var group = el("div", { class: "cv-group magnetic" });
+    var group = el("div", { class: "cv-group" });
     var main = el("button", { type: "button", class: "cv-main" });
     var sw = el("button", { type: "button", class: "cv-switch" });
     function paint() {
@@ -314,12 +317,23 @@
   }
 
   /* ---------- Skills (tuiles-logos + radars par categorie) ---------- */
+  function accentHex() {
+    var c = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
+    return c.replace("#", "") || "fe6614";
+  }
   function iconImg(name, size, accent) {
-    // icones monochromes (ph:, simple-icons:) -> colorees en violet pour rester visibles sur tout fond
+    // icones monochromes (ph:, simple-icons:) -> colorees avec l'accent de la palette courante
     var mono = accent || name.indexOf("simple-icons:") === 0 || name.indexOf("ph:") === 0;
-    var url = "https://api.iconify.design/" + name + ".svg" + (mono ? "?color=%238b5cf6" : "");
-    return '<img src="' + url + '" width="' + size + '" height="' + size + '" alt="" loading="lazy" ' +
+    var url = "https://api.iconify.design/" + name + ".svg" + (mono ? "?color=%23" + accentHex() : "");
+    return '<img src="' + url + '"' + (mono ? ' data-mono="' + name + '"' : "") + ' width="' + size + '" height="' + size + '" alt="" loading="lazy" ' +
       'onerror="this.style.display=\'none\';if(this.nextElementSibling)this.nextElementSibling.style.display=\'grid\'">';
+  }
+  // Recolore les icones monochromes apres un changement de palette
+  function refreshMonoIcons() {
+    var hex = accentHex();
+    document.querySelectorAll("img[data-mono]").forEach(function (im) {
+      im.src = "https://api.iconify.design/" + im.getAttribute("data-mono") + ".svg?color=%23" + hex;
+    });
   }
   function initials2(l) { return String(l).replace(/[^A-Za-z0-9]/g, "").slice(0, 2).toUpperCase(); }
   function buildTile(item) {
@@ -424,7 +438,7 @@
     // Carte du bureau, pleine largeur sous la grille
     var map = sr(el("div", { class: "contact-map wide" }), "fade-up");
     map.appendChild(el("iframe", { src: D.identity.mapEmbed, title: t(D.ui.office), loading: "lazy" }));
-    map.appendChild(el("a", { class: "contact-map-label", href: D.identity.workMaps, target: "_blank", rel: "noopener", html: ICON.pin + "<span>" + esc(D.identity.workName + " · Chavanod") + "</span>" }));
+    map.appendChild(el("a", { class: "contact-map-label", href: D.identity.workMaps, target: "_blank", rel: "noopener", html: ICON.pin + "<span>" + esc(D.identity.workName + " · Seynod, Annecy") + "</span>" }));
     sec.appendChild(map);
   }
   function cl(icon, label, value, href) {
@@ -488,49 +502,64 @@
 
   /* ---------- Controls ---------- */
   function currentTheme() { return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark"; }
+  function currentPalette() { return document.documentElement.getAttribute("data-palette") === "violet" ? "violet" : "kreaddis"; }
   function updateLabels() {
     document.getElementById("lang-toggle").setAttribute("aria-label", t(D.ui.langGroup));
     document.getElementById("menu-btn").setAttribute("aria-label", t(D.ui.menu));
     var tb = document.getElementById("theme-toggle");
     tb.setAttribute("aria-label", currentTheme() === "light" ? t(D.ui.themeToDark) : t(D.ui.themeToLight));
     tb.innerHTML = currentTheme() === "light" ? ICON.moon : ICON.sun;
+    var pb = document.getElementById("palette-toggle");
+    var pLabel = currentPalette() === "kreaddis" ? t(D.ui.paletteToViolet) : t(D.ui.paletteToKreaddis);
+    pb.setAttribute("aria-label", pLabel); pb.title = pLabel;
+    pb.innerHTML = ICON.palette;
     document.getElementById("to-top").setAttribute("aria-label", t(D.ui.scrollTop));
     document.getElementById("lseg-fr").classList.toggle("is-active", lang === "fr");
     document.getElementById("lseg-en").classList.toggle("is-active", lang === "en");
   }
   function setLang(l) { if (l === lang) return; lang = l; try { localStorage.setItem(LANG_KEY, l); } catch (e) {} renderAll(); }
   function setTheme(th) { document.documentElement.setAttribute("data-theme", th); try { localStorage.setItem(THEME_KEY, th); } catch (e) {} updateLabels(); }
-  // Bascule de theme avec une vague circulaire depuis le bouton
+  function setPalette(p) { document.documentElement.setAttribute("data-palette", p); try { localStorage.setItem(PALETTE_KEY, p); } catch (e) {} refreshMonoIcons(); updateLabels(); }
+  // Vague circulaire depuis un bouton (view transition), partagee theme/palette.
+  // expand=true : le nouvel etat s'etend depuis le bouton ; sinon l'ancien se retracte.
   var vtRunning = false;
-  function toggleTheme() {
-    var next = currentTheme() === "light" ? "dark" : "light";
-    if (reduceMotion || !document.startViewTransition || vtRunning) { setTheme(next); return; }
-    var b = document.getElementById("theme-toggle").getBoundingClientRect();
+  function waveFrom(btnId, expand, apply) {
+    if (reduceMotion || !document.startViewTransition || vtRunning) { apply(); return; }
+    var b = document.getElementById(btnId).getBoundingClientRect();
     var x = b.left + b.width / 2, y = b.top + b.height / 2;
     var r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-    var toLight = next === "light", root = document.documentElement;
-    root.classList.add(toLight ? "vt-to-light" : "vt-to-dark");
+    var root = document.documentElement;
+    root.classList.add(expand ? "vt-to-light" : "vt-to-dark");
     vtRunning = true;
     function cleanup() { vtRunning = false; root.classList.remove("vt-to-light", "vt-to-dark"); }
     var vt;
-    try { vt = document.startViewTransition(function () { setTheme(next); }); }
-    catch (e) { setTheme(next); cleanup(); return; }
+    try { vt = document.startViewTransition(apply); }
+    catch (e) { apply(); cleanup(); return; }
     // onRejected en no-op sur ready ET finished pour ne jamais laisser de rejet non gere
     vt.ready.then(function () {
       var full = "circle(" + r + "px at " + x + "px " + y + "px)", zero = "circle(0px at " + x + "px " + y + "px)";
       try {
         root.animate(
-          { clipPath: toLight ? [zero, full] : [full, zero] },
-          { duration: 620, easing: "ease-in-out", pseudoElement: toLight ? "::view-transition-new(root)" : "::view-transition-old(root)" }
+          { clipPath: expand ? [zero, full] : [full, zero] },
+          { duration: 620, easing: "ease-in-out", pseudoElement: expand ? "::view-transition-new(root)" : "::view-transition-old(root)" }
         );
       } catch (e) {}
     }, function () {});
     vt.finished.then(cleanup, cleanup);
   }
+  function toggleTheme() {
+    var next = currentTheme() === "light" ? "dark" : "light";
+    waveFrom("theme-toggle", next === "light", function () { setTheme(next); });
+  }
+  function togglePalette() {
+    var next = currentPalette() === "kreaddis" ? "violet" : "kreaddis";
+    waveFrom("palette-toggle", true, function () { setPalette(next); });
+  }
 
   function setupControls() {
     document.getElementById("lang-toggle").addEventListener("click", function () { setLang(lang === "fr" ? "en" : "fr"); });
     document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
+    document.getElementById("palette-toggle").addEventListener("click", togglePalette);
 
     var menuBtn = document.getElementById("menu-btn"), menu = document.getElementById("mobile-menu"), backdrop = document.getElementById("mobile-backdrop");
     function closeMenu() { menu.classList.remove("open"); backdrop.classList.remove("show"); menuBtn.setAttribute("aria-expanded", "false"); menu.setAttribute("aria-hidden", "true"); }

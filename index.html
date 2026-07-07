@@ -5,17 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Portfolio de Cyril Feltrin - developpeur Odoo et web, en alternance chez Kreaddis (Annecy)."
+      content="Portfolio de Cyril Feltrin - Business Analyst / Developpeur Odoo, en alternance chez Kreaddis (Annecy)."
     />
-    <title>Cyril Feltrin - Developpeur Odoo & web</title>
+    <title>Cyril Feltrin - Business Analyst / Developpeur Odoo</title>
 
     <script>
       (function () {
         try {
           var t = localStorage.getItem("theme");
           document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark");
+          var p = localStorage.getItem("palette");
+          document.documentElement.setAttribute("data-palette", p === "violet" ? "violet" : "kreaddis");
         } catch (e) {
           document.documentElement.setAttribute("data-theme", "dark");
+          document.documentElement.setAttribute("data-palette", "kreaddis");
         }
       })();
     </script>
@@ -56,6 +59,7 @@
             <span class="lseg is-active" id="lseg-fr">FR</span>
             <span class="lseg" id="lseg-en">EN</span>
           </button>
+          <button class="theme-btn palette-btn" id="palette-toggle" type="button" aria-label="Changer de palette"></button>
           <button class="theme-btn" id="theme-toggle" type="button" aria-label="Basculer le theme"></button>
           <button class="hamburger" id="menu-btn" type="button" aria-label="Menu" aria-expanded="false">
             <span></span><span></span><span></span>
