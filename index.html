@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Portfolio de Cyril Feltrin - Business Analyst / Developpeur Odoo, en alternance chez Kreaddis (Annecy)."
+    />
+    <title>Cyril Feltrin - Business Analyst / Developpeur Odoo</title>
+
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark");
+          var p = localStorage.getItem("palette");
+          document.documentElement.setAttribute("data-palette", p === "violet" ? "violet" : "kreaddis");
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "dark");
+          document.documentElement.setAttribute("data-palette", "kreaddis");
+        }
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#accueil">Aller au contenu</a>
+
+    <!-- Calques de fond -->
+    <div class="bg-layers" aria-hidden="true">
+      <div class="bg-dots"></div>
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <canvas id="particles" class="bg-particles"></canvas>
+      <div class="bg-scan"></div>
+      <div class="grain"></div>
+    </div>
+
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+    <header class="site-header" id="site-header">
+      <nav class="nav-pill" aria-label="Navigation principale">
+        <a class="brand" href="#accueil" id="brand" aria-label="Accueil"><span class="brand-mark">CF</span></a>
+
+        <ul class="nav-links" id="nav-links"></ul>
+
+        <div class="nav-actions">
+          <button type="button" class="lang-toggle" id="lang-toggle" aria-label="Changer de langue">
+            <span class="lseg is-active" id="lseg-fr">FR</span>
+            <span class="lseg" id="lseg-en">EN</span>
+          </button>
+          <button class="theme-btn palette-btn" id="palette-toggle" type="button" aria-label="Changer de palette"></button>
+          <button class="theme-btn" id="theme-toggle" type="button" aria-label="Basculer le theme"></button>
+          <button class="hamburger" id="menu-btn" type="button" aria-label="Menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <button type="button" class="mobile-backdrop" id="mobile-backdrop" tabindex="-1" aria-hidden="true"></button>
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <ul id="mobile-links"></ul>
+    </div>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero" id="accueil">
+        <div class="hero-inner">
+          <div class="hero-content">
+            <p class="status-pill" id="home-status"><span class="dot"></span><span id="home-status-text"></span></p>
+            <p class="hero-kicker" id="home-kicker"></p>
+            <div class="hero-name-wrap">
+              <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+              <svg class="hero-name-svg" id="hero-name-svg" viewBox="0 0 1000 180" aria-hidden="true">
+                <defs>
+                  <linearGradient id="name-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="var(--g1)" />
+                    <stop offset="50%" stop-color="var(--g2)" />
+                    <stop offset="100%" stop-color="var(--g3)" />
+                  </linearGradient>
+                </defs>
+                <text class="name-stroke" id="name-stroke" x="0" y="132" text-anchor="start" textLength="1000" lengthAdjust="spacingAndGlyphs"></text>
+                <text class="name-fill" id="name-fill" x="0" y="132" text-anchor="start" textLength="1000" lengthAdjust="spacingAndGlyphs"></text>
+              </svg>
+              <h1 class="sr-only" id="home-name-sr"></h1>
+            </div>
+            <p class="hero-role"><span id="home-role" class="type-target"></span><span class="caret" aria-hidden="true"></span></p>
+            <p class="hero-tagline" id="home-tagline"></p>
+            <div class="hero-actions" id="home-actions"></div>
+          </div>
+
+          <div class="hero-visual" aria-hidden="true">
+            <div class="code-window">
+              <div class="cw-bar"><i></i><i></i><i></i><em>kreaddis · sale_order.py</em></div>
+              <pre class="cw-code"><span class="c-k">from</span> odoo <span class="c-k">import</span> models, fields, api
+
+<span class="c-k">class</span> <span class="c-t">SaleOrder</span>(models.Model):
+    _inherit = <span class="c-s">"sale.order"</span>
+
+    marge = fields.<span class="c-t">Float</span>(
+        compute=<span class="c-s">"_compute_marge"</span>,
+        store=<span class="c-b">True</span>,
+    )
+
+    <span class="c-d">@api.depends</span>(<span class="c-s">"order_line.margin"</span>)
+    <span class="c-k">def</span> <span class="c-f">_compute_marge</span>(self):
+        <span class="c-k">for</span> order <span class="c-k">in</span> self:
+            order.marge = <span class="c-fn">sum</span>(
+                order.order_line.mapped(<span class="c-s">"margin"</span>)
+            )</pre>
+            </div>
+          </div>
+        </div>
+
+        <a class="scroll-cue" href="#stats" id="scroll-cue" aria-hidden="true">
+          <span id="scroll-cue-text"></span>
+          <span class="chev"></span>
+        </a>
+      </section>
+
+      <!-- STATS -->
+      <section class="stats-strip" id="stats" aria-label="Chiffres cles">
+        <div class="container stats-grid" id="stats-grid"></div>
+      </section>
+
+      <section class="section container" id="a-propos" aria-labelledby="a-propos-title"></section>
+      <section class="section container" id="interets" aria-labelledby="interets-title"></section>
+      <section class="section container" id="experience" aria-labelledby="experience-title"></section>
+      <section class="section container" id="projets" aria-labelledby="projets-title"></section>
+      <section class="section container" id="competences" aria-labelledby="competences-title"></section>
+      <section class="section container" id="contact" aria-labelledby="contact-title"></section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <span class="brand-sm" id="footer-brand"></span>
+        <p id="footer-text"></p>
+        <div class="footer-social" id="footer-social"></div>
+      </div>
+    </footer>
+
+    <button type="button" class="to-top" id="to-top" aria-label="Remonter en haut"></button>
+
+    <!-- Modal detail experience -->
+    <div class="modal" id="xp-modal" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal-backdrop" id="xp-modal-backdrop"></div>
+      <div class="modal-panel" id="xp-modal-panel" role="document">
+        <button type="button" class="modal-close" id="xp-modal-close" aria-label="Fermer"></button>
+        <div id="xp-modal-body"></div>
+      </div>
+    </div>
+
+    <script src="./data.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
