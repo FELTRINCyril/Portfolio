@@ -1,10 +1,11 @@
 (function () {
   if (window.__pf3dLoaded) return; window.__pf3dLoaded = true;
-  const THREE_URL = 'https://unpkg.com/three@0.160.0/build/three.module.js';
+  // Three.js 0.160.0 is kept locally in assets/lib/three (MIT); same file as the "three" entry of the import map
+  const THREE_URL = './assets/lib/three/build/three.module.js';
   let _T; const three = () => _T || (_T = import(THREE_URL));
   // GLTFLoader imports the bare specifier 'three': the import map in index.html points it to THREE_URL,
   // so the loader and this file share the same Three.js instance.
-  const GLTF_URL = 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
+  const GLTF_URL = './assets/lib/three/examples/jsm/loaders/GLTFLoader.js';
   const CANOPY_GLB = 'assets/parachute-3d.glb';
   // The GLB is compressed with EXT_meshopt_compression (glTF-Transform): decoder kept locally (MIT, from three@0.160.0)
   const MESHOPT_URL = './assets/lib/meshopt_decoder.module.js';
@@ -61,7 +62,8 @@
       for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) jobs.push(new Promise((res, rej) => {
         const im = new Image(); im.crossOrigin = 'anonymous';
         im.onload = () => { cx.drawImage(im, (dx + 1) * TS, (dy + 1) * TS); res(); }; im.onerror = rej;
-        im.src = `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/${Zs}/${tx + dx}/${ty + dy}.png`;
+        // Terrarium tiles frozen locally (tools/fetch_terrain_tiles.py), originally from AWS Open Data
+        im.src = `assets/terrain/${Zs}/${tx + dx}/${ty + dy}.png`;
       }));
       await Promise.all(jobs);
       const W = TS * 3, px = cx.getImageData(0, 0, W, W).data, el = new Float32Array(W * W);

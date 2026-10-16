@@ -3,16 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }</script>
+<script>
+  // Local copies of the libraries support.js would otherwise load from unpkg (official dc-runtime hook,
+  // see cdnScriptFor in support.js): the site no longer depends on a CDN.
+  window.__resources = {
+    'https://unpkg.com/react@18.3.1/umd/react.production.min.js': './assets/lib/react/react.production.min.js',
+    'https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js': './assets/lib/react/react-dom.production.min.js'
+  };
+</script>
+<script type="importmap">{ "imports": { "three": "./assets/lib/three/build/three.module.js" } }</script>
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
 <title>Cyril Feltrin — Business Analyst (v4)</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Big+Shoulders+Display:wght@700;800&amp;family=Instrument+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600&amp;family=DM+Mono:wght@400;500&amp;display=swap">
+<link rel="stylesheet" href="./assets/fonts/fonts.css">
 <style>
 ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
 ::view-transition-group(root){animation-duration:.9s}
@@ -446,6 +452,7 @@ a:hover{color:var(--accent)}
       <span>Haute-Savoie, France</span>
       <a href="#top">{{ t.footer.top }} ↑</a>
     </div>
+    <p style="max-width:1280px;margin:14px auto 0;font-family:var(--fm);font-size:10px;line-height:1.5;letter-spacing:.03em;color:var(--muted);opacity:.8">{{ t.footer.credits }}</p>
   </footer>
 </main>
 
@@ -608,7 +615,7 @@ const T = {
     detail: { hint: 'Cliquer sur une ligne pour le détail', more: 'Détails', close: 'Fermer', prev: 'Précédent', next: 'Suivant', display: 'AFFICHAGE', side: 'Panneau', modal: 'Fenêtre', full: 'Plein écran', photo: 'Photo à ajouter', desc: 'Description', todo: 'À COMPLÉTER', descPh: 'Texte à rédiger : contexte, rôle, missions principales et résultats obtenus.', missions: 'Missions', done: 'Réalisations', missionsPh: ['Mission principale à décrire', 'Outils et méthodes utilisés', 'Résultat ou apprentissage clé'], kExp: 'Expérience', kEdu: 'Formation', kJob: "Job d'été", kProj: 'Projet' },
     passions: { title: 'Passions', hint: 'Chaque passion s’ouvre en 3D', sky: 'Parachutisme', jumps: 'sauts', pac: 'Progression accompagnée en chute', brevets: 'Brevets obtenus', next: 'Prochaine étape', b2: 'Brevet B2, pour le saut en groupe', moto: 'Moto', gym: 'Musculation', skyAlt: 'Saut en parachute au-dessus du lac du Bourget', motoAlt: 'Suzuki GSX-8S au bord d’un lac alpin', explore: 'Explorer en 3D', ai: 'Retouchée avec IA · ChatGPT', compare: "Comparer avec l'original", original: 'Original', edited: 'Retouchée IA', cmpTitle: 'Photo originale et version retouchée', cmpNote: 'Glisser pour comparer. Retouche réalisée avec ChatGPT.', drag: 'Glisser pour tourner · molette ou pincement pour zoomer', parts: 'ÉLÉMENTS', places: 'LIEUX', specs: 'CARACTÉRISTIQUES', zones: 'ZONES', jump: 'LE SAUT' },
     contact: { title: 'Contact', lead: 'Une question, une opportunité ou un projet ? Écrivez-moi directement ou via ce formulaire.', direct: 'Directement', first: 'Prénom', last: 'Nom', email: 'Email', subject: 'Objet', message: 'Message', file: 'Pièce jointe (facultatif)', none: 'Aucun fichier sélectionné', choose: 'Choisir un fichier', send: 'Envoyer', sending: 'Envoi…', ok: 'Message envoyé. Je vous réponds rapidement.', err: "L'envoi a échoué. Réessayez ou écrivez à cyril@kreaddis.com.", noEp: 'Formulaire pas encore relié : ajoutez votre identifiant Formspree.' },
-    footer: { top: 'Haut de page' },
+    footer: { top: 'Haut de page', credits: "Relief : Mapzen Terrain Tiles - EU-DEM produit avec des données Copernicus financées par l'Union européenne ; SRTM et GMTED2010 avec l'aimable autorisation de l'USGS ; ETOPO1 (NOAA). Plans : © contributeurs OpenStreetMap." },
     alt: 'ALTITUDE', altHint: 'Glisser pour parcourir la page', phase: { ff: 'CHUTE LIBRE', canopy: 'SOUS VOILE', landed: 'POSÉ' }, palLabel: 'Changer la couleur', palTitle: 'Couleur', themeLight: 'Passer en mode clair', themeDark: 'Passer en mode sombre',
     facts: [['Poste', 'Business Analyst, CDI'], ['Entreprise', 'Kreaddis (ex-Kreatys)'], ['Formation', 'BUT Informatique'], ['Région', 'Haute-Savoie']]
   },
@@ -622,7 +629,7 @@ const T = {
     detail: { hint: 'Click a row for details', more: 'Details', close: 'Close', prev: 'Previous', next: 'Next', display: 'DISPLAY', side: 'Panel', modal: 'Window', full: 'Full screen', photo: 'Photo to add', desc: 'Description', todo: 'TO WRITE', descPh: 'Text to write: context, role, main tasks and results.', missions: 'Tasks', done: 'Highlights', missionsPh: ['Main task to describe', 'Tools and methods used', 'Key result or lesson'], kExp: 'Experience', kEdu: 'Education', kJob: 'Summer job', kProj: 'Project' },
     passions: { title: 'Interests', hint: 'Each interest opens in 3D', sky: 'Skydiving', jumps: 'jumps', pac: 'Accelerated freefall training', brevets: 'Licences earned', next: 'Next step', b2: 'B2 licence, for group jumps', moto: 'Motorcycling', gym: 'Weight training', skyAlt: 'Skydive above Lake Bourget', motoAlt: 'Suzuki GSX-8S by an alpine lake', explore: 'Explore in 3D', ai: 'AI-retouched · ChatGPT', compare: 'Compare with original', original: 'Original', edited: 'AI-retouched', cmpTitle: 'Original photo and retouched version', cmpNote: 'Drag to compare. Retouched with ChatGPT.', drag: 'Drag to rotate · scroll or pinch to zoom', parts: 'PARTS', places: 'PLACES', specs: 'SPECIFICATIONS', zones: 'ZONES', jump: 'THE JUMP' },
     contact: { title: 'Contact', lead: 'A question, an opportunity or a project? Write to me directly or through this form.', direct: 'Directly', first: 'First name', last: 'Last name', email: 'Email', subject: 'Subject', message: 'Message', file: 'Attachment (optional)', none: 'No file selected', choose: 'Choose a file', send: 'Send', sending: 'Sending…', ok: 'Message sent. I will get back to you shortly.', err: 'Sending failed. Try again or email cyril@kreaddis.com.', noEp: 'Form not connected yet: add your Formspree ID.' },
-    footer: { top: 'Back to top' },
+    footer: { top: 'Back to top', credits: 'Terrain: Mapzen Terrain Tiles - EU-DEM produced using Copernicus data and information funded by the European Union; SRTM and GMTED2010 courtesy of the U.S. Geological Survey; ETOPO1 (NOAA). Maps: © OpenStreetMap contributors.' },
     alt: 'ALTITUDE', altHint: 'Drag to move through the page', phase: { ff: 'FREEFALL', canopy: 'UNDER CANOPY', landed: 'LANDED' }, palLabel: 'Change colour', palTitle: 'Colour', themeLight: 'Switch to light mode', themeDark: 'Switch to dark mode',
     facts: [['Role', 'Business Analyst, permanent'], ['Company', 'Kreaddis (formerly Kreatys)'], ['Education', 'BUT Computer Science'], ['Region', 'Haute-Savoie, France']]
   }

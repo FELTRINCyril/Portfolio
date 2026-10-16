@@ -27,21 +27,34 @@ python3 -m http.server 8765
 - `assets/` :
   - `parachute-3d.glb` : modèle du parachute (voile et sac-harnais), compressé avec glTF-Transform
     (textures WebP, géométrie Meshopt) : 2,1 Mo au lieu de 10,9 Mo, rendu identique ;
-  - `lib/meshopt_decoder.module.js` : décodeur nécessaire pour lire ce modèle (meshoptimizer, licence MIT) ;
+  - `lib/` : copies locales de React 18.3.1, Three.js 0.160.0 (et son chargeur glTF) et du décodeur
+    Meshopt, avec leurs licences MIT ;
+  - `fonts/` : polices auto-hébergées (sous-ensembles latin et latin-ext), licences OFL dans
+    `fonts/licences/` ;
+  - `terrain/` : tuiles d'altitude figées (accueil, carte du saut, région d'Annecy) ;
   - `kreaddis-osm.json`, `iut-osm.json` : extraits OpenStreetMap des plans de quartier ;
   - photos, CV en PDF.
+- `tools/fetch_terrain_tiles.py` : retélécharge les tuiles d'altitude si les lieux changent dans
+  `pf3d-v4.js` (constante `SITES`).
 
-## Services externes utilisés
+## Aucune dépendance à un service externe
 
-Le site charge au démarrage :
+Tout ce dont la page a besoin est dans le dépôt : React, Three.js, polices et relief. Aucun visiteur n'est
+envoyé vers un serveur tiers (CDN, Google Fonts, AWS), sauf Formspree au moment d'envoyer le formulaire.
 
-- React, ReactDOM et Babel depuis unpkg.com (moteur de la page) ;
-- Three.js et son chargeur glTF depuis unpkg.com (3D) ;
-- les tuiles d'altitude Terrarium sur AWS (relief) ;
-- les polices Google Fonts ;
-- Formspree pour le formulaire de contact.
+- React est servi en local grâce au mécanisme prévu par le moteur Claude Design : `window.__resources`
+  dans `index.html` redirige les adresses unpkg vers `assets/lib/react/`. `support.js` n'est pas modifié.
+- Three.js est déclaré dans l'import map de `index.html`.
+- Babel n'est pas inclus : le moteur ne le charge que pour des composants JSX, que ce site n'utilise pas.
 
-Si unpkg.com est indisponible, la page ne s'affiche pas.
+## Crédits des données
+
+- **Relief** : Mapzen Terrain Tiles (AWS Open Data). Sources concernées pour la Savoie et la
+  Haute-Savoie : EU-DEM, produit avec des données Copernicus financées par l'Union européenne ; SRTM et
+  GMTED2010, avec l'aimable autorisation de l'U.S. Geological Survey ; ETOPO1, NOAA. Liste complète des
+  sources : https://github.com/tilezen/joerd/blob/master/docs/attribution.md
+- **Plans de quartier** : © contributeurs OpenStreetMap (ODbL).
+- Ces mentions sont affichées en pied de page et dans les panneaux des plans.
 
 ## Formulaire de contact (Formspree)
 
