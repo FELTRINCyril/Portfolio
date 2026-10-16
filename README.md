@@ -9,9 +9,12 @@ Le site doit être servi par un petit serveur : en double-cliquant sur `index.ht
 chargent pas.
 
 ```bash
-python3 -m http.server 8765
-# puis ouvrir http://localhost:8765
+python3 -m http.server 8780
+# puis ouvrir http://localhost:8780
 ```
+
+Le port 8780 est volontaire : le 8765 est celui de l'app Bobine (PWA), dont le service worker reste
+enregistré par le navigateur pour `localhost:8765` et y afficherait Bobine à la place du portfolio.
 
 ## Structure
 
