@@ -1,167 +1,1032 @@
-<!doctype html>
-<html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Portfolio de Cyril Feltrin - Business Analyst / Developpeur Odoo, en alternance chez Kreaddis (Annecy)."
-    />
-    <title>Cyril Feltrin - Business Analyst / Developpeur Odoo</title>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }</script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Cyril Feltrin — Business Analyst (v4)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Big+Shoulders+Display:wght@700;800&amp;family=Instrument+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600&amp;family=DM+Mono:wght@400;500&amp;display=swap">
+<style>
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+::view-transition-group(root){animation-duration:.9s}
+@keyframes pfPal{from{opacity:0;transform:translateY(-6px) scale(.96)}to{opacity:1;transform:none}}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg,#f6f4f0);color:var(--fg,#222);font-family:var(--fb,system-ui);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--accent)}
+::selection{background:var(--accent);color:var(--on-accent)}
+*{box-sizing:border-box}
+</style>
+</helmet>
 
-    <script>
-      (function () {
-        try {
-          var t = localStorage.getItem("theme");
-          document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark");
-          var p = localStorage.getItem("palette");
-          document.documentElement.setAttribute("data-palette", p === "violet" ? "violet" : "kreaddis");
-        } catch (e) {
-          document.documentElement.setAttribute("data-theme", "dark");
-          document.documentElement.setAttribute("data-palette", "kreaddis");
+<div style="position:fixed;inset:0;z-index:0;pointer-events:none">
+  <x-import component-from-global-scope="pf-terrain" from="./pf3d-v4.js" mode="B" source="{{ terrainSrc }}" view="{{ heroView }}" hint-size="100%,100%" style="width:100%;height:100%"></x-import>
+</div>
+<sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+  <div style="position:fixed;right:28px;bottom:40px;z-index:30;display:flex;flex-direction:column;align-items:flex-end;gap:14px;font-family:var(--fm);font-size:12px;letter-spacing:.08em;color:var(--fg);pointer-events:none">
+    <span style="color:var(--muted)">{{ t.alt }}</span>
+    <span style="font-size:20px;font-variant-numeric:tabular-nums">{{ altLabel }}</span>
+    <span style="color:var(--accent)">{{ phaseLabel }}</span>
+    <div style="position:relative;width:1px;height:220px;background:var(--line);margin-right:6px">
+      <div style="position:absolute;right:-6px;width:13px;height:1px;background:var(--accent);top:{{ altPct }}"></div>
+    </div>
+    <span style="color:var(--muted)">0 m</span>
+  </div>
+</sc-if>
+
+<header style="position:fixed;top:0;left:0;right:0;z-index:40;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 clamp(20px,4vw,48px);background:color-mix(in oklch, var(--bg) 82%, transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)">
+  <div style="position:relative;display:flex;align-items:center;gap:4px">
+    <button onClick="{{ togglePal }}" aria-label="{{ t.palLabel }}" title="{{ t.palLabel }}" style="all:unset;cursor:pointer;width:28px;height:28px;margin-left:-9px;display:grid;place-items:center;border-radius:50%" style-hover="background:color-mix(in oklch, var(--accent) 14%, transparent)">
+      <span style="width:9px;height:9px;background:var(--accent);border-radius:50%;box-shadow:0 0 0 {{ palRing }} color-mix(in oklch, var(--accent) 30%, transparent);transition:box-shadow .25s"></span>
+    </button>
+    <a href="#top" style="font-family:var(--fm);font-size:14px;letter-spacing:.04em">Cyril Feltrin</a>
+    <sc-if value="{{ palOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closePal }}" style="position:fixed;inset:0;z-index:-1"></div>
+      <div style="position:absolute;top:calc(100% + 14px);left:-14px;display:flex;flex-direction:column;gap:12px;padding:14px 16px 16px;background:var(--bg);border:1px solid var(--line);border-radius:4px;box-shadow:0 18px 40px -18px oklch(0 0 0 / .35);transform-origin:12px 0;animation:pfPal .28s cubic-bezier(.2,.8,.2,1)">
+        <span style="font-family:var(--fm);font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase">{{ t.palTitle }}</span>
+        <div style="display:flex;gap:8px">
+          <sc-for list="{{ palette }}" as="c" hint-placeholder-count="7">
+            <button onClick="{{ c.pick }}" aria-label="{{ c.label }}" title="{{ c.label }}" style="all:unset;cursor:pointer;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 {{ c.ring }} var(--fg)" style-hover="transform:scale(1.12)">
+              <span style="width:18px;height:18px;border-radius:50%;background:{{ c.color }}"></span>
+            </button>
+          </sc-for>
+        </div>
+        <span style="font-size:13px;color:var(--fg)">{{ palCurrent }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+    <nav style="display:flex;gap:28px;font-size:14px">
+      <a href="#profil">{{ t.nav.profil }}</a>
+      <a href="#parcours">{{ t.nav.parcours }}</a>
+      <a href="#projets">{{ t.nav.projets }}</a>
+      <a href="#competences">{{ t.nav.competences }}</a>
+      <a href="#passions">{{ t.nav.passions }}</a>
+      <a href="#contact">{{ t.nav.contact }}</a>
+    </nav>
+  </sc-if>
+  <div style="display:flex;align-items:center;gap:6px">
+    <div style="display:flex;font-family:var(--fm);font-size:13px;border:1px solid var(--line);border-radius:999px;overflow:hidden">
+      <button onClick="{{ setFR }}" style="all:unset;cursor:pointer;padding:7px 11px;opacity:{{ frOp }}">FR</button>
+      <button onClick="{{ setEN }}" style="all:unset;cursor:pointer;padding:7px 11px;opacity:{{ enOp }}">EN</button>
+    </div>
+    <button onClick="{{ toggleTheme }}" aria-label="{{ t.themeLabel }}" title="{{ t.themeLabel }}" style="all:unset;cursor:pointer;width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%">
+      <span style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--fg);background:linear-gradient(90deg, var(--fg) 50%, transparent 50%)"></span>
+    </button>
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ openMenu }}" style="all:unset;cursor:pointer;font-size:14px;padding:8px 4px 8px 10px">{{ t.nav.menu }}</button>
+    </sc-if>
+  </div>
+</header>
+
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;flex-direction:column;padding:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;height:44px;font-family:var(--fm);font-size:14px">
+      <span>Cyril Feltrin</span>
+      <button onClick="{{ closeMenu }}" style="all:unset;cursor:pointer;padding:8px 0 8px 12px">{{ t.nav.close }}</button>
+    </div>
+    <nav style="display:flex;flex-direction:column;gap:6px;margin-top:48px;font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:44px;line-height:1.15">
+      <a href="#profil" onClick="{{ closeMenu }}">{{ t.nav.profil }}</a>
+      <a href="#parcours" onClick="{{ closeMenu }}">{{ t.nav.parcours }}</a>
+      <a href="#projets" onClick="{{ closeMenu }}">{{ t.nav.projets }}</a>
+      <a href="#competences" onClick="{{ closeMenu }}">{{ t.nav.competences }}</a>
+      <a href="#passions" onClick="{{ closeMenu }}">{{ t.nav.passions }}</a>
+      <a href="#contact" onClick="{{ closeMenu }}">{{ t.nav.contact }}</a>
+    </nav>
+  </div>
+</sc-if>
+
+<main id="top" style="position:relative;z-index:1">
+  <section data-screen-label="Accueil" style="min-height:100vh;padding:96px clamp(20px,9vw,130px) clamp(40px,6vw,72px) clamp(20px,5vw,72px);display:flex;flex-direction:column;justify-content:space-between;gap:40px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">
+      <span>{{ t.hero.kicker }}</span>
+      <div style="display:flex;align-items:center;flex-wrap:wrap;justify-content:flex-end;gap:10px">
+        <span>{{ terrainCaption }}</span>
+
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <h1 style="margin:0;font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(72px,14vw,232px);line-height:.84">Cyril<br>Feltrin</h1>
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:28px">
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:520px">
+          <span style="font-size:clamp(20px,2vw,26px);font-weight:500">{{ t.hero.role }} <span style="color:var(--muted);font-weight:400">{{ t.hero.at }}</span></span>
+          <p style="margin:0;font-size:17px;line-height:1.6;text-wrap:pretty">{{ t.hero.intro }}</p>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <div style="display:flex;border:1px solid var(--fg);border-radius:2px;overflow:hidden">
+            <a href="assets/CV_Cyril_Feltrin.pdf" target="_blank" rel="noopener" style="padding:13px 20px;background:var(--fg);color:var(--bg);font-size:15px;font-weight:500" style-hover="background:var(--accent);color:var(--on-accent)">{{ t.hero.cvView }}</a>
+            <a href="assets/CV_Cyril_Feltrin.pdf" download="CV_Cyril_Feltrin.pdf" title="{{ t.hero.cvDl }}" style="padding:13px 16px;font-size:15px;background:color-mix(in oklch, var(--bg) 70%, transparent)" style-hover="background:var(--accent);color:var(--on-accent)">↓ {{ t.hero.cvDl }}</a>
+          </div>
+          <a href="https://www.linkedin.com/in/cyril-feltrin/" target="_blank" rel="noopener" style="padding:13px 18px;border:1px solid var(--fg);border-radius:2px;font-size:15px;background:color-mix(in oklch, var(--bg) 70%, transparent)" style-hover="border-color:var(--accent);color:var(--accent)">LinkedIn ↗</a>
+          <a href="https://github.com/kreaddis-cyril" target="_blank" rel="noopener" style="padding:13px 18px;border:1px solid var(--fg);border-radius:2px;font-size:15px;background:color-mix(in oklch, var(--bg) 70%, transparent)" style-hover="border-color:var(--accent);color:var(--accent)">GitHub ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="profil" data-screen-label="Profil" style="padding:clamp(72px,10vw,140px) clamp(20px,5vw,72px);background:color-mix(in oklch, var(--bg) 90%, transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line)">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="display:flex;align-items:baseline;gap:20px;margin-bottom:clamp(40px,6vw,72px);padding-bottom:20px;border-bottom:1px solid var(--line)">
+        <span style="font-family:var(--fm);font-size:13px;color:var(--accent)">01</span>
+        <h2 style="margin:0;font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(40px,6vw,84px);line-height:.95">{{ t.profil.title }}</h2>
+      </div>
+
+      <sc-if value="{{ profA }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(36px,6vw,96px);align-items:start">
+          <figure style="margin:0;display:flex;flex-direction:column;gap:12px;max-width:440px">
+            <div style="aspect-ratio:4/5;background:oklch(0.97 0.004 85);overflow:hidden;border:1px solid var(--line)">
+              <img src="assets/profil.webp" alt="Cyril Feltrin" style="width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block">
+            </div>
+            <figcaption style="display:flex;justify-content:space-between;gap:12px;font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">
+              <span>Cyril Feltrin</span><span>Chavanod · 74</span>
+            </figcaption>
+          </figure>
+          <div style="display:flex;flex-direction:column;gap:clamp(32px,4vw,48px);padding-top:clamp(0px,2vw,24px)">
+            <div style="display:flex;flex-direction:column;gap:20px">
+              <p style="margin:0;font-size:clamp(28px,3vw,42px);line-height:1.15;font-weight:500;letter-spacing:-.01em;max-width:20ch;text-wrap:balance">{{ t.profil.lead }}</p>
+              <p style="margin:0;font-size:18px;line-height:1.65;color:var(--muted);max-width:54ch;text-wrap:pretty">{{ t.profil.body }}</p>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line)">
+              <sc-for list="{{ facts }}" as="f" hint-placeholder-count="4">
+                <div style="display:flex;flex-direction:column;gap:6px;padding:18px 16px 18px 0;border-bottom:1px solid var(--line)">
+                  <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ f.k }}</span>
+                  <span style="font-size:18px">{{ f.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:24px;font-size:15px">
+              <a href="assets/CV_Cyril_Feltrin.pdf" target="_blank" rel="noopener" style="border-bottom:1px solid var(--accent);padding-bottom:2px">{{ t.hero.cvView }} ↗</a>
+              <a href="https://www.linkedin.com/in/cyril-feltrin/" target="_blank" rel="noopener" style="border-bottom:1px solid var(--line);padding-bottom:2px">LinkedIn ↗</a>
+              <a href="#contact" style="border-bottom:1px solid var(--line);padding-bottom:2px">{{ t.nav.contact }} →</a>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </section>
+
+  <section id="parcours" data-screen-label="Parcours" style="padding:clamp(72px,10vw,140px) clamp(20px,5vw,72px);background:color-mix(in oklch, var(--bg) 90%, transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line)">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:clamp(40px,6vw,72px);padding-bottom:20px;border-bottom:1px solid var(--line)">
+        <div style="display:flex;align-items:baseline;gap:20px">
+          <span style="font-family:var(--fm);font-size:13px;color:var(--accent)">02</span>
+          <h2 style="margin:0;font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(40px,6vw,84px);line-height:.95">{{ t.parcours.title }}</h2>
+        </div>
+        <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ t.detail.hint }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:clamp(32px,5vw,72px);margin-bottom:clamp(64px,8vw,112px)">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">2025 — {{ t.parcours.today }}</span>
+          <h3 style="margin:0;font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(44px,5vw,72px);line-height:1">Kreaddis</h3>
+          <span style="color:var(--muted)">{{ t.parcours.kreaddisNote }}</span>
+          <button onClick="{{ openKre }}" style="all:unset;cursor:pointer;align-self:flex-start;display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:2px;font-size:14px" style-hover="border-color:var(--accent);color:var(--accent)"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent)"></span>{{ t.parcours.map }} →</button>
+          <p style="margin:8px 0 0;max-width:38ch;line-height:1.6;text-wrap:pretty">{{ t.parcours.kreaddisLead }}</p>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ kreaddis }}" as="s" hint-placeholder-count="4">
+            <div role="button" tabIndex="0" onClick="{{ s.open }}" style="display:grid;grid-template-columns:minmax(0,140px) 20px minmax(0,1fr) auto;gap:12px;padding:22px 8px 22px 0;border-top:1px solid var(--line);align-items:start;cursor:pointer;transition:background .15s" style-hover="background:color-mix(in oklch, var(--accent) 7%, transparent)">
+              <span style="font-family:var(--fm);font-size:13px;color:var(--muted);padding-top:4px">{{ s.date }}</span>
+              <span style="width:9px;height:9px;margin-top:8px;border-radius:50%;border:1.5px solid var(--accent);background:{{ s.dot }}"></span>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <div style="display:flex;align-items:center;flex-wrap:wrap;gap:10px">
+                  <span style="font-size:21px;font-weight:500">{{ s.role }}</span>
+                  <sc-if value="{{ s.current }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-family:var(--fm);font-size:11px;letter-spacing:.06em;padding:3px 8px;background:var(--accent);color:var(--on-accent);border-radius:2px">{{ t.parcours.now }}</span>
+                  </sc-if>
+                </div>
+                <span style="color:var(--muted)">{{ s.type }}</span>
+              </div>
+              <span style="font-family:var(--fm);font-size:18px;color:var(--accent);padding-top:2px">+</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:clamp(40px,5vw,72px)">
+        <div style="display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding-bottom:14px">
+            <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ t.parcours.edu }}</span>
+            <button onClick="{{ openIut }}" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--line);border-radius:2px;font-size:13px" style-hover="border-color:var(--accent);color:var(--accent)"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent)"></span>{{ t.parcours.mapIut }} →</button>
+          </div>
+          <sc-for list="{{ edu }}" as="e" hint-placeholder-count="2">
+            <div role="button" tabIndex="0" onClick="{{ e.open }}" style="display:grid;grid-template-columns:minmax(0,110px) minmax(0,1fr) auto;gap:16px;padding:18px 8px 18px 0;border-top:1px solid var(--line);cursor:pointer" style-hover="background:color-mix(in oklch, var(--accent) 7%, transparent)">
+              <span style="font-family:var(--fm);font-size:13px;color:var(--muted);padding-top:3px">{{ e.date }}</span>
+              <div style="display:flex;flex-direction:column;gap:3px">
+                <span style="font-size:19px;font-weight:500">{{ e.title }}</span>
+                <span style="color:var(--muted)">{{ e.place }}</span>
+              </div>
+              <span style="font-family:var(--fm);font-size:18px;color:var(--accent)">+</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted);padding-bottom:14px">{{ t.parcours.summer }}</span>
+          <sc-for list="{{ summer }}" as="j" hint-placeholder-count="4">
+            <div role="button" tabIndex="0" onClick="{{ j.open }}" style="display:grid;grid-template-columns:minmax(0,110px) minmax(0,1fr) auto;gap:16px;padding:18px 8px 18px 0;border-top:1px solid var(--line);cursor:pointer" style-hover="background:color-mix(in oklch, var(--accent) 7%, transparent)">
+              <span style="font-family:var(--fm);font-size:13px;color:var(--muted);padding-top:3px">{{ j.date }}</span>
+              <div style="display:flex;flex-direction:column;gap:3px">
+                <span style="font-size:19px;font-weight:500">{{ j.role }}</span>
+                <span style="color:var(--muted)">{{ j.place }}</span>
+              </div>
+              <span style="font-family:var(--fm);font-size:18px;color:var(--accent)">+</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projets" data-screen-label="Projets" style="padding:clamp(72px,10vw,140px) clamp(20px,5vw,72px);background:color-mix(in oklch, var(--bg) 90%, transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line)">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="display:flex;align-items:baseline;gap:20px;margin-bottom:clamp(24px,4vw,40px);padding-bottom:20px;border-bottom:1px solid var(--line)">
+        <span style="font-family:var(--fm);font-size:13px;color:var(--accent)">03</span>
+        <h2 style="margin:0;font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(40px,6vw,84px);line-height:.95">{{ t.projets.title }}</h2>
+      </div>
+      <sc-for list="{{ projects }}" as="p" hint-placeholder-count="3">
+        <article style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(20px,4vw,56px);padding:clamp(32px,4vw,48px) 0;border-bottom:1px solid var(--line)">
+          <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+            <div style="display:flex;gap:16px;font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">
+              <span style="color:var(--accent)">{{ p.n }}</span><span>{{ p.year }}</span><span>{{ p.context }}</span>
+            </div>
+            <h3 style="margin:0;font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(30px,3.4vw,46px);line-height:1.02">{{ p.title }}</h3>
+            <span style="color:var(--muted)">{{ p.team }}</span>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+              <button onClick="{{ p.open }}" style="all:unset;cursor:pointer;padding:10px 16px;border:1px solid var(--fg);border-radius:2px;font-size:14px" style-hover="background:var(--accent);border-color:var(--accent);color:var(--on-accent)">{{ t.detail.more }} →</button>
+              <sc-if value="{{ p.link }}" hint-placeholder-val="{{ false }}">
+                <a href="{{ p.link }}" target="_blank" rel="noopener" style="padding:10px 16px;border:1px solid var(--line);border-radius:2px;font-size:14px">GitHub ↗</a>
+              </sc-if>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ p.points }}" as="pt" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;padding:10px 0;border-top:1px solid var(--line);line-height:1.5">
+                  <span style="color:var(--accent);font-family:var(--fm);font-size:13px;padding-top:2px">—</span>
+                  <span>{{ pt }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <sc-for list="{{ p.tags }}" as="tg" hint-placeholder-count="4">
+                <span style="font-family:var(--fm);font-size:12px;padding:5px 10px;border:1px solid var(--line);border-radius:999px">{{ tg }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="competences" data-screen-label="Compétences" style="padding:clamp(72px,10vw,140px) clamp(20px,5vw,72px);background:color-mix(in oklch, var(--bg) 90%, transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line)">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="display:flex;align-items:baseline;gap:20px;margin-bottom:clamp(40px,6vw,72px);padding-bottom:20px;border-bottom:1px solid var(--line)">
+        <span style="font-family:var(--fm);font-size:13px;color:var(--accent)">04</span>
+        <h2 style="margin:0;font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(40px,6vw,84px);line-height:.95">{{ t.competences.title }}</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:clamp(28px,3vw,40px) clamp(20px,3vw,40px)">
+        <sc-for list="{{ skills }}" as="g" hint-placeholder-count="6">
+          <div style="display:flex;flex-direction:column;border-top:1.5px solid var(--fg)">
+            <div style="display:flex;justify-content:space-between;padding:14px 0 18px">
+              <span style="font-size:19px;font-weight:500">{{ g.name }}</span>
+              <span style="font-family:var(--fm);font-size:12px;color:var(--muted)">{{ g.n }}</span>
+            </div>
+            <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+              <span style="padding:9px 0;border-top:1px solid var(--line)">{{ it }}</span>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="passions" data-screen-label="Passions" style="padding:clamp(72px,10vw,140px) clamp(20px,5vw,72px);background:color-mix(in oklch, var(--bg) 90%, transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line)">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:clamp(40px,6vw,72px);padding-bottom:20px;border-bottom:1px solid var(--line)">
+        <div style="display:flex;align-items:baseline;gap:20px">
+          <span style="font-family:var(--fm);font-size:13px;color:var(--accent)">05</span>
+          <h2 style="margin:0;font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(40px,6vw,84px);line-height:.95">{{ t.passions.title }}</h2>
+        </div>
+        <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ t.passions.hint }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(28px,3vw,40px)">
+        <figure style="margin:0;display:flex;flex-direction:column;gap:18px">
+          <div style="position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--line)">
+            <img src="assets/parachute.png" alt="{{ t.passions.skyAlt }}" style="width:100%;height:100%;object-fit:cover;display:block">
+            <span style="position:absolute;left:12px;top:12px;font-family:var(--fm);font-size:11px;letter-spacing:.04em;padding:5px 8px;background:color-mix(in oklch, var(--bg) 86%, transparent);color:var(--fg);border-radius:2px">{{ t.passions.ai }}</span>
+            <button onClick="{{ cmpSky }}" style="all:unset;cursor:pointer;position:absolute;right:12px;bottom:12px;font-size:13px;padding:8px 12px;background:color-mix(in oklch, var(--bg) 86%, transparent);color:var(--fg);border-radius:2px" style-hover="background:var(--accent);color:var(--on-accent)">{{ t.passions.compare }}</button>
+          </div>
+          <figcaption style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+              <span style="font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(28px,3vw,40px)">{{ t.passions.sky }}</span>
+              <span style="font-family:var(--fm);font-size:12px;color:var(--muted)">01</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)">
+              <div style="display:flex;flex-direction:column;gap:4px;padding:14px 10px 14px 0">
+                <span style="font-family:var(--fd);font-size:34px;line-height:1;font-weight:var(--dw)">25</span>
+                <span style="font-size:14px;color:var(--muted)">{{ t.passions.jumps }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;padding:14px 10px;border-left:1px solid var(--line)">
+                <span style="font-family:var(--fd);font-size:34px;line-height:1;font-weight:var(--dw)">PAC</span>
+                <span style="font-size:14px;color:var(--muted)">{{ t.passions.pac }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;padding:14px 0 14px 10px;border-left:1px solid var(--line)">
+                <span style="font-family:var(--fd);font-size:34px;line-height:1;font-weight:var(--dw)">A · B</span>
+                <span style="font-size:14px;color:var(--muted)">{{ t.passions.brevets }}</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding-top:12px;border-top:1px solid var(--line);font-size:15px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-family:var(--fm);font-size:11px;letter-spacing:.06em;padding:3px 8px;border:1px solid var(--accent);color:var(--accent);border-radius:2px">{{ t.passions.next }}</span>
+                <span>{{ t.passions.b2 }}</span>
+              </div>
+              <button onClick="{{ openSky }}" style="all:unset;cursor:pointer;padding:10px 16px;background:var(--fg);color:var(--bg);font-size:14px;border-radius:2px" style-hover="background:var(--accent);color:var(--on-accent)">{{ t.passions.explore }} →</button>
+            </div>
+          </figcaption>
+        </figure>
+        <figure style="margin:0;display:flex;flex-direction:column;gap:18px">
+          <div style="position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--line)">
+            <img src="assets/moto.png" alt="{{ t.passions.motoAlt }}" style="width:100%;height:100%;object-fit:cover;display:block">
+            <span style="position:absolute;left:12px;top:12px;font-family:var(--fm);font-size:11px;letter-spacing:.04em;padding:5px 8px;background:color-mix(in oklch, var(--bg) 86%, transparent);color:var(--fg);border-radius:2px">{{ t.passions.ai }}</span>
+            <button onClick="{{ cmpMoto }}" style="all:unset;cursor:pointer;position:absolute;right:12px;bottom:12px;font-size:13px;padding:8px 12px;background:color-mix(in oklch, var(--bg) 86%, transparent);color:var(--fg);border-radius:2px" style-hover="background:var(--accent);color:var(--on-accent)">{{ t.passions.compare }}</button>
+          </div>
+          <figcaption style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+              <span style="font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(28px,3vw,40px)">{{ t.passions.moto }}</span>
+              <span style="font-family:var(--fm);font-size:12px;color:var(--muted)">02</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding-top:12px;border-top:1px solid var(--line)">
+              <span>Suzuki GSX-8S</span>
+              <button onClick="{{ openMoto }}" style="all:unset;cursor:pointer;padding:10px 16px;background:var(--fg);color:var(--bg);font-size:14px;border-radius:2px" style-hover="background:var(--accent);color:var(--on-accent)">{{ t.passions.explore }} →</button>
+            </div>
+          </figcaption>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+            <button onClick="{{ openSnow }}" style="all:unset;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:18px;border:1px solid var(--line);min-height:150px" style-hover="border-color:var(--accent)">
+              <span style="display:flex;justify-content:space-between;font-family:var(--fm);font-size:12px;color:var(--muted)"><span>03</span><span style="color:var(--accent)">3D →</span></span>
+              <span style="font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(24px,2.4vw,32px)">Snowboard</span>
+            </button>
+            <button onClick="{{ openGym }}" style="all:unset;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:18px;border:1px solid var(--line);min-height:150px" style-hover="border-color:var(--accent)">
+              <span style="display:flex;justify-content:space-between;font-family:var(--fm);font-size:12px;color:var(--muted)"><span>04</span><span style="color:var(--accent)">3D →</span></span>
+              <span style="font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(24px,2.4vw,32px)">{{ t.passions.gym }}</span>
+            </button>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" data-screen-label="Contact" style="padding:clamp(72px,10vw,140px) clamp(20px,5vw,72px);background:color-mix(in oklch, var(--bg) 90%, transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line)">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="display:flex;align-items:baseline;gap:20px;margin-bottom:clamp(40px,6vw,72px);padding-bottom:20px;border-bottom:1px solid var(--line)">
+        <span style="font-family:var(--fm);font-size:13px;color:var(--accent)">06</span>
+        <h2 style="margin:0;font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(40px,6vw,84px);line-height:.95">{{ t.contact.title }}</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:clamp(40px,6vw,96px)">
+        <div style="display:flex;flex-direction:column;gap:32px">
+          <p style="margin:0;font-size:clamp(22px,2.4vw,30px);line-height:1.35;text-wrap:pretty">{{ t.contact.lead }}</p>
+          <div style="display:flex;flex-direction:column">
+            <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted);padding-bottom:12px">{{ t.contact.direct }}</span>
+            <a href="mailto:cyril@kreaddis.com" style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line);font-size:18px"><span>cyril@kreaddis.com</span><span>→</span></a>
+            <a href="https://www.linkedin.com/in/cyril-feltrin/" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line);font-size:18px"><span>LinkedIn</span><span>↗</span></a>
+            <a href="https://github.com/kreaddis-cyril" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line);font-size:18px"><span>GitHub</span><span>↗</span></a>
+            <a href="assets/CV_Cyril_Feltrin.pdf" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:18px"><span>{{ t.hero.cvView }}</span><span>↗</span></a>
+          </div>
+        </div>
+        <form onSubmit="{{ onSubmit }}" style="display:flex;flex-direction:column;gap:26px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:26px">
+            <label style="display:flex;flex-direction:column;gap:6px">
+              <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ t.contact.first }} *</span>
+              <input name="prenom" required="" autocomplete="given-name" style="background:transparent;border:none;border-bottom:1px solid var(--line);padding:10px 0;font:inherit;font-size:18px;color:var(--fg);outline:none;border-radius:0" style-focus="border-bottom-color:var(--accent)">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:6px">
+              <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ t.contact.last }} *</span>
+              <input name="nom" required="" autocomplete="family-name" style="background:transparent;border:none;border-bottom:1px solid var(--line);padding:10px 0;font:inherit;font-size:18px;color:var(--fg);outline:none;border-radius:0" style-focus="border-bottom-color:var(--accent)">
+            </label>
+          </div>
+          <label style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ t.contact.email }} *</span>
+            <input type="email" name="email" required="" autocomplete="email" style="background:transparent;border:none;border-bottom:1px solid var(--line);padding:10px 0;font:inherit;font-size:18px;color:var(--fg);outline:none;border-radius:0" style-focus="border-bottom-color:var(--accent)">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ t.contact.subject }} *</span>
+            <input name="_subject" required="" style="background:transparent;border:none;border-bottom:1px solid var(--line);padding:10px 0;font:inherit;font-size:18px;color:var(--fg);outline:none;border-radius:0" style-focus="border-bottom-color:var(--accent)">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ t.contact.message }} *</span>
+            <textarea name="message" required="" rows="5" style="background:transparent;border:none;border-bottom:1px solid var(--line);padding:10px 0;font:inherit;font-size:18px;line-height:1.5;color:var(--fg);outline:none;resize:vertical;border-radius:0" style-focus="border-bottom-color:var(--accent)"></textarea>
+          </label>
+          <label style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px;border:1px dashed var(--line);cursor:pointer" style-hover="border-color:var(--accent)">
+            <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+              <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ t.contact.file }}</span>
+              <span style="font-size:16px;overflow-wrap:anywhere">{{ fileLabel }}</span>
+            </div>
+            <span style="font-size:14px;padding:8px 14px;border:1px solid var(--fg);border-radius:999px">{{ t.contact.choose }}</span>
+            <input type="file" name="piece_jointe" onChange="{{ onFile }}" style="display:none">
+          </label>
+          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:20px">
+            <button type="submit" disabled="{{ sending }}" style="all:unset;cursor:pointer;padding:16px 26px;background:var(--fg);color:var(--bg);font-size:16px;font-weight:500;border-radius:2px" style-hover="background:var(--accent);color:var(--on-accent)">{{ sendLabel }} →</button>
+            <sc-if value="{{ statusMsg }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:15px;color:{{ statusColor }};max-width:40ch">{{ statusMsg }}</span>
+            </sc-if>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer style="padding:28px clamp(20px,5vw,72px);background:color-mix(in oklch, var(--bg) 90%, transparent);border-top:1px solid var(--line)">
+    <div style="max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-family:var(--fm);font-size:12px;letter-spacing:.04em;color:var(--muted)">
+      <span>© 2026 Cyril Feltrin</span>
+      <span>Haute-Savoie, France</span>
+      <a href="#top">{{ t.footer.top }} ↑</a>
+    </div>
+  </footer>
+</main>
+
+<div onClick="{{ closeDetail }}" style="position:fixed;inset:0;z-index:70;background:oklch(0.15 0.01 80 / .45);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:{{ da.backOp }};pointer-events:{{ da.pe }};transition:opacity .5s ease"></div>
+<aside role="dialog" aria-modal="true" aria-hidden="{{ da.hidden }}" style="position:fixed;z-index:71;top:0;right:0;bottom:0;width:min(620px, 100vw);background:var(--bg);color:var(--fg);border-left:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;box-shadow:-30px 0 80px -30px oklch(0.1 0.01 80 / .45);transform:{{ da.x }};transition:transform .7s cubic-bezier(.16,1,.3,1)">
+  <div style="height:2px;background:var(--accent);transform-origin:0 50%;transform:{{ da.bar }};transition:transform .9s cubic-bezier(.16,1,.3,1) .15s"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px clamp(16px,3vw,28px);border-bottom:1px solid var(--line)">
+    <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ dd.kind }} · {{ dd.pos }}</span>
+    <button onClick="{{ closeDetail }}" aria-label="{{ t.detail.close }}" style="all:unset;cursor:pointer;width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;font-size:16px;transition:transform .3s" style-hover="border-color:var(--accent);color:var(--accent);transform:rotate(90deg)">×</button>
+  </div>
+  <div style="flex:1;min-height:0;overflow:auto">
+    <div style="padding:clamp(24px,4vw,44px) clamp(16px,3vw,28px);display:flex;flex-direction:column;gap:36px">
+      <div style="display:flex;flex-direction:column;gap:12px;opacity:{{ da.op }};transform:{{ da.y1 }};transition:opacity .5s ease .12s, transform .8s cubic-bezier(.16,1,.3,1) .12s">
+        <span style="font-family:var(--fm);font-size:13px;color:var(--accent)">{{ dd.date }}</span>
+        <h3 style="margin:0;font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(40px,5vw,64px);line-height:.95">{{ dd.title }}</h3>
+        <span style="font-size:18px;color:var(--muted)">{{ dd.sub }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));gap:10px;opacity:{{ da.op }};transform:{{ da.y2 }};transition:opacity .5s ease .2s, transform .8s cubic-bezier(.16,1,.3,1) .2s">
+        <sc-for list="{{ dd.photos }}" as="ph" hint-placeholder-count="3">
+          <div style="aspect-ratio:4/3;border:1px solid var(--line);background:repeating-linear-gradient(135deg, var(--line) 0 1px, transparent 1px 11px);display:flex;align-items:flex-end;padding:10px">
+            <span style="font-family:var(--fm);font-size:11px;color:var(--muted);background:var(--bg);padding:3px 6px">{{ ph }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;opacity:{{ da.op }};transform:{{ da.y3 }};transition:opacity .5s ease .28s, transform .8s cubic-bezier(.16,1,.3,1) .28s">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:13px;font-weight:500;letter-spacing:.02em">{{ t.detail.desc }}</span>
+          <span style="font-family:var(--fm);font-size:10px;letter-spacing:.06em;padding:2px 6px;border:1px solid var(--line);color:var(--muted);border-radius:2px">{{ t.detail.todo }}</span>
+        </div>
+        <p style="margin:0;font-size:17px;line-height:1.65;color:var(--muted);text-wrap:pretty">{{ t.detail.descPh }}</p>
+      </div>
+      <div style="display:flex;flex-direction:column;opacity:{{ da.op }};transform:{{ da.y4 }};transition:opacity .5s ease .36s, transform .8s cubic-bezier(.16,1,.3,1) .36s">
+        <span style="font-size:13px;font-weight:500;letter-spacing:.02em;padding-bottom:10px">{{ dd.listTitle }}</span>
+        <sc-for list="{{ dd.points }}" as="dp" hint-placeholder-count="3">
+          <div style="display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;padding:12px 0;border-top:1px solid var(--line);line-height:1.5">
+            <span style="color:var(--accent);font-family:var(--fm);font-size:13px;padding-top:2px">—</span>
+            <span style="color:{{ dd.pointColor }}">{{ dp }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:20px;opacity:{{ da.op }};transform:{{ da.y4 }};transition:opacity .5s ease .44s, transform .8s cubic-bezier(.16,1,.3,1) .44s">
+        <sc-if value="{{ dd.hasTags }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <sc-for list="{{ dd.tags }}" as="dt" hint-placeholder-count="4">
+              <span style="font-family:var(--fm);font-size:12px;padding:5px 10px;border:1px solid var(--line);border-radius:999px">{{ dt }}</span>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ dd.link }}" hint-placeholder-val="{{ false }}">
+          <a href="{{ dd.link }}" target="_blank" rel="noopener" style="align-self:flex-start;font-size:15px;border-bottom:1px solid var(--accent);padding-bottom:2px">{{ t.projets.repo }} ↗</a>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;gap:12px;padding:12px clamp(16px,3vw,28px);border-top:1px solid var(--line);font-size:14px">
+    <button onClick="{{ prevDetail }}" style="all:unset;cursor:pointer;padding:8px 0;transition:transform .25s" style-hover="color:var(--accent);transform:translateX(-3px)">← {{ t.detail.prev }}</button>
+    <button onClick="{{ nextDetail }}" style="all:unset;cursor:pointer;padding:8px 0;transition:transform .25s" style-hover="color:var(--accent);transform:translateX(3px)">{{ t.detail.next }} →</button>
+  </div>
+</aside>
+
+<sc-if value="{{ pOpen }}" hint-placeholder-val="{{ false }}">
+  <div role="dialog" aria-modal="true" style="position:fixed;inset:0;z-index:80;background:var(--bg);color:var(--fg);display:flex;flex-direction:column">
+    <div style="min-height:64px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:10px clamp(16px,3vw,32px);border-bottom:1px solid var(--line)">
+      <div style="display:flex;align-items:baseline;gap:14px;min-width:0">
+        <span style="font-family:var(--fm);font-size:12px;color:var(--accent)">{{ pv.n }}</span>
+        <span style="font-family:var(--fd);font-weight:var(--dw);text-transform:var(--dt);letter-spacing:var(--dls);font-size:clamp(26px,3vw,36px);line-height:1">{{ pv.title }}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="display:flex;border:1px solid var(--line);border-radius:2px;overflow:hidden;font-size:13px;opacity:{{ pv.tabsOp }}">
+          <sc-for list="{{ pv.tabs }}" as="tb" hint-placeholder-count="1">
+            <button onClick="{{ tb.select }}" style="all:unset;cursor:pointer;padding:8px 12px;background:{{ tb.bg }};color:{{ tb.fg }}">{{ tb.label }}</button>
+          </sc-for>
+        </div>
+        <button onClick="{{ closePassion }}" aria-label="{{ t.detail.close }}" style="all:unset;cursor:pointer;width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;font-size:17px" style-hover="border-color:var(--accent);color:var(--accent)">×</button>
+      </div>
+    </div>
+    <div style="flex:1;min-height:0;display:flex;flex-direction:{{ pl.dir }}">
+      <div style="position:relative;flex:{{ pl.canvasFlex }};min-width:0;min-height:0">
+        <x-import component-from-global-scope="pf-scene" from="./pf3d-v4.js" mode="{{ pv.mode }}" highlight="{{ pv.hl }}" lang="{{ langCode }}" hint-size="100%,100%" style="position:absolute;inset:0"></x-import>
+        <span style="position:absolute;left:16px;bottom:14px;font-family:var(--fm);font-size:11px;letter-spacing:.04em;color:var(--muted);pointer-events:none">{{ t.passions.drag }}</span>
+      </div>
+      <div style="width:{{ pl.sideW }};flex:{{ pl.sideFlex }};min-height:0;overflow:auto;border-left:{{ pl.bl }};border-top:{{ pl.bt }};padding:clamp(20px,3vw,32px);display:flex;flex-direction:column;gap:28px">
+        <p style="margin:0;font-size:17px;line-height:1.6;text-wrap:pretty">{{ pv.desc }}</p>
+        <sc-if value="{{ pv.hasStats }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line)">
+            <sc-for list="{{ pv.stats }}" as="st" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:4px;padding:14px 10px 14px 0;border-bottom:1px solid var(--line)">
+                <span style="font-family:var(--fd);font-weight:var(--dw);font-size:30px;line-height:1">{{ st.v }}</span>
+                <span style="font-size:14px;color:var(--muted)">{{ st.k }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column">
+          <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted);padding-bottom:10px">{{ pv.partsTitle }}</span>
+          <sc-for list="{{ pv.parts }}" as="pp" hint-placeholder-count="5">
+            <button onClick="{{ pp.select }}" style="all:unset;cursor:pointer;display:grid;grid-template-columns:12px minmax(0,1fr);gap:12px;padding:13px 0;border-top:1px solid var(--line)" style-hover="color:var(--accent)">
+              <span style="width:7px;height:7px;margin-top:7px;border-radius:50%;border:1.5px solid var(--accent);background:{{ pp.dot }}"></span>
+              <span style="display:flex;flex-direction:column;gap:2px">
+                <span style="font-size:16px;font-weight:500;color:{{ pp.color }}">{{ pp.label }}</span>
+                <span style="font-size:14px;color:var(--muted)">{{ pp.value }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ pv.note }}" hint-placeholder-val="{{ false }}">
+          <span style="font-family:var(--fm);font-size:11px;letter-spacing:.04em;color:var(--muted)">{{ pv.note }}</span>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ cOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeCompare }}" style="position:fixed;inset:0;z-index:90;background:oklch(0.15 0.01 80 / .55)"></div>
+  <div role="dialog" aria-modal="true" style="position:fixed;z-index:91;top:50%;left:50%;transform:translate(-50%,-50%);width:min(520px, calc(100vw - 24px), 62vh);display:flex;flex-direction:column;gap:12px;background:var(--bg);color:var(--fg);border:1px solid var(--line);padding:14px;border-radius:4px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+      <span style="font-size:15px;font-weight:500">{{ t.passions.cmpTitle }}</span>
+      <button onClick="{{ closeCompare }}" aria-label="{{ t.detail.close }}" style="all:unset;cursor:pointer;width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;font-size:16px">×</button>
+    </div>
+    <div style="position:relative;aspect-ratio:{{ cv.aspect }};overflow:hidden;background:var(--line);user-select:none;touch-action:none">
+      <div style="position:absolute;top:0;left:{{ cv.sl }};width:{{ cv.sw }};aspect-ratio:1122/1402">
+        <img src="{{ cv.ai }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+      </div>
+      <div style="position:absolute;inset:0;clip-path:inset(0 {{ cmpRight }} 0 0)">
+        <div style="position:absolute;top:0;left:{{ cv.sl }};width:{{ cv.sw }};aspect-ratio:1122/1402;overflow:hidden">
+          <img src="{{ cv.orig }}" alt="" style="position:absolute;left:0;top:0;width:{{ cv.ow }};height:auto;max-width:none;display:block;transform-origin:0 0;transform:{{ cv.tf }}">
+        </div>
+      </div>
+      <div style="position:absolute;top:0;bottom:0;left:{{ cmpPct }};width:2px;margin-left:-1px;background:var(--bg);pointer-events:none">
+        <span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:var(--bg);color:var(--fg);display:grid;place-items:center;font-size:13px;font-family:var(--fm)">↔</span>
+      </div>
+      <span style="position:absolute;left:10px;top:10px;font-family:var(--fm);font-size:11px;padding:4px 7px;background:color-mix(in oklch, var(--bg) 86%, transparent);color:var(--fg);pointer-events:none">{{ t.passions.original }}</span>
+      <span style="position:absolute;right:10px;top:10px;font-family:var(--fm);font-size:11px;padding:4px 7px;background:color-mix(in oklch, var(--bg) 86%, transparent);color:var(--fg);pointer-events:none">{{ t.passions.edited }}</span>
+      <input type="range" min="0" max="100" step="0.5" value="{{ cmp }}" onChange="{{ onCmp }}" aria-label="{{ t.passions.cmpTitle }}" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0">
+    </div>
+    <span style="font-family:var(--fm);font-size:11px;letter-spacing:.04em;color:var(--muted)">{{ t.passions.cmpNote }}</span>
+  </div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Rouge&quot;,&quot;Orange&quot;,&quot;Jaune&quot;,&quot;Vert&quot;,&quot;Bleu&quot;,&quot;Violet&quot;,&quot;Rose&quot;],&quot;default&quot;:&quot;Violet&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Style&quot;},&quot;font&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Éditorial&quot;,&quot;Grotesk&quot;,&quot;Technique&quot;,&quot;Condensé&quot;,&quot;Humaniste&quot;],&quot;default&quot;:&quot;Condensé&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Style&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Style&quot;},&quot;heroView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Original&quot;,&quot;Miroir&quot;,&quot;Vue de dessus&quot;,&quot;Suivi&quot;],&quot;default&quot;:&quot;Miroir&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Accueil&quot;},&quot;themeFx&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Onde topo&quot;,&quot;Cercle&quot;,&quot;Éclipse&quot;,&quot;Altimètre&quot;,&quot;Fondu&quot;,&quot;Aucune&quot;],&quot;default&quot;:&quot;Onde topo&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Transitions&quot;},&quot;langFx&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Morphing&quot;,&quot;Cascade&quot;,&quot;Mise au point&quot;,&quot;Balayage&quot;,&quot;Store&quot;,&quot;Accent&quot;,&quot;Décodage&quot;,&quot;Frappe&quot;,&quot;Tambour&quot;,&quot;Dissolution&quot;,&quot;Vague&quot;,&quot;Brouillage&quot;],&quot;default&quot;:&quot;Morphing&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Transitions&quot;},&quot;formspree&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://formspree.io/f/VOTRE_ID&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contact&quot;}}">
+const ACCENTS = { Rouge: [27, .20], Orange: [45, .18], Jaune: [92, .16], Vert: [152, .15], Bleu: [258, .19], Violet: [300, .19], Rose: [355, .19] };
+const FONTS = {
+  'Éditorial': { d: "'Newsreader', Georgia, serif", b: "'Geist', system-ui, sans-serif", m: "'Geist Mono', ui-monospace, monospace", w: 400, tt: 'none', ls: '-0.02em' },
+  'Grotesk': { d: "'Archivo', sans-serif", b: "'Archivo', sans-serif", m: "'JetBrains Mono', monospace", w: 600, tt: 'none', ls: '-0.035em' },
+  'Technique': { d: "'IBM Plex Sans', sans-serif", b: "'IBM Plex Sans', sans-serif", m: "'IBM Plex Mono', monospace", w: 500, tt: 'none', ls: '-0.03em' },
+  'Condensé': { d: "'Big Shoulders Display', sans-serif", b: "'Instrument Sans', sans-serif", m: "'JetBrains Mono', monospace", w: 800, tt: 'uppercase', ls: '0' },
+  'Humaniste': { d: "'Bricolage Grotesque', sans-serif", b: "'Bricolage Grotesque', sans-serif", m: "'DM Mono', monospace", w: 600, tt: 'none', ls: '-0.035em' }
+};
+
+const T = {
+  fr: {
+    nav: { profil: 'Profil', parcours: 'Parcours', projets: 'Projets', competences: 'Compétences', passions: 'Passions', contact: 'Contact', menu: 'Menu', close: 'Fermer' },
+    hero: { kicker: 'Portfolio — 2026', role: 'Business Analyst', at: 'chez Kreaddis, Chavanod', intro: "Je fais le lien entre les besoins métier et les outils numériques, principalement autour des ERP Odoo et Dynamics. Formé au BUT Informatique de l'IUT d'Annecy.", cvView: 'Voir le CV', cvDl: 'Télécharger', fake: 'Fictif', real: 'Réel', capFake: 'Relief procédural', capReal: 'Relief réel · Savoie Parachutisme, aérodrome de Chambéry', capLoading: 'Chargement du relief réel…', capError: 'Relief réel indisponible' },
+    profil: { title: 'Profil', lead: 'Business Analyst chez Kreaddis depuis septembre 2026.', body: "J'y ai fait toutes les étapes : stage de BUT, contrat d'été comme développeur, alternance, puis CDI. Avant ça, un bac STI2D au lycée Louis Lachenal et un BUT Informatique à l'IUT d'Annecy.", card: 'FICHE PROFIL', scale: 'PARCOURS, DU PLUS RÉCENT', ladder: [['CDI Business Analyst', 'Kreaddis', '2026'], ['Alternance', 'Kreaddis', '2025'], ['Stage puis contrat d’été', 'Kreaddis', '2025'], ['BUT Informatique', 'IUT d’Annecy', '2023'], ['Bac STI2D', 'Lycée Louis Lachenal', '2023'], ['Premier job d’été', 'Le Colomban', '2021']], steps: [['2023', 'Bac STI2D'], ['2023 — 26', 'BUT Informatique'], ['2025', 'Stage chez Kreaddis'], ['2026', 'CDI Business Analyst']], cardRows: [['NOM', 'Cyril Feltrin'], ['POSTE', 'Business Analyst'], ['ENTREPRISE', 'Kreaddis'], ['DEPUIS', 'Septembre 2026'], ['FORMATION', 'BUT Informatique'], ['RÉGION', 'Haute-Savoie']] },
+    parcours: { title: 'Parcours', today: "aujourd'hui", kreaddisNote: 'Anciennement Kreatys · Chavanod', map: 'Voir le plan 3D', mapIut: 'Plan 3D de l’IUT', kreaddisLead: 'Quatre étapes dans la même entreprise, du stage de deuxième année au CDI.', now: 'Actuel', summer: "Jobs d'été", edu: 'Formation' },
+    projets: { title: 'Projets', repo: 'Voir le dépôt GitHub' },
+    competences: { title: 'Compétences' },
+    detail: { hint: 'Cliquer sur une ligne pour le détail', more: 'Détails', close: 'Fermer', prev: 'Précédent', next: 'Suivant', display: 'AFFICHAGE', side: 'Panneau', modal: 'Fenêtre', full: 'Plein écran', photo: 'Photo à ajouter', desc: 'Description', todo: 'À COMPLÉTER', descPh: 'Texte à rédiger : contexte, rôle, missions principales et résultats obtenus.', missions: 'Missions', done: 'Réalisations', missionsPh: ['Mission principale à décrire', 'Outils et méthodes utilisés', 'Résultat ou apprentissage clé'], kExp: 'Expérience', kEdu: 'Formation', kJob: "Job d'été", kProj: 'Projet' },
+    passions: { title: 'Passions', hint: 'Chaque passion s’ouvre en 3D', sky: 'Parachutisme', jumps: 'sauts', pac: 'Progression accompagnée en chute', brevets: 'Brevets obtenus', next: 'Prochaine étape', b2: 'Brevet B2, pour le saut en groupe', moto: 'Moto', gym: 'Musculation', skyAlt: 'Saut en parachute au-dessus du lac du Bourget', motoAlt: 'Suzuki GSX-8S au bord d’un lac alpin', explore: 'Explorer en 3D', ai: 'Retouchée avec IA · ChatGPT', compare: "Comparer avec l'original", original: 'Original', edited: 'Retouchée IA', cmpTitle: 'Photo originale et version retouchée', cmpNote: 'Glisser pour comparer. Retouche réalisée avec ChatGPT.', drag: 'Glisser pour tourner · molette ou pincement pour zoomer', parts: 'ÉLÉMENTS', places: 'LIEUX', specs: 'CARACTÉRISTIQUES', zones: 'ZONES', jump: 'LE SAUT' },
+    contact: { title: 'Contact', lead: 'Une question, une opportunité ou un projet ? Écrivez-moi directement ou via ce formulaire.', direct: 'Directement', first: 'Prénom', last: 'Nom', email: 'Email', subject: 'Objet', message: 'Message', file: 'Pièce jointe (facultatif)', none: 'Aucun fichier sélectionné', choose: 'Choisir un fichier', send: 'Envoyer', sending: 'Envoi…', ok: 'Message envoyé. Je vous réponds rapidement.', err: "L'envoi a échoué. Réessayez ou écrivez à cyril@kreaddis.com.", noEp: 'Formulaire pas encore relié : ajoutez votre identifiant Formspree.' },
+    footer: { top: 'Haut de page' },
+    alt: 'ALTITUDE', altHint: 'Glisser pour parcourir la page', phase: { ff: 'CHUTE LIBRE', canopy: 'SOUS VOILE', landed: 'POSÉ' }, palLabel: 'Changer la couleur', palTitle: 'Couleur', themeLight: 'Passer en mode clair', themeDark: 'Passer en mode sombre',
+    facts: [['Poste', 'Business Analyst, CDI'], ['Entreprise', 'Kreaddis (ex-Kreatys)'], ['Formation', 'BUT Informatique'], ['Région', 'Haute-Savoie']]
+  },
+  en: {
+    nav: { profil: 'Profile', parcours: 'Experience', projets: 'Projects', competences: 'Skills', passions: 'Interests', contact: 'Contact', menu: 'Menu', close: 'Close' },
+    hero: { kicker: 'Portfolio — 2026', role: 'Business Analyst', at: 'at Kreaddis, Chavanod', intro: 'I connect business needs with digital tools, mainly around the Odoo and Dynamics ERPs. Trained through the BUT in Computer Science at IUT Annecy.', cvView: 'View résumé', cvDl: 'Download', fake: 'Procedural', real: 'Real', capFake: 'Procedural terrain', capReal: 'Real terrain · Savoie Parachutisme, Chambéry airfield', capLoading: 'Loading real terrain…', capError: 'Real terrain unavailable' },
+    profil: { title: 'Profile', lead: 'Business Analyst at Kreaddis since September 2026.', body: 'I went through every step there: BUT internship, summer developer contract, apprenticeship, then a permanent role. Before that, an STI2D baccalauréat at Lycée Louis Lachenal and a BUT in Computer Science at IUT Annecy.', card: 'PROFILE CARD', scale: 'PATH, MOST RECENT FIRST', ladder: [['Business Analyst, permanent', 'Kreaddis', '2026'], ['Apprenticeship', 'Kreaddis', '2025'], ['Internship, then summer contract', 'Kreaddis', '2025'], ['BUT Computer Science', 'IUT Annecy', '2023'], ['STI2D Bac', 'Lycée Louis Lachenal', '2023'], ['First summer job', 'Le Colomban', '2021']], steps: [['2023', 'STI2D Bac'], ['2023 — 26', 'BUT Computer Science'], ['2025', 'Internship at Kreaddis'], ['2026', 'Business Analyst, permanent']], cardRows: [['NAME', 'Cyril Feltrin'], ['ROLE', 'Business Analyst'], ['COMPANY', 'Kreaddis'], ['SINCE', 'September 2026'], ['EDUCATION', 'BUT Computer Science'], ['REGION', 'Haute-Savoie']] },
+    parcours: { title: 'Experience', today: 'today', kreaddisNote: 'Formerly Kreatys · Chavanod', map: 'View 3D map', mapIut: 'IUT 3D map', kreaddisLead: 'Four steps at the same company, from a second-year internship to a permanent role.', now: 'Current', summer: 'Summer jobs', edu: 'Education' },
+    projets: { title: 'Projects', repo: 'View GitHub repository' },
+    competences: { title: 'Skills' },
+    detail: { hint: 'Click a row for details', more: 'Details', close: 'Close', prev: 'Previous', next: 'Next', display: 'DISPLAY', side: 'Panel', modal: 'Window', full: 'Full screen', photo: 'Photo to add', desc: 'Description', todo: 'TO WRITE', descPh: 'Text to write: context, role, main tasks and results.', missions: 'Tasks', done: 'Highlights', missionsPh: ['Main task to describe', 'Tools and methods used', 'Key result or lesson'], kExp: 'Experience', kEdu: 'Education', kJob: 'Summer job', kProj: 'Project' },
+    passions: { title: 'Interests', hint: 'Each interest opens in 3D', sky: 'Skydiving', jumps: 'jumps', pac: 'Accelerated freefall training', brevets: 'Licences earned', next: 'Next step', b2: 'B2 licence, for group jumps', moto: 'Motorcycling', gym: 'Weight training', skyAlt: 'Skydive above Lake Bourget', motoAlt: 'Suzuki GSX-8S by an alpine lake', explore: 'Explore in 3D', ai: 'AI-retouched · ChatGPT', compare: 'Compare with original', original: 'Original', edited: 'AI-retouched', cmpTitle: 'Original photo and retouched version', cmpNote: 'Drag to compare. Retouched with ChatGPT.', drag: 'Drag to rotate · scroll or pinch to zoom', parts: 'PARTS', places: 'PLACES', specs: 'SPECIFICATIONS', zones: 'ZONES', jump: 'THE JUMP' },
+    contact: { title: 'Contact', lead: 'A question, an opportunity or a project? Write to me directly or through this form.', direct: 'Directly', first: 'First name', last: 'Last name', email: 'Email', subject: 'Subject', message: 'Message', file: 'Attachment (optional)', none: 'No file selected', choose: 'Choose a file', send: 'Send', sending: 'Sending…', ok: 'Message sent. I will get back to you shortly.', err: 'Sending failed. Try again or email cyril@kreaddis.com.', noEp: 'Form not connected yet: add your Formspree ID.' },
+    footer: { top: 'Back to top' },
+    alt: 'ALTITUDE', altHint: 'Drag to move through the page', phase: { ff: 'FREEFALL', canopy: 'UNDER CANOPY', landed: 'LANDED' }, palLabel: 'Change colour', palTitle: 'Colour', themeLight: 'Switch to light mode', themeDark: 'Switch to dark mode',
+    facts: [['Role', 'Business Analyst, permanent'], ['Company', 'Kreaddis (formerly Kreatys)'], ['Education', 'BUT Computer Science'], ['Region', 'Haute-Savoie, France']]
+  }
+};
+
+const D = {
+  fr: {
+    kreaddis: [
+      { date: 'Depuis sept. 2026', role: 'Business Analyst', type: 'CDI', current: true },
+      { date: '2025 — 2026', role: 'Alternance', type: 'BUT Informatique, 3e année' },
+      { date: 'Été 2025', role: 'Développeur', type: "Contrat d'été · 1 mois" },
+      { date: '2025', role: 'Stage', type: 'BUT Informatique, 2e année · 2 mois' }
+    ],
+    edu: [
+      { date: '2023 — 2026', title: 'BUT Informatique', place: 'IUT d’Annecy, Annecy-le-Vieux' },
+      { date: '2023', title: 'Bac STI2D, mention AB', place: 'Lycée Louis Lachenal' }
+    ],
+    summer: [
+      { date: 'Été 2024', role: 'Mise en rayon', place: 'Intermarché, Les Villards-sur-Thônes · 1,5 mois' },
+      { date: 'Été 2023', role: 'Caissier', place: 'Intermarché, Les Villards-sur-Thônes · 1,5 mois' },
+      { date: 'Été 2022', role: 'Paysagiste', place: 'Niwaki Paysage, Thônes · 1,5 mois' },
+      { date: 'Été 2021', role: 'Restauration', place: 'Le Colomban, Les Villards-sur-Thônes · 1,5 mois' }
+    ],
+    projects: [
+      { n: '01', year: '2024 — 2025', context: 'Projet IUT', title: 'Reproduction de Vinted', team: 'Équipe de 5', points: ['Modélisation de la base de données (MCD)', 'Gestion de la base PostgreSQL via pgAdmin', 'Développement avec le framework Laravel'], tags: ['Laravel', 'PHP', 'PostgreSQL', 'HTML', 'CSS', 'JS'] },
+      { n: '02', year: '2024 — 2025', context: 'Projet IUT', title: 'CYNIA, paramétrage et développement Odoo', team: 'Équipe de 2', points: ['Paramétrage et développement de modules Odoo', 'Développement en Python, XML et JS, assisté par Cursor AI', 'Dépôt GitHub avec gestion de projet'], tags: ['Odoo', 'Python', 'XML', 'JS', 'Cursor', 'GitHub'], link: 'https://github.com/FELTRINCyril/CYNIA' },
+      { n: '03', year: '2026', context: 'Personnel', title: 'Ce portfolio', team: 'Projet solo', points: ['Site en HTML, CSS et JS, avec des scènes 3D', 'Conçu avec Claude Code et Claude Design'], tags: ['HTML', 'CSS', 'JS', 'Three.js', 'Claude'] }
+    ],
+    skills: [['ERP', ['Odoo', 'Dynamics']], ['Dev / Design', ['HTML / CSS / JS', 'Bootstrap', 'XML', 'Python']], ['Bases de données', ['MongoDB', 'pgAdmin']], ['Environnements', ['macOS', 'Windows', 'Linux']], ['Outils', ['Figma', 'Notion', 'Docker']], ['IA', ['Claude, Claude Code & Design', 'Gemini', 'Cursor']]],
+    passions: {
+      sky: { n: '01', title: 'Parachutisme', stats: [['sauts', '25'], ['progression accompagnée', 'PAC'], ['brevets obtenus', 'A · B'], ['prochaine étape, saut en groupe', 'B2']], tabs: [
+        { label: 'Carte réelle', mode: 'map', partsTitle: 'jump', desc: "Relief réel autour de l'aérodrome de Chambéry – Aix-les-Bains, où je saute avec Savoie Parachutisme, entre le lac du Bourget et le massif des Bauges. Données d'élévation réelles, relief exagéré pour la lisibilité.", note: 'Animation accélérée : en réalité ~50 s de chute libre et moins de 5 min sous voile, selon la voile et la météo.', parts: [['exit', 'Sortie', 'Vers 4 000 m · ~50 s de chute libre'], ['open', 'Ouverture', 'Vers 1 000 m · moins de 5 min sous voile'], ['land', 'Posé', 'Aérodrome de Chambéry (LFLB)']] },
+        { label: 'Le parachute', mode: 'canopy', partsTitle: 'parts', desc: "Une voile moderne est une aile à caissons : l'air entre par l'avant, gonfle les caissons et donne à la voile son profil d'aile.", note: "Modèle 3D : reconstitution artistique inspirée d'une voile Sabre3 et d'un sac-harnais Vector 3, dimensions estimées.", parts: [['voilure', 'Voilure', 'Aile à caissons gonflée par le vent relatif'], ['caissons', 'Caissons', 'L’air entre par les ouvertures du bord d’attaque'], ['stabilisateurs', 'Stabilisateurs', 'Panneaux latéraux qui stabilisent le vol'], ['suspentes', 'Suspentes', 'Relient la voilure aux élévateurs'], ['commandes', 'Commandes de frein', 'Freinent et dirigent la voile'], ['slider', 'Slider', 'Rend l’ouverture progressive'], ['elevateurs', 'Élévateurs', 'Liaison entre suspentes et sellette'], ['sellette', 'Sellette-conteneur', 'Contient la voile principale et la réserve'], ['extracteur', 'Extracteur', 'Petite voile qui extrait la principale']] }] },
+      moto: { n: '02', title: 'Moto', tabs: [{ label: 'Suzuki GSX-8S', mode: 'moto', partsTitle: 'specs', desc: 'Roadster bicylindre de Suzuki. Modèle 3D simplifié : cliquer sur une caractéristique pour la situer.', note: 'Données constructeur.', parts: [['moteur', 'Moteur', '776 cm³, bicylindre parallèle'], ['moteur', 'Puissance', '83 ch à 8 500 tr/min'], ['moteur', 'Couple', '78 Nm à 6 800 tr/min'], ['reservoir', 'Réservoir', '14 L'], ['selle', 'Hauteur de selle', '810 mm'], ['chassis', 'Poids tous pleins', '202 kg'], ['roues', 'Jantes', '17″']] }] },
+      snow: { n: '03', title: 'Snowboard', tabs: [{ label: 'Piste', mode: 'snow', partsTitle: 'parts', desc: 'Une planche qui descend une piste balisée en virages enchaînés.', parts: [['planche', 'Planche', 'Carres et semelle'], ['fixations', 'Fixations', 'Maintien des boots'], ['piste', 'Balisage', 'Piquets de bord de piste'], ['trace', 'Trace', 'Trajectoire en virages']] }] },
+      kre: { n: '', title: 'Kreaddis', tabs: [{ label: 'Quartier', mode: 'kreaddis', partsTitle: 'places', desc: "Plan 3D du quartier autour de Kreaddis, ZA des Césardes : bâtiments, routes et espaces verts réels (données OpenStreetMap).", note: '© contributeurs OpenStreetMap', parts: [['kreaddis', 'Kreaddis', '6 rue André Ampère'], ['rue', 'Rue André Ampère', 'Accès'], ['batiments', 'Bâtiments', 'Hauteurs estimées'], ['routes', 'Routes', 'A41 et voirie'], ['zones', 'Espaces verts', 'Prés et bois']] }, { label: 'Région', mode: 'kreregion', partsTitle: 'places', desc: "Relief réel autour de Chavanod, à l'ouest d'Annecy.", parts: [['kreaddis', 'Kreaddis', 'Seynod · Chavanod'], ['iut', 'IUT d’Annecy', 'Annecy-le-Vieux'], ['annecy', 'Annecy', 'Centre'], ['lac', 'Lac d’Annecy', ''], ['semnoz', 'Semnoz', '1 699 m']] }] },
+      iut: { n: '', title: 'IUT d’Annecy', tabs: [{ label: 'Campus', mode: 'iut', partsTitle: 'places', desc: "Plan 3D du campus universitaire d'Annecy-le-Vieux, où j'ai suivi mon BUT Informatique, et de son quartier : bâtiments, routes et espaces verts réels (données OpenStreetMap).", note: '© contributeurs OpenStreetMap', parts: [['iut', 'IUT d’Annecy', '9 rue de l’Arc en Ciel'], ['rue', 'Rue de l’Arc en Ciel', 'Accès'], ['batiments', 'Bâtiments', 'Hauteurs estimées'], ['routes', 'Routes', 'Voirie'], ['zones', 'Espaces verts', 'Prés et bois'], ['eau', 'Cours d’eau', '']] }] },
+      gym: { n: '04', title: 'Musculation', tabs: [{ label: 'Salle', mode: 'gym', partsTitle: 'zones', desc: 'Une salle de sport modélisée en 3D, organisée par zones.', parts: [['cardio', 'Cardio', 'Tapis de course, échauffement'], ['racks', 'Racks', 'Squat, développé couché'], ['halteres', 'Poids libres', 'Haltères et bancs'], ['machines', 'Machines guidées', 'Travail d’isolation'], ['etirement', 'Étirements', 'Retour au calme']] }] }
+    }
+  },
+  en: {
+    kreaddis: [
+      { date: 'Since Sep 2026', role: 'Business Analyst', type: 'Permanent contract', current: true },
+      { date: '2025 — 2026', role: 'Apprenticeship', type: 'BUT Computer Science, 3rd year' },
+      { date: 'Summer 2025', role: 'Developer', type: 'Summer contract · 1 month' },
+      { date: '2025', role: 'Internship', type: 'BUT Computer Science, 2nd year · 2 months' }
+    ],
+    edu: [
+      { date: '2023 — 2026', title: 'BUT Computer Science', place: 'IUT Annecy, Annecy-le-Vieux' },
+      { date: '2023', title: 'STI2D Baccalauréat, with honours', place: 'Lycée Louis Lachenal' }
+    ],
+    summer: [
+      { date: 'Summer 2024', role: 'Shelf stocking', place: 'Intermarché, Les Villards-sur-Thônes · 6 weeks' },
+      { date: 'Summer 2023', role: 'Cashier', place: 'Intermarché, Les Villards-sur-Thônes · 6 weeks' },
+      { date: 'Summer 2022', role: 'Landscaper', place: 'Niwaki Paysage, Thônes · 6 weeks' },
+      { date: 'Summer 2021', role: 'Restaurant staff', place: 'Le Colomban, Les Villards-sur-Thônes · 6 weeks' }
+    ],
+    projects: [
+      { n: '01', year: '2024 — 2025', context: 'University project', title: 'Vinted reproduction', team: 'Team of 5', points: ['Database modelling (conceptual data model)', 'PostgreSQL database managed with pgAdmin', 'Development with the Laravel framework'], tags: ['Laravel', 'PHP', 'PostgreSQL', 'HTML', 'CSS', 'JS'] },
+      { n: '02', year: '2024 — 2025', context: 'University project', title: 'CYNIA, Odoo configuration and development', team: 'Team of 2', points: ['Configuration and development of Odoo modules', 'Python, XML and JS, assisted by Cursor AI', 'GitHub repository with project management'], tags: ['Odoo', 'Python', 'XML', 'JS', 'Cursor', 'GitHub'], link: 'https://github.com/FELTRINCyril/CYNIA' },
+      { n: '03', year: '2026', context: 'Personal', title: 'This portfolio', team: 'Solo project', points: ['HTML, CSS and JS site with 3D scenes', 'Built with Claude Code and Claude Design'], tags: ['HTML', 'CSS', 'JS', 'Three.js', 'Claude'] }
+    ],
+    skills: [['ERP', ['Odoo', 'Dynamics']], ['Dev / Design', ['HTML / CSS / JS', 'Bootstrap', 'XML', 'Python']], ['Databases', ['MongoDB', 'pgAdmin']], ['Environments', ['macOS', 'Windows', 'Linux']], ['Tools', ['Figma', 'Notion', 'Docker']], ['AI', ['Claude, Claude Code & Design', 'Gemini', 'Cursor']]],
+    passions: {
+      sky: { n: '01', title: 'Skydiving', stats: [['jumps', '25'], ['accelerated freefall', 'AFF'], ['licences earned', 'A · B'], ['next step, group jumps', 'B2']], tabs: [
+        { label: 'Real map', mode: 'map', partsTitle: 'jump', desc: 'Real terrain around Chambéry – Aix-les-Bains airfield, where I jump with Savoie Parachutisme, between Lake Bourget and the Bauges range. Real elevation data, vertically exaggerated for readability.', note: 'Sped-up animation: in reality ~50 s of freefall and under 5 min under canopy, depending on canopy and weather.', parts: [['exit', 'Exit', 'Around 4,000 m · ~50 s of freefall'], ['open', 'Deployment', 'Around 1,000 m · under 5 min under canopy'], ['land', 'Landing', 'Chambéry airfield (LFLB)']] },
+        { label: 'The canopy', mode: 'canopy', partsTitle: 'parts', desc: 'A modern canopy is a ram-air wing: air enters at the front, inflates the cells and gives the canopy its wing shape.', note: '3D model: artistic reconstruction inspired by a Sabre3 canopy and a Vector 3 harness-container, estimated dimensions.', parts: [['voilure', 'Canopy', 'Ram-air wing inflated by the relative wind'], ['caissons', 'Cells', 'Air enters through the leading-edge inlets'], ['stabilisateurs', 'Stabilizers', 'Side panels that stabilise flight'], ['suspentes', 'Lines', 'Connect the canopy to the risers'], ['commandes', 'Brake lines', 'Slow down and steer'], ['slider', 'Slider', 'Makes the opening progressive'], ['elevateurs', 'Risers', 'Link lines and harness'], ['sellette', 'Harness-container', 'Holds main and reserve'], ['extracteur', 'Pilot chute', 'Small chute that extracts the main']] }] },
+      moto: { n: '02', title: 'Motorcycling', tabs: [{ label: 'Suzuki GSX-8S', mode: 'moto', partsTitle: 'specs', desc: 'Suzuki parallel-twin roadster. Simplified 3D model: click a spec to locate it.', note: 'Manufacturer data.', parts: [['moteur', 'Engine', '776 cc parallel twin'], ['moteur', 'Power', '83 hp at 8,500 rpm'], ['moteur', 'Torque', '78 Nm at 6,800 rpm'], ['reservoir', 'Tank', '14 L'], ['selle', 'Seat height', '810 mm'], ['chassis', 'Curb weight', '202 kg'], ['roues', 'Wheels', '17″']] }] },
+      snow: { n: '03', title: 'Snowboard', tabs: [{ label: 'Piste', mode: 'snow', partsTitle: 'parts', desc: 'A board riding down a marked piste in linked turns.', parts: [['planche', 'Board', 'Edges and base'], ['fixations', 'Bindings', 'Hold the boots'], ['piste', 'Markers', 'Piste edge poles'], ['trace', 'Track', 'Turning line']] }] },
+      kre: { n: '', title: 'Kreaddis', tabs: [{ label: 'Neighbourhood', mode: 'kreaddis', partsTitle: 'places', desc: 'Real 3D plan of the area around Kreaddis, ZA des Césardes: buildings, roads and green spaces (OpenStreetMap data).', note: '© OpenStreetMap contributors', parts: [['kreaddis', 'Kreaddis', '6 rue André Ampère'], ['rue', 'Rue André Ampère', 'Access'], ['batiments', 'Buildings', 'Estimated heights'], ['routes', 'Roads', 'A41 and streets'], ['zones', 'Green spaces', 'Fields and woods']] }, { label: 'Region', mode: 'kreregion', partsTitle: 'places', desc: 'Real terrain around Chavanod, west of Annecy.', parts: [['kreaddis', 'Kreaddis', 'Seynod · Chavanod'], ['iut', 'IUT Annecy', 'Annecy-le-Vieux'], ['annecy', 'Annecy', 'Centre'], ['lac', 'Lake Annecy', ''], ['semnoz', 'Semnoz', '1,699 m']] }] },
+      iut: { n: '', title: 'IUT Annecy', tabs: [{ label: 'Campus', mode: 'iut', partsTitle: 'places', desc: 'Real 3D plan of the Annecy-le-Vieux university campus, where I studied for my BUT in Computer Science, and its neighbourhood: buildings, roads and green spaces (OpenStreetMap data).', note: '© OpenStreetMap contributors', parts: [['iut', 'IUT Annecy', '9 rue de l’Arc en Ciel'], ['rue', 'Rue de l’Arc en Ciel', 'Access'], ['batiments', 'Buildings', 'Estimated heights'], ['routes', 'Roads', 'Streets'], ['zones', 'Green spaces', 'Fields and woods'], ['eau', 'Streams', '']] }] },
+      gym: { n: '04', title: 'Weight training', tabs: [{ label: 'Gym', mode: 'gym', partsTitle: 'zones', desc: 'A gym modelled in 3D, organised by zones.', parts: [['cardio', 'Cardio', 'Treadmills, warm-up'], ['racks', 'Racks', 'Squat, bench press'], ['halteres', 'Free weights', 'Dumbbells and benches'], ['machines', 'Machines', 'Isolation work'], ['etirement', 'Stretching', 'Cool-down']] }] }
+    }
+  }
+};
+
+class Component extends DCLogic {
+  state = { accent: null, palOpen: false, lang: null, theme: null, sysDark: false, mobile: false, menu: false, prog: 0, status: 'idle', fileName: '', terrain: 'real', tStatus: '', alt: 4000, phase: 'ff', detail: null, dOpen: false, dIn: false, passion: null, ptab: 0, hlIdx: -1, compare: null, cmp: 50 };
+  q(k) { try { return new URLSearchParams(location.search).get(k); } catch (e) { return null; } }
+  cfg() {
+    const p = this.props;
+    let accent = this.state.accent || this.q('accent') || p.accent || 'Violet'; if (!ACCENTS[accent]) accent = 'Violet';
+    let font = this.q('font') || p.font || 'Condensé'; if (!FONTS[font]) font = 'Condensé';
+    const themeMode = this.state.theme || this.q('theme') || p.theme || 'auto';
+    const dark = themeMode === 'dark' || (themeMode === 'auto' && this.state.sysDark);
+    const lang = this.state.lang || this.q('lang') || p.lang || 'fr';
+    const view = { 'Original': 'orig', 'Miroir': 'mirror', 'Vue de dessus': 'top', 'Suivi': 'chase' }[this.q('vue') || p.heroView] || 'mirror';
+    return { accent, font, dark, lang: lang === 'en' ? 'en' : 'fr', prof: 'A', view };
+  }
+  componentDidMount() {
+    try { const sa = localStorage.getItem('pf-accent'); if (sa && ACCENTS[sa]) this.setState({ accent: sa }); } catch (e) {}
+    this.mq = matchMedia('(prefers-color-scheme: dark)');
+    this.onMq = () => this.setState({ sysDark: this.mq.matches });
+    this.mq.addEventListener('change', this.onMq);
+    this.onResize = () => { const m = innerWidth < 760; if (m !== this.state.mobile) this.setState({ mobile: m }); };
+    this.onScroll = () => {
+      const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+      const p = Math.round(Math.min(1, Math.max(0, scrollY / max)) * 400) / 400;
+      if (p !== this.state.prog) this.setState({ prog: p });
+    };
+    this.onTStatus = (e) => this.setState({ tStatus: e.detail });
+    this.onAlt = () => {};
+    addEventListener('scroll', this.onScroll, { passive: true }); this.onScroll();
+    this.onKey = (e) => {
+      const s = this.state;
+      if (e.key === 'Escape') {
+        if (s.compare) this.setState({ compare: null }); else if (s.passion) this.setState({ passion: null }); else if (s.dOpen) this.closeD(); else if (s.menu) this.setState({ menu: false });
+      } else if (s.dOpen && !s.passion && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) this.stepDetail(e.key === 'ArrowRight' ? 1 : -1);
+    };
+    addEventListener('resize', this.onResize);
+    addEventListener('pf-terrain-status', this.onTStatus); addEventListener('keydown', this.onKey);
+    this.setState({ sysDark: this.mq.matches, mobile: innerWidth < 760 });
+    this.applyVars();
+  }
+  componentDidUpdate() {
+    this.applyVars();
+    const lock = this.state.dOpen || !!this.state.passion || !!this.state.compare || this.state.menu;
+    document.body.style.overflow = lock ? 'hidden' : '';
+  }
+  vt(apply, run) {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!document.startViewTransition || reduce || !run) { apply(() => {}); return; }
+    if (this._vt) { try { this._vt.skipTransition(); } catch (e) {} }
+    let settled = false;
+    const tr = this._vt = document.startViewTransition(() => new Promise(r => {
+      const fin = () => { if (!settled) { settled = true; this.applyVars(); r(); } };
+      apply(fin); setTimeout(fin, 120);
+    }));
+    tr.ready.then(run).catch(() => {});
+    tr.finished.finally(() => { if (this._vt === tr) this._vt = null; });
+  }
+  anim(pe, kf, o) { document.documentElement.animate(kf, Object.assign({ duration: 800, easing: 'cubic-bezier(.65,0,.25,1)', fill: 'both', pseudoElement: '::view-transition-' + pe + '(root)' }, o)); }
+  switchTheme(next, e) {
+    const fx = this.q('themeFx') || this.props.themeFx || 'Onde topo';
+    const r = e && e.currentTarget ? e.currentTarget.getBoundingClientRect() : { left: innerWidth - 40, top: 30, width: 0, height: 0 };
+    const x = r.left + r.width / 2, y = r.top + r.height / 2, R = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    const apply = done => this.setState({ theme: next }, done);
+    const runs = {
+      'Cercle': () => this.anim('new', [{ clipPath: `circle(0px at ${x}px ${y}px)` }, { clipPath: `circle(${R}px at ${x}px ${y}px)` }], { duration: 750 }),
+      'Onde topo': () => {
+        const N = 72, seed = Math.random() * 10, shape = k => { const rr = R * 1.25 * k; const pts = []; for (let i = 0; i < N; i++) { const a = i / N * Math.PI * 2; const w = 1 + .09 * Math.sin(a * 3 + seed + k * 4) + .05 * Math.sin(a * 7 - seed * 2 + k * 9) + .03 * Math.sin(a * 13 + k * 15); pts.push(`${(x + Math.cos(a) * rr * w).toFixed(1)}px ${(y + Math.sin(a) * rr * w).toFixed(1)}px`); } return `polygon(${pts.join(',')})`; };
+        const kf = []; for (let i = 0; i <= 14; i++) { const k = i / 14; kf.push({ clipPath: shape(k * k * (3 - 2 * k) + .0001), offset: k }); }
+        this.anim('new', kf, { duration: 1100, easing: 'linear' });
+        this.anim('old', [{ filter: 'blur(0px)' }, { filter: 'blur(3px)' }], { duration: 1100 });
+      },
+      'Éclipse': () => {
+        const V = Math.hypot(innerWidth, innerHeight);
+        this.anim('new', [{ clipPath: `circle(${V}px at ${-V}px 50%)` }, { clipPath: `circle(${V}px at ${innerWidth / 2}px 50%)` }], { duration: 900 });
+        this.anim('old', [{ transform: 'translateX(0)', opacity: 1 }, { transform: 'translateX(6%)', opacity: .6 }], { duration: 900 });
+      },
+      'Altimètre': () => {
+        this.anim('new', [{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)' }], { duration: 900, easing: 'cubic-bezier(.7,0,.3,1)' });
+        this.anim('old', [{ transform: 'translateY(0)' }, { transform: 'translateY(40px)' }], { duration: 900, easing: 'cubic-bezier(.7,0,.3,1)' });
+      },
+      'Fondu': () => {
+        this.anim('new', [{ opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0)' }], { duration: 700, easing: 'ease' });
+        this.anim('old', [{ opacity: 1 }, { opacity: 0 }], { duration: 700, easing: 'ease' });
+      }
+    };
+    this.vt(apply, runs[fx] || null);
+  }
+  textNodes() {
+    const out = [], tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    while (tw.nextNode() && out.length < 500) {
+      const n = tw.currentNode, p = n.parentElement, v = n.nodeValue; if (!p || !v.trim() || /SCRIPT|STYLE|TEXTAREA|OPTION/.test(p.tagName)) continue;
+      const r = p.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight || r.width === 0) continue;
+      out.push(n);
+    }
+    return out;
+  }
+  switchLang(lang) {
+    if (lang === this.cfg().lang) return;
+    this.restoreFx();
+    const fx = this.q('langFx') || this.props.langFx || 'Morphing';
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { this.setState({ lang }); return; }
+    const old = new Map(); this.textNodes().forEach(n => old.set(n, n.nodeValue));
+    this._fxTok = (this._fxTok || 0) + 1; const tok = this._fxTok;
+    this.setState({ lang }, () => requestAnimationFrame(() => this.textFx(fx, old, tok)));
+  }
+  restoreFx() { if (this._fxItems) this._fxItems.forEach(it => { if (it.n.isConnected) it.n.nodeValue = it.v; }); this._fxItems = null; }
+  textFx(fx, old, tok) {
+    const G = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', GL = 'abcdefghijklmnopqrstuvwxyz', AL = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const rnd = ch => /[a-zà-ÿ]/.test(ch) ? GL[(Math.random() * 26) | 0] : G[(Math.random() * G.length) | 0];
+    const isSp = ch => /\s/.test(ch);
+    const items = this.textNodes().map((n, idx) => {
+      const v = n.nodeValue, o = old.has(n) ? old.get(n) : '', r = n.parentElement.getBoundingClientRect();
+      const len = Math.max(v.length, o.length);
+      return { n, v, o, same: o === v, idx, cx: r.left + r.width / 2, cy: r.top, ord: Array.from({ length: len + 1 }, () => Math.random()) };
+    });
+    const CSS = {
+      'Cascade': (el, i, y) => el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 520, delay: y * 320, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' }),
+      'Mise au point': (el, i, y) => el.animate([{ opacity: .15, filter: 'blur(7px)' }, { opacity: 1, filter: 'blur(0)' }], { duration: 620, delay: Math.random() * 160, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' }),
+      'Balayage': (el, i, y) => {
+        const m = 'linear-gradient(90deg, #000 40%, transparent 60%)';
+        return el.animate([{ maskImage: m, webkitMaskImage: m, maskSize: '250% 100%', webkitMaskSize: '250% 100%', maskPosition: '100% 0', webkitMaskPosition: '100% 0' }, { maskImage: m, webkitMaskImage: m, maskSize: '250% 100%', webkitMaskSize: '250% 100%', maskPosition: '0% 0', webkitMaskPosition: '0% 0' }], { duration: 700, delay: y * 260, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'backwards' });
+      },
+      'Store': (el, i, y) => el.animate([{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: 480, delay: y * 300, easing: 'cubic-bezier(.65,0,.25,1)', fill: 'backwards' }),
+      'Accent': (el, i, y) => { const c = getComputedStyle(el).color; return el.animate([{ color: 'var(--accent)', opacity: 0 }, { color: 'var(--accent)', opacity: 1, offset: .3 }, { color: c, opacity: 1 }], { duration: 900, delay: y * 240, easing: 'ease-out', fill: 'backwards' }); }
+    };
+    if (CSS[fx]) {
+      (this._fxAnims || []).forEach(a => a.cancel());
+      const els = [];
+      items.forEach(it => { if (it.same) return; const el = it.n.parentElement; if (el && !els.includes(el)) els.push(el); });
+      const top = els.filter(el => !els.some(o => o !== el && o.contains(el)));
+      this._fxAnims = top.map((el, i) => CSS[fx](el, i, Math.min(1, Math.max(0, el.getBoundingClientRect().top / innerHeight))));
+      return;
+    }
+    this._fxItems = items;
+    const D = { 'Décodage': 900, 'Frappe': 1100, 'Tambour': 1000, 'Morphing': 800, 'Dissolution': 850, 'Vague': 1000, 'Brouillage': 650 }[fx] || 800;
+    const cxM = innerWidth / 2;
+    const F = {
+      'Brouillage': (it, k) => { const v = it.v; let s = ''; for (let i = 0; i < v.length; i++) s += isSp(v[i]) || k > .2 + .6 * (i / v.length) ? v[i] : rnd(v[i]); return s; },
+      'Décodage': (it, k) => {
+        const v = it.v, L = v.length, kk = Math.min(1, Math.max(0, (k - Math.min(.35, it.idx * .004)) / .65)), rev = Math.floor(kk * L), ahead = Math.min(L, rev + 6);
+        let s = v.slice(0, rev); for (let i = rev; i < ahead; i++) s += isSp(v[i]) ? v[i] : rnd(v[i]);
+        return s + (kk < 1 ? v.slice(ahead).replace(/\S/g, '·') : '');
+      },
+      'Frappe': (it, k) => {
+        if (it.same) return it.v;
+        const o = it.o, v = it.v, de = .35;
+        if (k < de) return o.slice(0, Math.ceil(o.length * (1 - k / de))) + '▍';
+        const kk = (k - de) / (1 - de); return v.slice(0, Math.floor(v.length * kk)) + '▍';
+      },
+      'Tambour': (it, k) => {
+        const v = it.v; let s = '';
+        for (let i = 0; i < v.length; i++) {
+          const ch = v[i]; if (isSp(ch)) { s += ch; continue; }
+          const t0 = Math.min(.7, (i / Math.max(1, v.length)) * .5 + it.ord[i] * .2), kk = (k - t0) / (1 - t0);
+          if (kk >= 1) { s += ch; continue; }
+          const up = ch.toUpperCase(), ti = AL.indexOf(up), steps = 10, pos = Math.floor(Math.max(0, kk) * steps);
+          if (ti < 0) { s += kk > .5 ? ch : rnd(ch); continue; }
+          const c = AL[(ti - steps + pos + AL.length * 2) % AL.length];
+          s += ch === up ? c : c.toLowerCase();
         }
-      })();
-    </script>
+        return s;
+      },
+      'Morphing': (it, k) => {
+        if (it.same) return it.v;
+        const o = it.o, v = it.v, L = Math.round(o.length + (v.length - o.length) * Math.min(1, k * 1.4)); let s = '';
+        for (let i = 0; i < L; i++) {
+          const t = it.ord[i] * .6 + .2, nc = v[i] || '', oc = o[i] || '';
+          s += k >= t + .15 ? nc : k < t - .15 ? (oc || ' ') : (isSp(nc) || !nc ? nc : rnd(nc));
+        }
+        return s;
+      },
+      'Dissolution': (it, k) => { const v = it.v; let s = ''; for (let i = 0; i < v.length; i++) { const ch = v[i], q = it.ord[i]; s += isSp(ch) || q < k * 1.15 ? ch : q < k * 1.15 + .12 ? '░' : '·'; } return s; },
+      'Vague': (it, k) => {
+        const v = it.v, dist = Math.min(1, Math.hypot(it.cx - cxM, it.cy) / Math.hypot(cxM, innerHeight)), front = k * 1.6 - dist * .6; let s = '';
+        for (let i = 0; i < v.length; i++) { const ch = v[i], p = front - (i / v.length) * .25; s += isSp(ch) || p > .25 ? ch : p > 0 ? rnd(ch) : '·'; }
+        return s;
+      }
+    };
+    const f = F[fx] || F['Décodage'], t0 = performance.now();
+    const step = () => {
+      if (tok !== this._fxTok) return;
+      const k = Math.min(1, (performance.now() - t0) / D);
+      items.forEach(it => { if (it.n.isConnected) it.n.nodeValue = k >= 1 ? it.v : f(it, k); });
+      if (k < 1) requestAnimationFrame(step); else if (this._fxItems === items) this._fxItems = null;
+    };
+    step();
+  }
+  componentWillUnmount() {
+    this.restoreFx();
+    this.mq && this.mq.removeEventListener('change', this.onMq);
+    removeEventListener('resize', this.onResize); removeEventListener('scroll', this.onScroll);
+    removeEventListener('pf-terrain-status', this.onTStatus); removeEventListener('scroll', this.onScroll); removeEventListener('keydown', this.onKey);
+  }
+  applyVars() {
+    const c = this.cfg();
+    const key = [c.accent, c.font, c.dark].join('|');
+    if (key === this._key) return; this._key = key;
+    const [h, ch] = ACCENTS[c.accent];
+    const L = c.accent === 'Jaune' ? .82 : (c.dark ? .7 : .58);
+    const accent = `oklch(${L} ${ch} ${h})`;
+    const f = FONTS[c.font];
+    const v = c.dark
+      ? { bg: 'oklch(0.165 0.006 80)', fg: 'oklch(0.95 0.005 80)', muted: 'oklch(0.70 0.008 80)', line: 'oklch(0.33 0.008 80)' }
+      : { bg: 'oklch(0.972 0.005 80)', fg: 'oklch(0.21 0.01 80)', muted: 'oklch(0.47 0.01 80)', line: 'oklch(0.87 0.008 80)' };
+    const vars = {
+      '--bg': v.bg, '--fg': v.fg, '--muted': v.muted, '--line': v.line, '--accent': accent,
+      '--on-accent': (c.accent === 'Jaune' || (c.dark && c.accent !== 'Bleu' && c.accent !== 'Violet')) ? 'oklch(0.18 0.01 80)' : 'oklch(0.99 0.003 80)',
+      '--fd': f.d, '--fb': f.b, '--fm': f.m, '--dw': String(f.w), '--dt': f.tt, '--dls': f.ls
+    };
+    const s = document.documentElement.style;
+    Object.entries(vars).forEach(([k, val]) => s.setProperty(k, val));
+    document.documentElement.lang = c.lang;
+    s.colorScheme = c.dark ? 'dark' : 'light';
+    window.__pfTheme = { bg: v.bg, fg: v.fg, accent, dark: c.dark };
+    window.dispatchEvent(new Event('pf-theme'));
+  }
+  details(c) {
+    const t = T[c.lang], d = D[c.lang], out = [];
+    d.kreaddis.forEach(s => out.push({ kind: t.detail.kExp + ' · Kreaddis', title: s.role, sub: s.type + ' · Kreaddis, Chavanod', date: s.date }));
+    d.edu.forEach(e => out.push({ kind: t.detail.kEdu, title: e.title, sub: e.place, date: e.date }));
+    d.summer.forEach(j => out.push({ kind: t.detail.kJob, title: j.role, sub: j.place, date: j.date }));
+    d.projects.forEach(p => out.push({ kind: t.detail.kProj, title: p.title, sub: p.team + ' · ' + p.context, date: p.year, points: p.points, tags: p.tags, link: p.link }));
+    return out;
+  }
+  openD(i) { clearTimeout(this._dT); this.setState({ detail: i, dOpen: true, dIn: false }); this._dT = setTimeout(() => this.setState({ dIn: true }), 40); }
+  closeD() { clearTimeout(this._dT); this.setState({ dOpen: false, dIn: false }); }
+  stepDetail(dir) {
+    const n = this.details(this.cfg()).length; clearTimeout(this._dT);
+    this.setState({ dIn: false });
+    this._dT = setTimeout(() => { this.setState(s => ({ detail: ((s.detail ?? 0) + dir + n) % n })); this._dT = setTimeout(() => this.setState({ dIn: true }), 40); }, 220);
+  }
+  onSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const ep = this.q('formspree') || this.props.formspree || 'https://formspree.io/f/VOTRE_ID';
+    if (/VOTRE_ID/.test(ep)) { this.setState({ status: 'noep' }); return; }
+    this.setState({ status: 'sending' });
+    try {
+      const r = await fetch(ep, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      if (!r.ok) throw new Error();
+      form.reset(); this.setState({ status: 'ok', fileName: '' });
+    } catch (err) { this.setState({ status: 'err' }); }
+  };
+  renderVals() {
+    const c = this.cfg(), s = this.state;
+    const t = T[c.lang], d = D[c.lang];
+    const st = s.status;
+    const statusMsg = st === 'ok' ? t.contact.ok : st === 'err' ? t.contact.err : st === 'noep' ? t.contact.noEp : '';
+    const on = { bg: 'var(--fg)', fg: 'var(--bg)' }, off = { bg: 'transparent', fg: 'var(--fg)' };
+    const open = i => () => this.openD(i);
+    const nK = d.kreaddis.length, nE = d.edu.length, nS = d.summer.length;
+    const dets = this.details(c);
+    let dd = null;
+    if (s.detail !== null && dets[s.detail]) {
+      const x = dets[s.detail];
+      dd = { ...x, pos: (s.detail + 1) + ' / ' + dets.length, hasTags: !!(x.tags && x.tags.length), tags: x.tags || [], link: x.link || '',
+        listTitle: x.points ? t.detail.done : t.detail.missions, points: x.points || t.detail.missionsPh,
+        pointColor: x.points ? 'var(--fg)' : 'var(--muted)', photos: [t.detail.photo + ' · 1', t.detail.photo + ' · 2', t.detail.photo + ' · 3'] };
+    }
+    let pv = null;
+    if (s.passion) {
+      const P = d.passions[s.passion], tab = P.tabs[Math.min(s.ptab, P.tabs.length - 1)];
+      const hlKey = s.hlIdx >= 0 && tab.parts[s.hlIdx] ? tab.parts[s.hlIdx][0] : '';
+      pv = { n: P.n, title: P.title, mode: tab.mode, hl: hlKey, desc: tab.desc, note: tab.note || '',
+        partsTitle: t.passions[tab.partsTitle] || '', hasStats: !!P.stats && tab.mode === 'map', stats: (P.stats || []).map(([k, v]) => ({ k, v })),
+        tabsOp: P.tabs.length > 1 ? 1 : 0,
+        tabs: P.tabs.length > 1 ? P.tabs.map((tb, i) => ({ label: tb.label, select: () => this.setState({ ptab: i, hlIdx: -1 }), ...(i === s.ptab ? on : off) })) : [],
+        parts: tab.parts.map(([key, label, value], i) => ({ label, value, select: () => this.setState({ hlIdx: s.hlIdx === i ? -1 : i }), dot: i === s.hlIdx ? 'var(--accent)' : 'transparent', color: i === s.hlIdx ? 'var(--accent)' : 'var(--fg)' })) };
+    }
+    const m = s.mobile, sAlt = Math.round((1 - s.prog) * 400) * 10;
+    const openP = k => () => this.setState({ passion: k, ptab: 0, hlIdx: -1 });
+    const CMP = {
+      sky: { ai: 'assets/parachute.png', orig: 'assets/parachute-original.jpg', aspect: '1122/1356', sl: '0%', sw: '100%', ow: '49.198%', tf: 'translate(-24.984%, -8.0002%) matrix(2.65496, -0.029682, 0.029682, 2.65496, 0, 0)' },
+      moto: { ai: 'assets/moto.png', orig: 'assets/moto-original.jpg', aspect: '1096/1402', sl: '-2.372%', sw: '102.372%', ow: '102.674%', tf: 'translate(2.1446%, -22.378%) matrix(1.04931, 0.027471, -0.027471, 1.04931, 0, 0)' }
+    };
+    const prog = s.prog;
+    return {
+      t: { ...t, themeLabel: c.dark ? t.themeLight : t.themeDark }, langCode: c.lang,
+      isMobile: m, notMobile: !m, menuOpen: s.menu,
+      openMenu: () => this.setState({ menu: true }), closeMenu: () => this.setState({ menu: false }),
+      setFR: () => this.switchLang('fr'), setEN: () => this.switchLang('en'),
+      openIut: () => this.setState({ passion: 'iut', ptab: 0, hlIdx: -1 }),
+      frOp: c.lang === 'fr' ? 1 : .45, enOp: c.lang === 'en' ? 1 : .45,
+      toggleTheme: (e) => this.switchTheme(c.dark ? 'light' : 'dark', e),
+      togglePal: () => this.setState(st => ({ palOpen: !st.palOpen })), closePal: () => this.setState({ palOpen: false }),
+      palOpen: s.palOpen, palRing: s.palOpen ? '4px' : '0px',
+      palCurrent: (c.lang === 'en' ? { Rouge: 'Red', Orange: 'Orange', Jaune: 'Yellow', Vert: 'Green', Bleu: 'Blue', Violet: 'Purple', Rose: 'Pink' } : {})[c.accent] || c.accent,
+      palette: Object.keys(ACCENTS).map(k => { const [h, ch] = ACCENTS[k], en = { Rouge: 'Red', Orange: 'Orange', Jaune: 'Yellow', Vert: 'Green', Bleu: 'Blue', Violet: 'Purple', Rose: 'Pink' }[k];
+        return { label: c.lang === 'en' ? en : k, color: `oklch(${k === 'Jaune' ? .82 : c.dark ? .7 : .6} ${ch} ${h})`, ring: k === c.accent ? '1.5px' : '0px', pick: () => { this.setState({ accent: k }); try { localStorage.setItem('pf-accent', k); } catch (e) {} } }; }),
+      terrainSrc: s.terrain, heroView: c.view,
+      setFake: () => this.setState({ terrain: 'fake', tStatus: '' }), setReal: () => this.setState({ terrain: 'real' }),
+      fakeBg: s.terrain === 'fake' ? on.bg : off.bg, fakeFg: s.terrain === 'fake' ? on.fg : off.fg,
+      realBg: s.terrain === 'real' ? on.bg : off.bg, realFg: s.terrain === 'real' ? on.fg : off.fg,
+      terrainCaption: s.terrain === 'fake' ? t.hero.capFake : s.tStatus === 'loading' ? t.hero.capLoading : s.tStatus === 'error' ? t.hero.capError : t.hero.capReal,
+      altLabel: sAlt.toLocaleString('fr-FR') + ' m', phaseLabel: t.phase[sAlt > 1000 ? 'ff' : sAlt > 0 ? 'canopy' : 'landed'] || '',
+      altPct: (s.prog * 100).toFixed(1) + '%',
+      openKre: () => this.setState({ passion: 'kre', ptab: 0, hlIdx: -1 }),
+      facts: t.facts.map(([k, v]) => ({ k, v })),
+      kreaddis: d.kreaddis.map((x, i) => ({ ...x, current: !!x.current, dot: x.current ? 'var(--accent)' : 'transparent', open: open(i) })),
+      edu: d.edu.map((x, i) => ({ ...x, open: open(nK + i) })),
+      summer: d.summer.map((x, i) => ({ ...x, open: open(nK + nE + i) })),
+      projects: d.projects.map((x, i) => ({ ...x, link: x.link || '', open: open(nK + nE + nS + i) })),
+      skills: d.skills.map(([name, items], i) => ({ n: String(i + 1).padStart(2, '0'), name, items })),
+dd: dd || { kind: '', pos: '', date: '', title: '', sub: '', listTitle: '', link: '', hasTags: false, photos: [], points: [], tags: [] },
+      da: { backOp: s.dOpen ? 1 : 0, pe: s.dOpen ? 'auto' : 'none', hidden: s.dOpen ? 'false' : 'true', x: s.dOpen ? 'translateX(0)' : 'translateX(104%)', bar: s.dIn ? 'scaleX(1)' : 'scaleX(0)', op: s.dIn ? 1 : 0,
+        y1: s.dIn ? 'none' : 'translateY(18px)', y2: s.dIn ? 'none' : 'translateY(26px)', y3: s.dIn ? 'none' : 'translateY(34px)', y4: s.dIn ? 'none' : 'translateY(42px)' },
+      profA: c.prof === 'A', profB: c.prof === 'B', profC: c.prof === 'C',
+      steps: t.profil.steps.map(([y, l], i) => ({ y, l, dot: i === t.profil.steps.length - 1 ? 'var(--accent)' : 'var(--bg)' })),
+      ladder: t.profil.ladder.map(([l, p, y], i, arr) => ({ l, p, y, w: Math.round(100 - i * (78 / (arr.length - 1))) + '%', bar: i === 0 ? 'var(--accent)' : 'var(--line)', color: i === 0 ? 'var(--accent)' : 'var(--fg)' })),
+      closeDetail: () => this.closeD(), prevDetail: () => this.stepDetail(-1), nextDetail: () => this.stepDetail(1),
+      pOpen: !!pv, pv: pv || { tabs: [], parts: [], stats: [] },
+      pl: m ? { dir: 'column', canvasFlex: '0 0 50vh', sideW: '100%', sideFlex: '1 1 auto', bl: 'none', bt: '1px solid var(--line)' }
+            : { dir: 'row', canvasFlex: '1 1 auto', sideW: '400px', sideFlex: '0 0 400px', bl: '1px solid var(--line)', bt: 'none' },
+      openSky: openP('sky'), openMoto: openP('moto'), openSnow: openP('snow'), openGym: openP('gym'),
+      closePassion: () => this.setState({ passion: null }),
+      cOpen: !!s.compare, cv: CMP[s.compare] || CMP.sky, cmp: s.cmp,
+      cmpPct: s.cmp + '%', cmpRight: (100 - s.cmp) + '%',
+      onCmp: e => this.setState({ cmp: Number(e.target.value) }),
+      cmpSky: () => this.setState({ compare: 'sky', cmp: 50 }), cmpMoto: () => this.setState({ compare: 'moto', cmp: 50 }),
+      closeCompare: () => this.setState({ compare: null }),
+      onSubmit: this.onSubmit,
+      onFile: (e) => { const f = e.target.files && e.target.files[0]; this.setState({ fileName: f ? f.name : '' }); },
+      fileLabel: s.fileName || t.contact.none,
+      sending: st === 'sending',
+      sendLabel: st === 'sending' ? t.contact.sending : t.contact.send,
+      statusMsg, statusColor: st === 'ok' ? 'var(--fg)' : 'var(--accent)'
+    };
+  }
+}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-
-  <body>
-    <a class="skip-link" href="#accueil">Aller au contenu</a>
-
-    <!-- Calques de fond -->
-    <div class="bg-layers" aria-hidden="true">
-      <div class="bg-dots"></div>
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-      <div class="orb orb-3"></div>
-      <canvas id="particles" class="bg-particles"></canvas>
-      <div class="bg-scan"></div>
-      <div class="grain"></div>
-    </div>
-
-    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
-
-    <header class="site-header" id="site-header">
-      <nav class="nav-pill" aria-label="Navigation principale">
-        <a class="brand" href="#accueil" id="brand" aria-label="Accueil"><span class="brand-mark">CF</span></a>
-
-        <ul class="nav-links" id="nav-links"></ul>
-
-        <div class="nav-actions">
-          <button type="button" class="lang-toggle" id="lang-toggle" aria-label="Changer de langue">
-            <span class="lseg is-active" id="lseg-fr">FR</span>
-            <span class="lseg" id="lseg-en">EN</span>
-          </button>
-          <button class="theme-btn palette-btn" id="palette-toggle" type="button" aria-label="Changer de palette"></button>
-          <button class="theme-btn" id="theme-toggle" type="button" aria-label="Basculer le theme"></button>
-          <button class="hamburger" id="menu-btn" type="button" aria-label="Menu" aria-expanded="false">
-            <span></span><span></span><span></span>
-          </button>
-        </div>
-      </nav>
-    </header>
-
-    <button type="button" class="mobile-backdrop" id="mobile-backdrop" tabindex="-1" aria-hidden="true"></button>
-    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-      <ul id="mobile-links"></ul>
-    </div>
-
-    <main>
-      <!-- HERO -->
-      <section class="hero" id="accueil">
-        <div class="hero-inner">
-          <div class="hero-content">
-            <p class="status-pill" id="home-status"><span class="dot"></span><span id="home-status-text"></span></p>
-            <p class="hero-kicker" id="home-kicker"></p>
-            <div class="hero-name-wrap">
-              <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
-              <svg class="hero-name-svg" id="hero-name-svg" viewBox="0 0 1000 180" aria-hidden="true">
-                <defs>
-                  <linearGradient id="name-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="var(--g1)" />
-                    <stop offset="50%" stop-color="var(--g2)" />
-                    <stop offset="100%" stop-color="var(--g3)" />
-                  </linearGradient>
-                </defs>
-                <text class="name-stroke" id="name-stroke" x="0" y="132" text-anchor="start" textLength="1000" lengthAdjust="spacingAndGlyphs"></text>
-                <text class="name-fill" id="name-fill" x="0" y="132" text-anchor="start" textLength="1000" lengthAdjust="spacingAndGlyphs"></text>
-              </svg>
-              <h1 class="sr-only" id="home-name-sr"></h1>
-            </div>
-            <p class="hero-role"><span id="home-role" class="type-target"></span><span class="caret" aria-hidden="true"></span></p>
-            <p class="hero-tagline" id="home-tagline"></p>
-            <div class="hero-actions" id="home-actions"></div>
-          </div>
-
-          <div class="hero-visual" aria-hidden="true">
-            <div class="code-window">
-              <div class="cw-bar"><i></i><i></i><i></i><em>kreaddis · sale_order.py</em></div>
-              <pre class="cw-code"><span class="c-k">from</span> odoo <span class="c-k">import</span> models, fields, api
-
-<span class="c-k">class</span> <span class="c-t">SaleOrder</span>(models.Model):
-    _inherit = <span class="c-s">"sale.order"</span>
-
-    marge = fields.<span class="c-t">Float</span>(
-        compute=<span class="c-s">"_compute_marge"</span>,
-        store=<span class="c-b">True</span>,
-    )
-
-    <span class="c-d">@api.depends</span>(<span class="c-s">"order_line.margin"</span>)
-    <span class="c-k">def</span> <span class="c-f">_compute_marge</span>(self):
-        <span class="c-k">for</span> order <span class="c-k">in</span> self:
-            order.marge = <span class="c-fn">sum</span>(
-                order.order_line.mapped(<span class="c-s">"margin"</span>)
-            )</pre>
-            </div>
-          </div>
-        </div>
-
-        <a class="scroll-cue" href="#stats" id="scroll-cue" aria-hidden="true">
-          <span id="scroll-cue-text"></span>
-          <span class="chev"></span>
-        </a>
-      </section>
-
-      <!-- STATS -->
-      <section class="stats-strip" id="stats" aria-label="Chiffres cles">
-        <div class="container stats-grid" id="stats-grid"></div>
-      </section>
-
-      <section class="section container" id="a-propos" aria-labelledby="a-propos-title"></section>
-      <section class="section container" id="interets" aria-labelledby="interets-title"></section>
-      <section class="section container" id="experience" aria-labelledby="experience-title"></section>
-      <section class="section container" id="projets" aria-labelledby="projets-title"></section>
-      <section class="section container" id="competences" aria-labelledby="competences-title"></section>
-      <section class="section container" id="contact" aria-labelledby="contact-title"></section>
-    </main>
-
-    <footer class="footer">
-      <div class="container footer-inner">
-        <span class="brand-sm" id="footer-brand"></span>
-        <p id="footer-text"></p>
-        <div class="footer-social" id="footer-social"></div>
-      </div>
-    </footer>
-
-    <button type="button" class="to-top" id="to-top" aria-label="Remonter en haut"></button>
-
-    <!-- Modal detail experience -->
-    <div class="modal" id="xp-modal" aria-hidden="true" role="dialog" aria-modal="true">
-      <div class="modal-backdrop" id="xp-modal-backdrop"></div>
-      <div class="modal-panel" id="xp-modal-panel" role="document">
-        <button type="button" class="modal-close" id="xp-modal-close" aria-label="Fermer"></button>
-        <div id="xp-modal-body"></div>
-      </div>
-    </div>
-
-    <script src="./data.js"></script>
-    <script src="./script.js"></script>
-  </body>
+</script>
+</body>
 </html>

@@ -1,67 +1,57 @@
-# Portfolio - Cyril Feltrin
+# Portfolio - Cyril Feltrin (v4, scènes 3D)
 
-Portfolio statique (HTML / CSS / JavaScript vanilla), bilingue FR/EN, thème sombre/clair,
-design "dev premium" en violet, déployé automatiquement sur GitHub Pages.
+Portfolio statique bilingue FR/EN, thème clair ou sombre, couleur d'accent au choix, avec des scènes 3D
+interactives (Three.js). Conçu avec Claude Design, puis développé avec Claude Code.
 
 ## Lancer en local
 
-Ouvre `index.html` dans ton navigateur. (Si un navigateur bloque quelque chose en `file://`,
-sers le dossier avec `python3 -m http.server` puis ouvre `http://localhost:8000`.)
+Le site doit être servi par un petit serveur : en double-cliquant sur `index.html`, les cartes 3D ne se
+chargent pas.
 
-## Modifier le contenu : un seul fichier
+```bash
+python3 -m http.server 8765
+# puis ouvrir http://localhost:8765
+```
 
-Tout le contenu du site vit dans **`data.js`**. C'est la seule source à éditer.
+## Structure
 
-Principe : la structure est écrite **une seule fois**. Seul le texte à traduire est un objet
-`{ fr: "...", en: "..." }`. Le reste (URLs, images, dates, valeurs %, tags) est écrit une fois.
+- `index.html` : la page et **tous les textes**, dans deux objets en bas du fichier : `T` (libellés de
+  l'interface) et `D` (parcours, projets, compétences, passions), chacun en `fr` et `en`.
+- `support.js` : moteur de rendu de Claude Design (charge React et transforme les `{{ ... }}` en page).
+  Fichier généré, ne pas le modifier.
+- `pf3d-v4.js` : toute la 3D, sous forme de deux balises HTML :
+  - `<pf-terrain>` : le relief de l'accueil (données d'altitude réelles autour de l'aérodrome de Chambéry)
+    et le saut en parachute animé au défilement ;
+  - `<pf-scene>` : les scènes des passions (carte du saut, parachute, moto, snowboard, musculation) et les
+    plans 3D de Kreaddis et de l'IUT (données OpenStreetMap).
+- `assets/` :
+  - `parachute-3d.glb` : modèle du parachute (voile et sac-harnais), compressé avec glTF-Transform
+    (textures WebP, géométrie Meshopt) : 2,1 Mo au lieu de 10,9 Mo, rendu identique ;
+  - `lib/meshopt_decoder.module.js` : décodeur nécessaire pour lire ce modèle (meshoptimizer, licence MIT) ;
+  - `kreaddis-osm.json`, `iut-osm.json` : extraits OpenStreetMap des plans de quartier ;
+  - photos, CV en PDF.
 
-- Ajouter une expérience / un projet / une compétence : copier un bloc existant dans la liste
-  correspondante et adapter.
-- Une traduction manquante saute aux yeux : `fr` et `en` sont côte à côte.
-- L'**âge** est calculé automatiquement depuis `identity.birthdate` (le token `{age}` est remplacé).
-- Le **hero** : `home.titles` = les titres qui défilent (type animation) ; `home.stats` = les
-  chiffres animés ; `home.status` = la pastille verte.
+## Services externes utilisés
 
-Fichiers :
+Le site charge au démarrage :
 
-- `data.js` : **contenu** (FR + EN), la seule chose à éditer au quotidien.
-- `styles.css` : design (design system par variables CSS).
-- `script.js` : logique (rendu, langue, thème, type animation, compteurs, radar, particules, formulaire).
-- `assets/` : images (`.webp`) et CV PDF (voir `assets/README.md`).
+- React, ReactDOM et Babel depuis unpkg.com (moteur de la page) ;
+- Three.js et son chargeur glTF depuis unpkg.com (3D) ;
+- les tuiles d'altitude Terrarium sur AWS (relief) ;
+- les polices Google Fonts ;
+- Formspree pour le formulaire de contact.
 
-## Thème et couleur
+Si unpkg.com est indisponible, la page ne s'affiche pas.
 
-- Thème **sombre par défaut**, bouton bascule (switch) pour le clair (`localStorage`, clé `theme`).
-- Langue FR/EN mémorisée (`localStorage`, clé `portfolioLang`).
-- **Couleur d'accent** : centralisée dans le bloc de tokens en haut de `styles.css`
-  (`--g1`, `--g2`, `--g3`, `--accent`). Changer ces variables change toute l'identité couleur
-  (dégradés des titres, boutons, badges, radar, orbs de fond).
+## Formulaire de contact (Formspree)
 
-## Compétences (barres + radar)
+1. Créer un formulaire sur https://formspree.io et copier son URL `https://formspree.io/f/xxxxxxx`.
+2. Dans `index.html`, remplacer `https://formspree.io/f/VOTRE_ID` par cette URL.
+3. Dans Formspree, ajouter le domaine du site dans "Allowed domains".
+4. Les pièces jointes demandent l'offre payante de Formspree ; sans elle, le message part sans le fichier.
 
-Barres (groupées par catégorie) et radar (toutes les compétences) sont générés depuis
-`sections.skills.categories`. Modifier une valeur `value` (0-100) met à jour les deux.
+## Déploiement
 
-## Formulaire de contact
-
-Par défaut (`sections.contact.formActionUrl` vide), le formulaire ouvre un **mailto** prérempli.
-Pour un envoi réel sans serveur, utiliser **Formspree** (offre gratuite) :
-
-1. Créer un formulaire sur https://formspree.io
-2. Récupérer l'URL `https://formspree.io/f/xxxxxxxx`
-3. La coller dans `sections.contact.formActionUrl` (dans `data.js`)
-4. Déployer.
-
-## Déploiement GitHub Pages (automatique)
-
-À chaque `push` sur **`main`**, le workflow (`.github/workflows/deploy.yml`) publie le site sur la
-branche **`gh-pages`**. Un fichier `.nojekyll` évite le traitement Jekyll.
-
-Activation (une fois) : **Settings -> Pages -> Deploy from a branch -> `gh-pages` / `(root)`**.
-URL du site : `https://FELTRINCyril.github.io/Portfolio/`.
-
-## Sauvegardes
-
-- `backup-old-portfolio` : tout premier portfolio.
-- `backup-v2-editorial` : version "éditorial épuré" (clair).
-- `main` : version actuelle (dev premium violet).
+GitHub Pages sert le site depuis la branche `main` (https://feltrincyril.github.io/Portfolio/). Cette
+version vit pour l'instant sur la branche `portfolio-v4-3d` : elle n'est pas en ligne tant qu'elle n'est
+pas fusionnée dans `main`.
