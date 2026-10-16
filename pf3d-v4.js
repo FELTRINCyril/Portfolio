@@ -47,7 +47,9 @@
 
   // Real elevation — Aérodrome de Chambéry-Aix-les-Bains (LFLB), Savoie Parachutisme
   const LFLB = { lat: 45.6381, lon: 5.8803 }, Z = 11, TS = 256, SPAN = 2.8, SIZE = 14;
-  const SITES = { lflb: { key: 'lflb', lat: 45.6381, lon: 5.8803, z: 11, water: 232.6 }, kre: { key: 'kre', lat: 45.878, lon: 6.108, z: 12, pin: [45.8893, 6.0565], water: 449.5, seed: [45.875, 6.163] } };
+  // kre.pin = centroid of the Kreaddis building in assets/kreaddis-osm.json (6 rue André Ampère, ZA des Césardes,
+  // geocoded 45.88704, 6.07600). It used to point ~1.5 km west, which broke the region <-> neighbourhood alignment.
+  const SITES = { lflb: { key: 'lflb', lat: 45.6381, lon: 5.8803, z: 11, water: 232.6 }, kre: { key: 'kre', lat: 45.878, lon: 6.108, z: 12, pin: [45.88721, 6.0757], water: 449.5, seed: [45.875, 6.163] } };
   function tileF(lat, lon, z = Z) { const n = 2 ** z, lr = lat * Math.PI / 180; return [(lon + 180) / 360 * n, (1 - Math.log(Math.tan(lr) + 1 / Math.cos(lr)) / Math.PI) / 2 * n]; }
   function ll2xz(lat, lon, S = SITES.lflb) { const [ax, ay] = tileF(S.lat, S.lon, S.z), [fx, fy] = tileF(lat, lon, S.z); return [(fx - ax) / SPAN * SIZE, (fy - ay) / SPAN * SIZE]; }
   const demPs = {};
@@ -81,6 +83,11 @@
     return D.el[i] * (1 - fx) * (1 - fy) + D.el[i + 1] * fx * (1 - fy) + D.el[i + D.W] * (1 - fx) * fy + D.el[i + D.W + 1] * fx * fy;
   }
   const E2Y = e => Math.max(0, (e - 232) / 1000 * 0.85);
+  // Region (kreregion) and neighbourhood maps (kreaddis, iut) share one scene so the tabs can zoom into each other.
+  const GEO_LAYER = { kreregion: 'region', kreaddis: 'kreaddis', iut: 'iut' };
+  const CITY_RAD = 21.5; // radius of a neighbourhood map, in its own units (RAD in buildCity)
+  // A neighbourhood map unit is 50 m; in region units (Web Mercator tiles at zoom S.z) that is:
+  const cityScale = (lat, S = SITES.kre) => 50 * SIZE * 2 ** S.z / (SPAN * 40075016.686 * Math.cos(lat * Math.PI / 180));
 
   function lakeMask(D) {
     if (D.mask) return D.mask;
@@ -127,10 +134,10 @@
     geo.computeVertexNormals();
     const mat = new T.ShaderMaterial({
       transparent: true,
-      uniforms: { uBg: { value: new T.Color() }, uFg: { value: new T.Color() }, uAc: { value: new T.Color() }, uDark: { value: 0 }, uTime: { value: 0 }, uLand: { value: new T.Vector3() }, uMask: { value: tex }, uMP: { value: mp } },
+      uniforms: { uBg: { value: new T.Color() }, uFg: { value: new T.Color() }, uAc: { value: new T.Color() }, uDark: { value: 0 }, uTime: { value: 0 }, uLand: { value: new T.Vector3() }, uMask: { value: tex }, uMP: { value: mp }, uOp: { value: 1 } },
       vertexShader: `varying float vH; varying vec3 vN; varying vec3 vW; varying float vD;
         void main(){ vH=position.y; vN=normal; vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; vec4 mv=viewMatrix*w; vD=-mv.z; gl_Position=projectionMatrix*mv; }`,
-      fragmentShader: `uniform vec3 uBg; uniform vec3 uFg; uniform vec3 uAc; uniform float uDark; uniform float uTime; uniform vec3 uLand; uniform sampler2D uMask; uniform vec4 uMP;
+      fragmentShader: `uniform vec3 uBg; uniform vec3 uFg; uniform vec3 uAc; uniform float uDark; uniform float uTime; uniform vec3 uLand; uniform sampler2D uMask; uniform vec4 uMP; uniform float uOp;
         varying float vH; varying vec3 vN; varying vec3 vW; varying float vD;
         void main(){
           float m = uMP.w > .5 ? texture2D(uMask, vec2(uMP.x + vW.x*uMP.z, uMP.y + vW.z*uMP.z)).r : 0.;
@@ -150,7 +157,7 @@
           col = mix(col, uAc, pulse*.9 + smoothstep(.12,.0,dl)*.8);
           float edge = smoothstep(7.,4.2,max(abs(vW.x),abs(vW.z))*1.08);
           float fog = smoothstep(30.,9.,vD);
-          gl_FragColor = vec4(col, edge*fog);
+          gl_FragColor = vec4(col, edge*fog*uOp);
         }`
     });
     mat.extensions = { derivatives: true };
@@ -372,7 +379,13 @@
       if (this.R) { this.R.dispose(); this.R.forceContextLoss(); }
       this._started = false; this._ready = false; this.innerHTML = '';
     }
-    attributeChangedCallback(n) { if (!this._ready) return; if (n === 'highlight') this.recolor(); else this.build(); }
+    attributeChangedCallback(n, oldV, newV) {
+      if (!this._ready) return;
+      if (n === 'highlight') return this.recolor();
+      // Region <-> neighbourhood: animate inside the existing scene instead of rebuilding it
+      if (n === 'mode' && this.geo && GEO_LAYER[newV]) return this.geoGo(GEO_LAYER[newV]);
+      this.build();
+    }
     get hl() { return this.getAttribute('highlight') || ''; }
     colorFor(kind) {
       const t = theme(), bg = toRGB(t.bg), fg = toRGB(t.fg);
@@ -490,13 +503,19 @@
       el.addEventListener('pointerdown', e => { el.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); el.style.cursor = 'grabbing'; this.orb.idle = 0; this._goto = null; });
       el.addEventListener('pointermove', e => {
         if (!pts.has(e.pointerId)) return; const [px, py] = pts.get(e.pointerId);
+        if (this.geo && this.geo.tr) { pts.set(e.pointerId, [e.clientX, e.clientY]); return; } // camera driven by the transition
         if (pts.size === 1) { this.orb.th -= (e.clientX - px) * .006; this.orb.ph = Math.min(this.phMax || 1.5, Math.max(.2, this.orb.ph - (e.clientY - py) * .005)); }
-        else { const o = [...pts.entries()].find(([k]) => k !== e.pointerId)[1]; const d0 = Math.hypot(px - o[0], py - o[1]), d1 = Math.hypot(e.clientX - o[0], e.clientY - o[1]); this.orb.r = Math.min(this.rMax, Math.max(this.rMin, this.orb.r * d0 / (d1 || 1))); }
+        else { const o = [...pts.entries()].find(([k]) => k !== e.pointerId)[1]; const d0 = Math.hypot(px - o[0], py - o[1]), d1 = Math.hypot(e.clientX - o[0], e.clientY - o[1]), r0 = this.orb.r, f = d0 / (d1 || 1);
+          this.orb.r = Math.min(this.rMax, Math.max(this.rMin, r0 * f)); if (this.geo) this.geoOverscroll((f - 1) * 800, r0); }
         pts.set(e.pointerId, [e.clientX, e.clientY]); this.orb.idle = 0;
       });
       const up = e => { pts.delete(e.pointerId); el.style.cursor = 'grab'; };
       el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
-      el.addEventListener('wheel', e => { e.preventDefault(); this.orb.r = Math.min(this.rMax, Math.max(this.rMin, this.orb.r * (1 + e.deltaY * .001))); this.orb.idle = 0; this._goto = null; }, { passive: false });
+      el.addEventListener('wheel', e => {
+        e.preventDefault(); if (this.geo && this.geo.tr) return;
+        const r0 = this.orb.r; this.orb.r = Math.min(this.rMax, Math.max(this.rMin, r0 * (1 + e.deltaY * .001))); this.orb.idle = 0; this._goto = null;
+        if (this.geo) this.geoOverscroll(e.deltaY, r0);
+      }, { passive: false });
       const resize = () => { const w = this.clientWidth || 1, h = this.clientHeight || 1; R.setSize(w, h, false); this.cam.aspect = w / h; this.cam.updateProjectionMatrix(); this.W = w; this.H = h; };
       this._ro = new ResizeObserver(resize); this._ro.observe(this); resize();
       this._ready = true; await this.build();
@@ -510,7 +529,7 @@
         c.lookAt(o.tgt);
         if (this.scene) R.render(this.scene, c);
         (this.labels || []).forEach(l => {
-          v.copy(l.p).project(c); const vis = v.z < 1 && Math.abs(v.x) < 1.1 && Math.abs(v.y) < 1.1;
+          v.copy(l.p).project(c); const vis = !l.off && v.z < 1 && Math.abs(v.x) < 1.1 && Math.abs(v.y) < 1.1;
           l.el.style.display = vis ? 'block' : 'none';
           if (vis) l.el.style.transform = `translate(${(v.x * .5 + .5) * this.W}px, ${(-v.y * .5 + .5) * this.H}px) translate(-50%, -130%)`;
         });
@@ -520,7 +539,7 @@
     async build() {
       const T = this.T, mode = this.getAttribute('mode') || 'canopy', tok = (this._tok = (this._tok || 0) + 1);
       this.mats = []; this.accentMats = []; this.fgMats = []; this.labels = []; this.lblRoot.innerHTML = ''; this.update = null; this.terr = null;
-      this.glbParts = null; this.focus = null; this._goto = null;
+      this.glbParts = null; this.focus = null; this._goto = null; this.geo = null; this._geoQueue = null;
       if (this.scene) this.scene.traverse(o => { o.geometry && o.geometry.dispose(); });
       const scene = this._scene = new T.Scene(); this._phys = false; this._srgb = false; this._sky = null;
       this.cam.far = 200; this.cam.updateProjectionMatrix();
@@ -537,9 +556,7 @@
       else if (mode === 'moto') this.buildMoto(g);
       else if (mode === 'gym') this.buildGym(g);
       else if (mode === 'snow') this.buildSnow(g);
-      else if (mode === 'kreaddis') { await this.buildKre(g); if (tok !== this._tok) return; }
-      else if (mode === 'iut') { await this.buildIut(g); if (tok !== this._tok) return; }
-      else if (mode === 'kreregion') { await this.buildKreRegion(g); if (tok !== this._tok) return; }
+      else if (GEO_LAYER[mode]) { await this.buildGeo(g, mode, tok); if (tok !== this._tok) return; }
       else { this.scene = null; this.R.clear(); await this.buildCanopyGlb(g); if (tok !== this._tok) return; }
       this.scene = scene; this.recolor();
       if (this._frame) this._frame();
@@ -883,12 +900,16 @@
     async buildIut(g) { return this.buildCity(g, 'assets/iut-osm.json', { key: 'iut', label: 'IUT d’Annecy · 9 rue de l’Arc en Ciel', street: 'Rue de l’Arc en Ciel', alt: "Rue de l'Arc en Ciel" }); }
     flatMat(key, kind, extra) { const m = new this.T.MeshBasicMaterial(Object.assign({ transparent: true }, extra || {})); m.userData = { key, kind, line: true }; this.mats.push(m); return m; }
     async buildCity(g, file, site) {
-      const T = this.T, S = 1 / 50, RAD = 21.5; this._srgb = true;
+      const T = this.T, S = 1 / 50, RAD = CITY_RAD; this._srgb = true;
       PfScene._osmC = PfScene._osmC || {};
-      let O; try { O = PfScene._osmC[file] || (PfScene._osmC[file] = await (await fetch(file)).json()); } catch (e) { return this.buildKreRegion(g); }
+      let O; try { O = PfScene._osmC[file] || (PfScene._osmC[file] = await (await fetch(file)).json()); } catch (e) { if (this._geoBuilding) throw e; return this.buildKreRegion(g); }
+      // Edge fade in world space: (centre x, centre z, outer radius, inner radius). buildGeo moves and shrinks it
+      // when the map is placed on the region relief, and animates the radii to reveal the map from its centre.
+      const fadeU = { value: new T.Vector4(0, 0, RAD, RAD - 5) }; g.userData.fade = fadeU;
       const fade = m => { m.transparent = true; m.onBeforeCompile = sh => {
+        sh.uniforms.uFade = fadeU;
         sh.vertexShader = 'varying vec2 vFw;\n' + sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\nvFw = (modelMatrix * vec4(transformed, 1.)).xz;');
-        sh.fragmentShader = 'varying vec2 vFw;\n' + sh.fragmentShader.replace('#include <fog_fragment>', '#include <fog_fragment>\ngl_FragColor.a *= smoothstep(' + RAD.toFixed(1) + ', ' + (RAD - 5).toFixed(1) + ', length(vFw));');
+        sh.fragmentShader = 'uniform vec4 uFade; varying vec2 vFw;\n' + sh.fragmentShader.replace('#include <fog_fragment>', '#include <fog_fragment>\ngl_FragColor.a *= smoothstep(uFade.z, uFade.w, length(vFw - uFade.xy));');
       }; return m; };
       const F = (key, kind, extra) => fade(this.flatMat(key, kind, extra));
       this._hemi.color.setRGB(1, 1, 1); this._hemi.groundColor.setRGB(.5, .5, .5); this._hemi.intensity = 2.1; this._sun.intensity = .9; this._sun.position.set(-5, 10, 7); this._fill.intensity = .35;
@@ -946,8 +967,9 @@
       const eg = new T.BufferGeometry(); eg.setAttribute('position', new T.Float32BufferAttribute(ep, 3));
       const em = fade(new T.LineBasicMaterial({ transparent: true, opacity: .5 })); em.userData = { key: 'batiments', kind: 'cEdge', line: true }; this.mats.push(em); g.add(new T.LineSegments(eg, em));
       if (kn) { kc = [kc[0] / kn, 0, kc[2] / kn]; } const K = new T.Vector3(kc[0], 0, kc[2]);
+      let kEm = null; // local: buildGeo builds two maps in the same scene
       if (kg.length) { const km = new T.MeshStandardMaterial({ roughness: .7, emissiveIntensity: 1 }); this.accentMats.push(km); const kmesh = add(merge(kg), km, 0);
-        const ke = new T.LineBasicMaterial({ transparent: true, opacity: .9 }); this.fgMats.push(ke); kmesh.add(new T.LineSegments(new T.EdgesGeometry(kmesh.geometry, 30), ke)); this._kEm = km; }
+        const ke = new T.LineBasicMaterial({ transparent: true, opacity: .9 }); this.fgMats.push(ke); kmesh.add(new T.LineSegments(new T.EdgesGeometry(kmesh.geometry, 30), ke)); kEm = km; }
       const am = new T.MeshBasicMaterial(), fm = new T.MeshBasicMaterial(); this.accentMats.push(am); this.fgMats.push(fm);
       const pin = new T.Mesh(new T.CylinderGeometry(.01, .01, 1.6, 8), fm); pin.position.set(K.x, kTop + .8, K.z); g.add(pin);
       const head = new T.Mesh(new T.SphereGeometry(.1, 20, 16), am); g.add(head);
@@ -965,7 +987,8 @@
         const l = this.label(st ? 'rue' : 'routes', new T.Vector3(q[0] * S, .05, q[1] * S), o.h.n); Object.assign(l.el.style, { background: 'transparent', border: 'none', fontSize: '10px', opacity: st ? '1' : '.7' });
       });
       if (site.ref) { const mw = O.h.find(h => h.c === 'motorway' && h.g.some(q => near(q, RAD * .6))); if (mw) { const q = mw.g.find(q2 => near(q2, RAD * .6)); const l = this.label('routes', new T.Vector3(q[0] * S, .05, q[1] * S), mw.ref || 'A41'); l.el.style.fontWeight = '600'; } }
-      this.update = t => { head.position.set(K.x, kTop + 1.62 + Math.sin(t * 2) * .04, K.z); const u = (t * .45) % 1; ring.scale.setScalar(.3 + u * 2.2); ringM.opacity = .9 * (1 - u); if (this._kEm) { const ac = toRGB(theme().accent); this._kEm.emissive.setRGB(ac[0] * .35, ac[1] * .35, ac[2] * .35, T.SRGBColorSpace); } };
+      g.userData.center = [pin, head, ring]; // marker objects, shown only once the map is fully in place
+      this.update = t => { head.position.set(K.x, kTop + 1.62 + Math.sin(t * 2) * .04, K.z); const u = (t * .45) % 1; ring.scale.setScalar(.3 + u * 2.2); ringM.opacity = .9 * (1 - u); if (kEm) { const ac = toRGB(theme().accent); kEm.emissive.setRGB(ac[0] * .35, ac[1] * .35, ac[2] * .35, T.SRGBColorSpace); } };
       this.phMax = 1.32; this.view([K.x, 0, K.z], 24, .82, .5, 3, 46);
     }
 
@@ -987,6 +1010,134 @@
       this.label('annecy', P(45.8992, 6.1294, .14)); this.label('lac', P(45.858, 6.168, .1)); this.label('semnoz', P(45.796, 6.098, .14));
       this.update = t => { terr.mat.uniforms.uTime.value = t; head.position.y = k.y + .92 + Math.sin(t * 2) * .03; };
       this.view([-.2, .4, .6], 13, .92, .15, 3, 22);
+    }
+
+    /* ---------- Region <-> neighbourhood: one scene, continuous zoom ----------
+       The region relief and the two neighbourhood maps (Kreaddis, IUT) live in region coordinates: each map is
+       scaled down to its true size (1 map unit = 50 m) and placed at its real position on the relief. Switching
+       tab, clicking a site on the region, or zooming past the limits plays a camera move between the two framings
+       while the relief fades out, the map is revealed from its centre and its buildings rise. */
+    async buildGeo(g, mode, tok) {
+      const T = this.T, S = SITES.kre;
+      this._geoBuilding = true;
+      const take = async fn => {
+        const group = new T.Group(), l0 = this.labels.length; this.update = null;
+        await fn(group);
+        const o = this.orb;
+        return { group, labels: this.labels.slice(l0), update: this.update,
+          view: { tgt: o.tgt.clone(), r: o.r, ph: o.ph, th: o.th, rMin: this.rMin, rMax: this.rMax, phMax: this.phMax } };
+      };
+      try {
+        const region = await take(gr => this.buildKreRegion(gr)); if (tok !== this._tok) return;
+        // Pins are sized to be read from afar: up close they would tower over the map, so they leave first
+        region.mats = []; region.markers = [];
+        region.group.traverse(o => { if (!o.material) return; if (o.isMesh && !o.material.uniforms) region.markers.push(o); else region.mats.push(o.material); });
+        let D = null; try { D = await loadDEM(S); } catch (e) {}
+        const gy = (x, z) => D ? E2Y(demAt(D, x, z)) : fakeH(x, z);
+        const L = { region };
+        for (const [key, fn, file] of [['kreaddis', gr => this.buildKre(gr), 'assets/kreaddis-osm.json'], ['iut', gr => this.buildIut(gr), 'assets/iut-osm.json']]) {
+          let lay; try { lay = await take(fn); } catch (e) { continue; } // map unavailable: the region simply has no dive for it
+          if (tok !== this._tok) return;
+          const O = PfScene._osmC[file], k = cityScale(O.c[0]), [cx, cz] = ll2xz(O.c[0], O.c[1], S), rad = CITY_RAD * k;
+          // The map is flat: lift it above the highest point of the relief under its disc so it is never buried
+          let top = -Infinity;
+          for (let i = 0; i < 48; i++) for (const f of [0, .35, .7, 1]) { const a = i / 48 * Math.PI * 2; top = Math.max(top, gy(cx + Math.cos(a) * rad * f, cz + Math.sin(a) * rad * f)); }
+          const gr = lay.group; gr.position.set(cx, top + .002, cz); gr.scale.setScalar(k); gr.updateMatrixWorld(true);
+          lay.labels.forEach(l => l.p.applyMatrix4(gr.matrixWorld));
+          const v = lay.view; v.tgt.applyMatrix4(gr.matrixWorld); v.r *= k; v.rMin *= k; v.rMax *= k;
+          Object.assign(lay, { k, rad, fade: gr.userData.fade, center: gr.userData.center || [] });
+          if (lay.fade) lay.fade.value.set(cx, cz, rad, rad * (CITY_RAD - 5) / CITY_RAD);
+          gr.traverse(o => { o.renderOrder = 1; }); // drawn after the (fading, transparent) relief
+          L[key] = lay;
+        }
+        Object.values(L).forEach(l => g.add(l.group));
+        const G = this.geo = { L, cur: L[GEO_LAYER[mode]] ? GEO_LAYER[mode] : 'region', tr: null };
+        // On the region, the Kreaddis and IUT labels lead into their neighbourhood
+        region.labels.forEach(l => {
+          if (!L[l.key] || l.key === 'region') return;
+          Object.assign(l.el.style, { pointerEvents: 'auto', cursor: 'pointer' });
+          l.el.title = this.lang === 'en' ? 'Zoom into the neighbourhood' : 'Plonger dans le quartier';
+          l.el.addEventListener('click', () => this.geoNav(l.key));
+        });
+        this.update = t => { Object.values(L).forEach(l => l.update && l.update(t)); this.geoTick(); };
+        this.geoSet(G.cur === 'region' ? 0 : 1, G.cur === 'region' ? null : G.cur);
+        this.geoView(L[G.cur].view);
+      } finally { this._geoBuilding = false; }
+    }
+    geoView(v) { const o = this.orb; o.tgt.copy(v.tgt); o.r = v.r; o.ph = v.ph; o.th = v.th; this.rMin = v.rMin; this.rMax = v.rMax; this.phMax = v.phMax; }
+    // p = progress towards the neighbourhood `city` (0 = region only, 1 = neighbourhood only)
+    geoSet(p, city) {
+      const L = this.geo.L, ramp = (a, b) => Math.min(1, Math.max(0, (p - a) / (b - a)));
+      const fr = 1 - ramp(.45, .85), fc = ramp(.35, .8), grow = .02 + .98 * ramp(.6, 1), fl = ramp(.85, 1), rl = 1 - ramp(0, .25);
+      const R = L.region; R.group.visible = fr > .001;
+      R.mats.forEach(m => {
+        if (m.uniforms && m.uniforms.uOp) { m.uniforms.uOp.value = fr; m.depthWrite = fr > .999; } // the relief must not hide the map while fading
+        else { m.transparent = true; m.opacity = fr; }
+      });
+      const fm = Math.min(fr, 1 - ramp(0, .3));
+      R.markers.forEach(o => { o.visible = fm > .001; o.material.transparent = true; o.material.opacity = fm; });
+      R.labels.forEach(l => { l.off = rl <= .01; l.el.style.opacity = rl; });
+      ['kreaddis', 'iut'].forEach(key => {
+        const C = L[key]; if (!C) return;
+        const on = key === city, f = on ? fc : 0;
+        C.group.visible = f > .001; C.group.scale.set(C.k, C.k * (on ? grow : .02), C.k);
+        if (C.fade) { const r = Math.max(1e-4, C.rad * f); C.fade.value.z = r; C.fade.value.w = r * (CITY_RAD - 5) / CITY_RAD; }
+        C.center.forEach(o => { o.visible = on && p > .9; });
+        C.labels.forEach(l => { l.off = !on || fl <= .01; l.el.style.opacity = on ? fl : 0; });
+      });
+    }
+    geoGo(target) {
+      const G = this.geo; if (!G || !G.L[target]) return;
+      if (G.tr) { this._geoQueue = target; return; }   // replayed when the current move ends
+      if (target === G.cur) return;
+      if (G.cur !== 'region' && target !== 'region') { this._geoQueue = target; target = 'region'; } // map -> other map goes through the region
+      const o = this.orb;
+      G.tr = { to: target, city: target === 'region' ? G.cur : target, dir: target === 'region' ? -1 : 1, t0: performance.now(), dur: 2600,
+        A: { tgt: o.tgt.clone(), r: o.r, ph: o.ph, th: o.th }, B: G.L[target].view };
+      this._goto = null;
+    }
+    geoTick() {
+      const G = this.geo, o = this.orb, c = this.cam;
+      // Scale spans ~27x between the two framings: keep the depth range proportional to the camera distance
+      const near = Math.max(5e-4, o.r * .004), far = Math.max(60, o.r * 30);
+      if (c.near !== near || c.far !== far) { c.near = near; c.far = far; c.updateProjectionMatrix(); }
+      const tr = G.tr; if (!tr) return;
+      const u = Math.min(1, (performance.now() - tr.t0) / tr.dur), e = u < .5 ? 4 * u ** 3 : 1 - (-2 * u + 2) ** 3 / 2;
+      // Diving in: centre the site first, then descend. Leaving: rise first, then recentre on the region.
+      const et = tr.dir > 0 ? 1 - (1 - Math.min(1, u * 1.6)) ** 3 : Math.max(0, (u - .375) / .625) ** 2;
+      const A = tr.A, B = tr.B;
+      o.tgt.copy(A.tgt).lerp(B.tgt, et);
+      o.r = Math.exp(Math.log(A.r) + (Math.log(B.r) - Math.log(A.r)) * e);
+      o.ph = A.ph + (B.ph - A.ph) * e;
+      o.th = A.th + Math.atan2(Math.sin(B.th - A.th), Math.cos(B.th - A.th)) * e;
+      o.idle = 0;
+      this.geoSet(tr.dir > 0 ? e : 1 - e, tr.city);
+      if (u >= 1) {
+        G.cur = tr.to; G.tr = null; this.rMin = B.rMin; this.rMax = B.rMax; this.phMax = B.phMax;
+        // Queued targets already match the page's tab (they come from `mode`), so move without asking again
+        if (this._geoQueue) { const q = this._geoQueue; this._geoQueue = null; this.geoGo(q); }
+      }
+    }
+    // Ask the page to switch tab (it updates `mode`, which calls geoGo); without a listener, move directly
+    geoNav(target) {
+      const ev = new CustomEvent('pf-geo-nav', { detail: target, bubbles: true, composed: true, cancelable: true });
+      if (this.dispatchEvent(ev)) this.geoGo(target);
+    }
+    // Zooming past the limits: out of a neighbourhood -> region; into the region -> the site nearest the centre
+    geoOverscroll(delta, r0) {
+      const G = this.geo, now = performance.now();
+      if (!G || G.tr) return;
+      if (now - (this._ovT || 0) > 700) this._ov = 0;
+      this._ovT = now;
+      if (G.cur !== 'region' && delta > 0 && r0 >= this.rMax * .999) this._ov += delta;
+      else if (G.cur === 'region' && delta < 0 && r0 <= this.rMin * 1.001) this._ov -= delta;
+      else { this._ov = 0; return; }
+      if (this._ov < 260) return;
+      this._ov = 0;
+      if (G.cur !== 'region') return this.geoNav('region');
+      const v = new this.T.Vector3(); let best = null, bd = Infinity;
+      G.L.region.labels.forEach(l => { if (!G.L[l.key] || l.key === 'region') return; v.copy(l.p).project(this.cam); const d = Math.hypot(v.x, v.y); if (d < bd) { bd = d; best = l.key; } });
+      if (best) this.geoNav(best);
     }
 
     buildSnow(g) {
