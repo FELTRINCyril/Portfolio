@@ -6,7 +6,8 @@ window.PF_CONTENT = {
     "linkedin": "https://www.linkedin.com/in/cyril-feltrin/",
     "github": "https://github.com/kreaddis-cyril",
     "cv": "assets/CV_Cyril_Feltrin.pdf",
-    "formspree": "https://formspree.io/f/VOTRE_ID"
+    "formspree": "https://formspree.io/f/xbgdegra",
+    "attachments": false
   },
   "T": {
     "fr": {
@@ -205,6 +206,7 @@ window.PF_CONTENT = {
         "file": "Pièce jointe (facultatif)",
         "none": "Aucun fichier sélectionné",
         "choose": "Choisir un fichier",
+        "remove": "Retirer",
         "send": "Envoyer",
         "sending": "Envoi…",
         "ok": "Message envoyé. Je vous réponds rapidement.",
@@ -441,6 +443,7 @@ window.PF_CONTENT = {
         "file": "Attachment (optional)",
         "none": "No file selected",
         "choose": "Choose a file",
+        "remove": "Remove",
         "send": "Send",
         "sending": "Sending…",
         "ok": "Message sent. I will get back to you shortly.",

@@ -65,9 +65,13 @@ envoyé vers un serveur tiers (CDN, Google Fonts, AWS), sauf Formspree au moment
 ## Formulaire de contact (Formspree)
 
 1. Créer un formulaire sur https://formspree.io et copier son URL `https://formspree.io/f/xxxxxxx`.
-2. Dans `index.html`, remplacer `https://formspree.io/f/VOTRE_ID` par cette URL.
+2. La mettre dans `content.js`, clé `links.formspree` (fait : `https://formspree.io/f/xbgdegra`). Aucun champ
+   à créer côté Formspree : il reçoit tels quels les champs du formulaire du site.
 3. Dans Formspree, ajouter le domaine du site dans "Allowed domains".
-4. Les pièces jointes demandent l'offre payante de Formspree ; sans elle, le message part sans le fichier.
+4. Pièce jointe : l'offre gratuite de Formspree refuse les fichiers et rejette alors **tout** le message
+   (réponse `400 File Uploads Not Permitted`, constaté le 19/10/2026). Le champ est donc masqué : il
+   s'affiche seulement si `links.attachments` vaut `true` dans `content.js`, à activer uniquement avec une
+   offre Formspree qui accepte les fichiers.
 
 ## Déploiement
 

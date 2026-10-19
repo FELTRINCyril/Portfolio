@@ -428,14 +428,23 @@ a:hover{color:var(--accent)}
             <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ t.contact.message }} *</span>
             <textarea name="message" required="" rows="5" style="background:transparent;border:none;border-bottom:1px solid var(--line);padding:10px 0;font:inherit;font-size:18px;line-height:1.5;color:var(--fg);outline:none;resize:vertical;border-radius:0" style-focus="border-bottom-color:var(--accent)"></textarea>
           </label>
-          <label style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px;border:1px dashed var(--line);cursor:pointer" style-hover="border-color:var(--accent)">
-            <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
-              <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ t.contact.file }}</span>
-              <span style="font-size:16px;overflow-wrap:anywhere">{{ fileLabel }}</span>
-            </div>
-            <span style="font-size:14px;padding:8px 14px;border:1px solid var(--fg);border-radius:999px">{{ t.contact.choose }}</span>
-            <input type="file" name="piece_jointe" onChange="{{ onFile }}" style="display:none">
-          </label>
+          <!-- Piece jointe : masquee tant que links.attachments (content.js) n'est pas true.
+               L'offre gratuite Formspree refuse les fichiers et rejette alors tout le message. -->
+          <sc-if value="{{ attachments }}" hint-placeholder-val="{{ false }}">
+            <label style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px;border:1px dashed var(--line);cursor:pointer" style-hover="border-color:var(--accent)">
+              <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                <span style="font-family:var(--fm);font-size:12px;letter-spacing:.06em;color:var(--muted)">{{ t.contact.file }}</span>
+                <span style="font-size:16px;overflow-wrap:anywhere">{{ fileLabel }}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <sc-if value="{{ hasFile }}" hint-placeholder-val="{{ false }}">
+                  <button type="button" onClick="{{ clearFile }}" style="all:unset;cursor:pointer;font-size:14px;padding:8px 14px;border:1px solid var(--line);border-radius:999px" style-hover="border-color:var(--accent);color:var(--accent)">{{ t.contact.remove }}</button>
+                </sc-if>
+                <span style="font-size:14px;padding:8px 14px;border:1px solid var(--fg);border-radius:999px">{{ t.contact.choose }}</span>
+              </div>
+              <input type="file" name="piece_jointe" onChange="{{ onFile }}" style="display:none">
+            </label>
+          </sc-if>
           <div style="display:flex;align-items:center;flex-wrap:wrap;gap:20px">
             <button type="submit" disabled="{{ sending }}" style="all:unset;cursor:pointer;padding:16px 26px;background:var(--fg);color:var(--bg);font-size:16px;font-weight:500;border-radius:2px" style-hover="background:var(--accent);color:var(--on-accent)">{{ sendLabel }} →</button>
             <sc-if value="{{ statusMsg }}" hint-placeholder-val="{{ false }}">
@@ -946,6 +955,8 @@ dd: dd || { kind: '', pos: '', date: '', title: '', sub: '', listTitle: '', link
       closeCompare: () => this.setState({ compare: null }),
       onSubmit: this.onSubmit,
       onFile: (e) => { const f = e.target.files && e.target.files[0]; this.setState({ fileName: f ? f.name : '' }); },
+      clearFile: (e) => { e.preventDefault(); e.stopPropagation(); const inp = e.currentTarget.closest('label').querySelector('input[type=file]'); if (inp) inp.value = ''; this.setState({ fileName: '' }); },
+      attachments: LINKS.attachments === true, hasFile: !!s.fileName,
       fileLabel: s.fileName || t.contact.none,
       sending: st === 'sending',
       sendLabel: st === 'sending' ? t.contact.sending : t.contact.send,
