@@ -18,8 +18,11 @@ enregistré par le navigateur pour `localhost:8765` et y afficherait Bobine à l
 
 ## Structure
 
-- `index.html` : la page et **tous les textes**, dans deux objets en bas du fichier : `T` (libellés de
-  l'interface) et `D` (parcours, projets, compétences, passions), chacun en `fr` et `en`.
+- `content.js` : **tous les textes et liens du site** (FR et EN), en JSON. Il se modifie avec l'éditeur de
+  contenu (outil local, hors du dépôt : `Portfolio/editeur/index.html`) ou à la main, tant que ce qui suit
+  `window.PF_CONTENT =` reste du JSON valide. Les panneaux de détail y ont trois champs : `desc`, `missions`
+  et `photos` (vides = texte d'attente, grille photo masquée).
+- `index.html` : la page (gabarit et logique) ; elle lit `content.js` (`T` = libellés, `D` = données, `links`).
 - `support.js` : moteur de rendu de Claude Design (charge React et transforme les `{{ ... }}` en page).
   Fichier généré, ne pas le modifier.
 - `pf3d-v4.js` : toute la 3D, sous forme de deux balises HTML :
