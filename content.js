@@ -620,7 +620,7 @@ window.PF_CONTENT = {
           "date": "Été 2021",
           "role": "Serveur",
           "place": "Le Colomban, Les Villards-sur-Thônes · 1,5 mois",
-          "desc": "Mon tout premier job d'été, au restaurant Le Colomban aux Villards-sur-Thônes : service en salle pendant la saison.",
+          "desc": "Un mois et demi comme serveur au Colomban, aux Villards-sur-Thônes : mon tout premier job, dans un restaurant dont la clientèle était surtout composée d'ouvriers. Une bonne école du rythme et du contact client.",
           "missions": [
             "Service en salle : menus ouvriers, avec plusieurs choix",
             "Prise de commandes et service à table",
@@ -655,7 +655,7 @@ window.PF_CONTENT = {
         },
         {
           "n": "02",
-          "year": "2024 — 2025",
+          "year": "2025 - 2026",
           "context": "Projet IUT",
           "title": "CYNIA, paramétrage et développement Odoo",
           "team": "Équipe de 2",
@@ -1260,7 +1260,7 @@ window.PF_CONTENT = {
           "date": "Summer 2021",
           "role": "Waiter",
           "place": "Le Colomban, Les Villards-sur-Thônes · 6 weeks",
-          "desc": "My very first summer job, at Le Colomban restaurant in Les Villards-sur-Thônes: table service during the season.",
+          "desc": "Six weeks as a waiter at Le Colomban, in Les Villards-sur-Thônes: my very first job, in a restaurant whose customers were mostly manual workers. A good school for pace and customer contact.",
           "missions": [
             "Table service: set workers' menus, with several choices",
             "Taking orders and serving at the table",
@@ -1295,7 +1295,7 @@ window.PF_CONTENT = {
         },
         {
           "n": "02",
-          "year": "2024 — 2025",
+          "year": "2025 - 2026",
           "context": "University project",
           "title": "CYNIA, Odoo configuration and development",
           "team": "Team of 2",
