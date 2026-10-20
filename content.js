@@ -4,7 +4,7 @@ window.PF_CONTENT = {
   "links": {
     "email": "cyril@kreaddis.com",
     "linkedin": "https://www.linkedin.com/in/cyril-feltrin/",
-    "github": "https://github.com/kreaddis-cyril",
+    "github": "https://github.com/FELTRINCyril",
     "cv": "assets/CV_Cyril_Feltrin.pdf",
     "formspree": "https://formspree.io/f/xbgdegra",
     "attachments": false
@@ -25,7 +25,7 @@ window.PF_CONTENT = {
         "kicker": "Portfolio — 2026",
         "role": "Business Analyst",
         "at": "chez Kreaddis, Chavanod",
-        "intro": "Je fais le lien entre les besoins métier et les outils numériques, principalement autour des ERP Odoo et Dynamics. Formé au BUT Informatique de l'IUT d'Annecy.",
+        "intro": "Je fais le lien entre le métier d'une entreprise et son ERP : je comprends comment elle travaille, puis je paramètre et développe Odoo pour que l'outil colle à sa réalité. Formé au BUT Informatique de l'IUT d'Annecy, en alternance puis en CDI chez Kreaddis.",
         "cvView": "Voir le CV",
         "cvDl": "Télécharger",
         "fake": "Fictif",
@@ -38,7 +38,7 @@ window.PF_CONTENT = {
       "profil": {
         "title": "Profil",
         "lead": "Business Analyst chez Kreaddis depuis septembre 2026.",
-        "body": "J'y ai fait toutes les étapes : stage de BUT, contrat d'été comme développeur, alternance, puis CDI. Avant ça, un bac STI2D au lycée Louis Lachenal et un BUT Informatique à l'IUT d'Annecy.",
+        "body": "J'y ai franchi toutes les étapes : stage de deuxième année de BUT, job d'été comme développeur, alternance comme Business Analyst, puis CDI. Aujourd'hui, j'accompagne les clients de Kreaddis sur leurs projets Odoo, de l'analyse du besoin jusqu'à la mise en production. Avant ça : un bac STI2D option SIN au lycée Louis Lachenal d'Argonay, puis un BUT Informatique, parcours gestion de projet, à l'IUT d'Annecy.",
         "card": "FICHE PROFIL",
         "scale": "PARCOURS, DU PLUS RÉCENT",
         "ladder": [
@@ -192,11 +192,11 @@ window.PF_CONTENT = {
         "specs": "CARACTÉRISTIQUES",
         "zones": "ZONES",
         "jump": "LE SAUT",
-        "motoModel": "Suzuki GSX-8S"
+        "motoModel": "Suzuki GSX-8S, ma moto depuis juillet 2024"
       },
       "contact": {
         "title": "Contact",
-        "lead": "Une question, une opportunité ou un projet ? Écrivez-moi directement ou via ce formulaire.",
+        "lead": "Pour une question ou simplement pour échanger, n'hésitez pas à m'écrire.",
         "direct": "Directement",
         "first": "Prénom",
         "last": "Nom",
@@ -210,7 +210,7 @@ window.PF_CONTENT = {
         "send": "Envoyer",
         "sending": "Envoi…",
         "ok": "Message envoyé. Je vous réponds rapidement.",
-        "err": "L'envoi a échoué. Réessayez ou écrivez à cyril@kreaddis.com.",
+        "err": "L'envoi n'a pas abouti. Réessayez, ou utilisez les liens de contact de cette page.",
         "noEp": "Formulaire pas encore relié : ajoutez votre identifiant Formspree."
       },
       "footer": {
@@ -238,8 +238,16 @@ window.PF_CONTENT = {
           "Kreaddis (ex-Kreatys)"
         ],
         [
+          "Spécialité",
+          "ERP Odoo, versions 16 à 19"
+        ],
+        [
           "Formation",
-          "BUT Informatique"
+          "BUT Informatique, gestion de projet"
+        ],
+        [
+          "Outils du quotidien",
+          "Odoo.sh, Git, Claude Code"
         ],
         [
           "Région",
@@ -262,7 +270,7 @@ window.PF_CONTENT = {
         "kicker": "Portfolio — 2026",
         "role": "Business Analyst",
         "at": "at Kreaddis, Chavanod",
-        "intro": "I connect business needs with digital tools, mainly around the Odoo and Dynamics ERPs. Trained through the BUT in Computer Science at IUT Annecy.",
+        "intro": "I bridge the gap between how a business works and its ERP: I learn how the company operates, then configure and develop Odoo so the tool fits its reality. Trained through the BUT in Computer Science at IUT Annecy, first as an apprentice, now full-time at Kreaddis.",
         "cvView": "View résumé",
         "cvDl": "Download",
         "fake": "Procedural",
@@ -275,7 +283,7 @@ window.PF_CONTENT = {
       "profil": {
         "title": "Profile",
         "lead": "Business Analyst at Kreaddis since September 2026.",
-        "body": "I went through every step there: BUT internship, summer developer contract, apprenticeship, then a permanent role. Before that, an STI2D baccalauréat at Lycée Louis Lachenal and a BUT in Computer Science at IUT Annecy.",
+        "body": "I went through every step there: second-year BUT internship, summer developer job, apprenticeship as a Business Analyst, then a permanent role. Today I support Kreaddis clients on their Odoo projects, from needs analysis to go-live. Before that: an STI2D baccalauréat (digital and information systems option) at Lycée Louis Lachenal in Argonay, then a BUT in Computer Science, project management track, at IUT Annecy.",
         "card": "PROFILE CARD",
         "scale": "PATH, MOST RECENT FIRST",
         "ladder": [
@@ -429,11 +437,11 @@ window.PF_CONTENT = {
         "specs": "SPECIFICATIONS",
         "zones": "ZONES",
         "jump": "THE JUMP",
-        "motoModel": "Suzuki GSX-8S"
+        "motoModel": "Suzuki GSX-8S, mine since July 2024"
       },
       "contact": {
         "title": "Contact",
-        "lead": "A question, an opportunity or a project? Write to me directly or through this form.",
+        "lead": "For a question or just to talk, feel free to write to me.",
         "direct": "Directly",
         "first": "First name",
         "last": "Last name",
@@ -447,7 +455,7 @@ window.PF_CONTENT = {
         "send": "Send",
         "sending": "Sending…",
         "ok": "Message sent. I will get back to you shortly.",
-        "err": "Sending failed. Try again or email cyril@kreaddis.com.",
+        "err": "The message did not go through. Try again, or use the contact links on this page.",
         "noEp": "Form not connected yet: add your Formspree ID."
       },
       "footer": {
@@ -475,8 +483,16 @@ window.PF_CONTENT = {
           "Kreaddis (formerly Kreatys)"
         ],
         [
+          "Specialty",
+          "Odoo ERP, versions 16 to 19"
+        ],
+        [
           "Education",
-          "BUT Computer Science"
+          "BUT Computer Science, project management"
+        ],
+        [
+          "Everyday tools",
+          "Odoo.sh, Git, Claude Code"
         ],
         [
           "Region",
@@ -493,32 +509,47 @@ window.PF_CONTENT = {
           "role": "Business Analyst",
           "type": "CDI",
           "current": true,
-          "desc": "",
-          "missions": [],
+          "desc": "À la fin de mon alternance, Kreaddis m'a proposé un CDI de Business Analyst. Je travaille sur les projets Odoo de nos clients, sur des versions allant de la 16 à la 19 : je pars de leur besoin, je propose la solution la plus proche du standard, puis je la mets en place et je l'accompagne jusqu'en production.",
+          "missions": [
+            "Analyser le besoin du client et le traduire en solution Odoo : paramétrage standard d'abord, développement spécifique seulement si nécessaire",
+            "Développer des modules sur mesure en Python, XML et QWeb : rapports PDF personnalisés (devis, factures, bons de livraison), vues, automatisations",
+            "Déployer et suivre les instances sur Odoo.sh (test, préproduction, production), diagnostiquer et corriger les anomalies"
+          ],
           "photos": []
         },
         {
           "date": "2025 — 2026",
-          "role": "Alternance",
+          "role": "Business Analyst en alternance",
           "type": "BUT Informatique, 3e année",
-          "desc": "",
-          "missions": [],
+          "desc": "En troisième année de BUT, j'ai alterné entre l'IUT d'Annecy et Kreaddis. Côté entreprise, je suis passé du développement au rôle de Business Analyst, avec des projets clients suivis de bout en bout, du besoin exprimé jusqu'à la mise en production.",
+          "missions": [
+            "Paramétrage et développement Odoo sur des projets clients",
+            "Prise en charge progressive de demandes clients, en autonomie croissante",
+            "Mise en pratique du parcours gestion de projet de l'IUT : suivi des tâches, priorisation, échanges avec les clients"
+          ],
           "photos": []
         },
         {
           "date": "Été 2025",
           "role": "Développeur",
           "type": "Contrat d'été · 1 mois",
-          "desc": "",
-          "missions": [],
+          "desc": "Après mon stage, Kreaddis m'a proposé un contrat d'un mois pendant l'été pour poursuivre les développements engagés pour le groupe Gemaddis, auquel appartient Kreaddis aux côtés de Gemaddis France et Gemaddis Tunisie : la refonte des documents PDF et l'impression automatique.",
+          "missions": [
+            "Refonte des documents PDF de Gemaddis : bons de livraison, commandes d'achat et factures, avec un en-tête commun",
+            "Impression automatique : envoi direct des documents vers les imprimantes de l'entreprise, depuis Odoo"
+          ],
           "photos": []
         },
         {
           "date": "2025",
-          "role": "Stage",
+          "role": "Stage développeur",
           "type": "BUT Informatique, 2e année · 2 mois",
-          "desc": "",
-          "missions": [],
+          "desc": "Ma première expérience chez un intégrateur Odoo : un stage de deux mois consacré à la refonte des rapports PDF de Gemaddis, le groupe auquel appartient Kreaddis. J'y ai appris le framework et le travail en équipe, et je suis allé voir les utilisateurs pour comprendre leurs besoins.",
+          "missions": [
+            "Prise en main d'Odoo : modèles, vues XML et QWeb, structure d'un module",
+            "Refonte des rapports PDF de Gemaddis, en allant voir les utilisateurs pour comprendre leurs besoins",
+            "Premiers usages de l'IA comme aide au développement, alors toute nouvelle dans l'entreprise"
+          ],
           "photos": []
         }
       ],
@@ -527,16 +558,24 @@ window.PF_CONTENT = {
           "date": "2023 — 2026",
           "title": "BUT Informatique",
           "place": "IUT d’Annecy, Annecy-le-Vieux",
-          "desc": "",
-          "missions": [],
+          "desc": "Trois ans de BUT Informatique à l'IUT d'Annecy (Université Savoie Mont Blanc), parcours gestion de projet. Deux années de formation avec de nombreux projets d'équipe, puis une troisième année en alternance chez Kreaddis. Formation terminée, diplôme en attente de délivrance.",
+          "missions": [
+            "Développement web et bases de données : Laravel, PHP, PostgreSQL, modélisation MCD",
+            "Gestion de projet et travail en équipe, sur des projets de 2 à 5 personnes",
+            "Plusieurs ERP : Odoo en priorité, Microsoft Dynamics le temps d'un projet entier, et des notions de SAP"
+          ],
           "photos": []
         },
         {
           "date": "2023",
           "title": "Bac STI2D, mention AB",
-          "place": "Lycée Louis Lachenal",
-          "desc": "",
-          "missions": [],
+          "place": "Lycée Louis Lachenal, Argonay - option SIN",
+          "desc": "Bac technologique STI2D, option Systèmes d'information et numérique (SIN), obtenu avec mention assez bien au lycée Louis Lachenal d'Argonay. C'est là que j'ai écrit mes premières lignes de code et choisi l'informatique.",
+          "missions": [
+            "Premiers pas en développement web : HTML, CSS et JavaScript, pour réaliser mon premier CV",
+            "Programmation en C++ et premiers montages sur Arduino (option SIN)",
+            "Bases d'ingénierie au-delà de l'informatique : énergie, matériaux et développement durable"
+          ],
           "photos": []
         }
       ],
@@ -545,32 +584,48 @@ window.PF_CONTENT = {
           "date": "Été 2024",
           "role": "Mise en rayon",
           "place": "Intermarché, Les Villards-sur-Thônes · 1,5 mois",
-          "desc": "",
-          "missions": [],
+          "desc": "Un mois et demi à l'Intermarché des Villards-sur-Thônes : réapprovisionnement des rayons et rotation des produits. Une première vue concrète de la logistique d'un magasin, que je retrouve aujourd'hui dans le module Inventaire d'Odoo.",
+          "missions": [
+            "Réapprovisionnement des rayons et rotation des produits",
+            "Rigueur et rapidité, y compris aux heures de forte affluence",
+            "Travail en lien avec les chefs de rayon"
+          ],
           "photos": []
         },
         {
           "date": "Été 2023",
           "role": "Caissier",
           "place": "Intermarché, Les Villards-sur-Thônes · 1,5 mois",
-          "desc": "",
-          "missions": [],
+          "desc": "Encaissement et accueil des clients à l'Intermarché des Villards-sur-Thônes. Mon premier contact avec un logiciel de caisse, côté utilisateur, que j'ai retrouvé ensuite dans Odoo : j'ai paramétré son Point de Vente pour mon projet CYNIA à l'IUT.",
+          "missions": [
+            "Encaissement et tenue de caisse",
+            "Accueil et relation client, y compris en période d'affluence",
+            "Fiabilité dans la manipulation des espèces"
+          ],
           "photos": []
         },
         {
           "date": "Été 2022",
           "role": "Paysagiste",
           "place": "Niwaki Paysage, Thônes · 1,5 mois",
-          "desc": "",
-          "missions": [],
+          "desc": "Un été en extérieur chez Niwaki Paysage à Thônes : entretien et aménagement d'espaces verts, terrassement compris, au sein d'une petite équipe.",
+          "missions": [
+            "Entretien de jardins : tonte, taille, plantations",
+            "Terrassement pour les chantiers d'aménagement",
+            "Travail en extérieur, physique et en équipe"
+          ],
           "photos": []
         },
         {
           "date": "Été 2021",
-          "role": "Restauration",
+          "role": "Serveur",
           "place": "Le Colomban, Les Villards-sur-Thônes · 1,5 mois",
-          "desc": "",
-          "missions": [],
+          "desc": "Mon tout premier job d'été, au restaurant Le Colomban aux Villards-sur-Thônes : service en salle pendant la saison.",
+          "missions": [
+            "Service en salle : menus ouvriers, avec plusieurs choix",
+            "Prise de commandes et service à table",
+            "Premier contact avec le travail en équipe et la clientèle"
+          ],
           "photos": []
         }
       ],
@@ -592,9 +647,10 @@ window.PF_CONTENT = {
             "PostgreSQL",
             "HTML",
             "CSS",
-            "JS"
+            "JS",
+            "MCD"
           ],
-          "desc": "",
+          "desc": "Projet de deuxième année de BUT, en équipe de cinq : reproduire les fonctionnalités clés de Vinted (annonces, recherche, profils) avec le framework Laravel. Pour ma part, j'ai surtout travaillé sur le front-end du site.",
           "photos": []
         },
         {
@@ -617,7 +673,7 @@ window.PF_CONTENT = {
             "GitHub"
           ],
           "link": "https://github.com/FELTRINCyril/CYNIA",
-          "desc": "",
+          "desc": "Projet de troisième année de BUT, en binôme : migrer vers Odoo 17 la gestion du Refuge des Aventuriers, un bar fictif. Clients et fidélité, achats, stock, nomenclatures des cocktails et point de vente, plus deux applications développées en OWL : la commande à table par QR code et un planning des employés généré automatiquement. Le projet était suivi sur GitHub.",
           "photos": []
         },
         {
@@ -627,8 +683,9 @@ window.PF_CONTENT = {
           "title": "Ce portfolio",
           "team": "Projet solo",
           "points": [
-            "Site en HTML, CSS et JS, avec des scènes 3D",
-            "Conçu avec Claude Code et Claude Design"
+            "Accueil en 3D : relief réel autour de l'aérodrome de Chambéry, avec un saut en parachute animé",
+            "Scènes 3D interactives : voile de parachute, moto, salle de sport, piste de snowboard, et zoom continu de la région vers les quartiers de Kreaddis et de l'IUT",
+            "Bilingue français / anglais, thème clair ou sombre, couleur d'accent au choix, sans aucun service externe"
           ],
           "tags": [
             "HTML",
@@ -637,7 +694,7 @@ window.PF_CONTENT = {
             "Three.js",
             "Claude"
           ],
-          "desc": "",
+          "desc": "Ce site a été conçu avec Claude Design, puis développé et mis en ligne avec Claude Code. Les scènes 3D sont générées en code avec Three.js à partir de données réelles : relief issu de modèles numériques de terrain et plans de quartiers OpenStreetMap.",
           "photos": []
         }
       ],
@@ -645,24 +702,52 @@ window.PF_CONTENT = {
         [
           "ERP",
           [
-            "Odoo",
-            "Dynamics"
+            "Odoo (paramétrage et développement)",
+            "Odoo.sh",
+            "Bases en Microsoft Dynamics"
           ]
         ],
         [
-          "Dev / Design",
+          "Développement",
           [
+            "Python",
+            "XML / QWeb",
             "HTML / CSS / JS",
             "Bootstrap",
-            "XML",
-            "Python"
+            "PHP / Laravel"
           ]
         ],
         [
           "Bases de données",
           [
-            "MongoDB",
-            "pgAdmin"
+            "PostgreSQL (pgAdmin)",
+            "MongoDB"
+          ]
+        ],
+        [
+          "Méthodes",
+          [
+            "Analyse du besoin",
+            "Rédaction de spécifications",
+            "Gestion de projet"
+          ]
+        ],
+        [
+          "Outils",
+          [
+            "Git / GitHub",
+            "Docker",
+            "Figma",
+            "Notion"
+          ]
+        ],
+        [
+          "IA",
+          [
+            "Claude, Claude Code & Design",
+            "ChatGPT",
+            "Gemini",
+            "Cursor"
           ]
         ],
         [
@@ -671,22 +756,6 @@ window.PF_CONTENT = {
             "macOS",
             "Windows",
             "Linux"
-          ]
-        ],
-        [
-          "Outils",
-          [
-            "Figma",
-            "Notion",
-            "Docker"
-          ]
-        ],
-        [
-          "IA",
-          [
-            "Claude, Claude Code & Design",
-            "Gemini",
-            "Cursor"
           ]
         ]
       ],
@@ -801,7 +870,7 @@ window.PF_CONTENT = {
               "label": "Suzuki GSX-8S",
               "mode": "moto",
               "partsTitle": "specs",
-              "desc": "Roadster bicylindre de Suzuki. Modèle 3D simplifié : cliquer sur une caractéristique pour la situer.",
+              "desc": "Ma moto : une Suzuki GSX-8S, roadster bicylindre de 776 cm³. Je roule surtout dans les Aravis et autour du lac d'Annecy ; ma balade préférée mène jusqu'au barrage de Roselend, dans le Beaufortain. Modèle 3D simplifié : cliquer sur une caractéristique pour la situer.",
               "note": "Données constructeur.",
               "parts": [
                 [
@@ -851,7 +920,7 @@ window.PF_CONTENT = {
               "label": "Piste",
               "mode": "snow",
               "partsTitle": "parts",
-              "desc": "Une planche qui descend une piste balisée en virages enchaînés.",
+              "desc": "Je fais du snowboard depuis mes 9 ans, surtout à La Clusaz : principalement sur piste, avec un peu de hors-piste. La scène montre une planche qui enchaîne les virages sur une piste balisée.",
               "parts": [
                 [
                   "planche",
@@ -1040,7 +1109,7 @@ window.PF_CONTENT = {
               "label": "Salle",
               "mode": "gym",
               "partsTitle": "zones",
-              "desc": "Une salle de sport modélisée en 3D, organisée par zones.",
+              "desc": "Je m'entraîne 3 à 5 fois par semaine depuis plus d'un an, principalement chez Basic-Fit. Ma base est un programme PPL (push, pull, legs), complété par des séances haut du corps et bas du corps quand je m'entraîne plus de trois fois. La scène représente une salle type, organisée par zones.",
               "parts": [
                 [
                   "cardio",
@@ -1080,32 +1149,47 @@ window.PF_CONTENT = {
           "role": "Business Analyst",
           "type": "Permanent contract",
           "current": true,
-          "desc": "",
-          "missions": [],
+          "desc": "At the end of my apprenticeship, Kreaddis offered me a permanent position as a Business Analyst. I work on our clients' Odoo projects, on versions 16 to 19: I start from their needs, propose the solution closest to standard Odoo, then implement it and follow it through to production.",
+          "missions": [
+            "Analyse client needs and turn them into an Odoo solution: standard configuration first, custom development only when needed",
+            "Build custom modules in Python, XML and QWeb: tailored PDF reports (quotations, invoices, delivery slips), views, automations",
+            "Deploy and monitor instances on Odoo.sh (test, staging, production), troubleshoot and fix issues"
+          ],
           "photos": []
         },
         {
           "date": "2025 — 2026",
-          "role": "Apprenticeship",
+          "role": "Business Analyst, apprenticeship",
           "type": "BUT Computer Science, 3rd year",
-          "desc": "",
-          "missions": [],
+          "desc": "In my third BUT year, I alternated between IUT Annecy and Kreaddis. At the company, I moved from development to the Business Analyst role, following client projects end to end, from the stated need to go-live.",
+          "missions": [
+            "Odoo configuration and development on client projects",
+            "Gradually handling client requests on my own",
+            "Applying the IUT project management track: task tracking, prioritisation, client communication"
+          ],
           "photos": []
         },
         {
           "date": "Summer 2025",
           "role": "Developer",
           "type": "Summer contract · 1 month",
-          "desc": "",
-          "missions": [],
+          "desc": "After my internship, Kreaddis offered me a one-month summer contract to continue the development work I had started for the Gemaddis group, which Kreaddis belongs to alongside Gemaddis France and Gemaddis Tunisia: redesigning PDF documents and automatic printing.",
+          "missions": [
+            "Redesign of Gemaddis PDF documents: delivery slips, purchase orders and invoices, with a shared header",
+            "Automatic printing: documents sent straight from Odoo to the company's printers"
+          ],
           "photos": []
         },
         {
           "date": "2025",
-          "role": "Internship",
+          "role": "Developer internship",
           "type": "BUT Computer Science, 2nd year · 2 months",
-          "desc": "",
-          "missions": [],
+          "desc": "My first experience at an Odoo integrator: a two-month internship dedicated to redesigning the PDF reports of Gemaddis, the group Kreaddis belongs to. I learned the framework and teamwork, and went to see the users to understand their needs.",
+          "missions": [
+            "Getting started with Odoo: models, XML and QWeb views, module structure",
+            "Redesign of Gemaddis PDF reports, going to see the users to understand their needs",
+            "First use of AI as a development aid, then brand new in the company"
+          ],
           "photos": []
         }
       ],
@@ -1114,16 +1198,24 @@ window.PF_CONTENT = {
           "date": "2023 — 2026",
           "title": "BUT Computer Science",
           "place": "IUT Annecy, Annecy-le-Vieux",
-          "desc": "",
-          "missions": [],
+          "desc": "Three years of BUT in Computer Science at IUT Annecy (Université Savoie Mont Blanc), project management track. Two years of coursework with many team projects, then a third year as an apprentice at Kreaddis. Course completed, degree awaiting award.",
+          "missions": [
+            "Web development and databases: Laravel, PHP, PostgreSQL, conceptual data modelling",
+            "Project management and teamwork, on projects of 2 to 5 people",
+            "Several ERPs: Odoo first, Microsoft Dynamics for a whole project, and some SAP basics"
+          ],
           "photos": []
         },
         {
           "date": "2023",
           "title": "STI2D Baccalauréat, with honours",
-          "place": "Lycée Louis Lachenal",
-          "desc": "",
-          "missions": [],
+          "place": "Lycée Louis Lachenal, Argonay - digital and information systems option",
+          "desc": "STI2D technological baccalauréat, digital and information systems option, with honours, at Lycée Louis Lachenal in Argonay. That is where I wrote my first lines of code and chose computer science.",
+          "missions": [
+            "First steps in web development: HTML, CSS and JavaScript, to build my first résumé",
+            "C++ programming and first Arduino projects (digital and information systems option)",
+            "Engineering basics beyond computing: energy, materials and sustainable development"
+          ],
           "photos": []
         }
       ],
@@ -1132,32 +1224,48 @@ window.PF_CONTENT = {
           "date": "Summer 2024",
           "role": "Shelf stocking",
           "place": "Intermarché, Les Villards-sur-Thônes · 6 weeks",
-          "desc": "",
-          "missions": [],
+          "desc": "Six weeks at the Intermarché in Les Villards-sur-Thônes: restocking shelves and rotating products. A first concrete look at store logistics, which I now find again in Odoo's Inventory module.",
+          "missions": [
+            "Restocking shelves and rotating products",
+            "Accuracy and speed, including at peak times",
+            "Working alongside department managers"
+          ],
           "photos": []
         },
         {
           "date": "Summer 2023",
           "role": "Cashier",
           "place": "Intermarché, Les Villards-sur-Thônes · 6 weeks",
-          "desc": "",
-          "missions": [],
+          "desc": "Checkout and customer service at the Intermarché in Les Villards-sur-Thônes. My first contact with point-of-sale software, as a user, which I later found again in Odoo: I configured its Point of Sale for my CYNIA project at the IUT.",
+          "missions": [
+            "Checkout and cash handling",
+            "Customer service, including at busy times",
+            "Reliability with cash"
+          ],
           "photos": []
         },
         {
           "date": "Summer 2022",
           "role": "Landscaper",
           "place": "Niwaki Paysage, Thônes · 6 weeks",
-          "desc": "",
-          "missions": [],
+          "desc": "A summer outdoors at Niwaki Paysage in Thônes: maintaining and landscaping green spaces, earthworks included, in a small team.",
+          "missions": [
+            "Garden maintenance: mowing, pruning, planting",
+            "Earthworks for landscaping projects",
+            "Outdoor, physical teamwork"
+          ],
           "photos": []
         },
         {
           "date": "Summer 2021",
-          "role": "Restaurant staff",
+          "role": "Waiter",
           "place": "Le Colomban, Les Villards-sur-Thônes · 6 weeks",
-          "desc": "",
-          "missions": [],
+          "desc": "My very first summer job, at Le Colomban restaurant in Les Villards-sur-Thônes: table service during the season.",
+          "missions": [
+            "Table service: set workers' menus, with several choices",
+            "Taking orders and serving at the table",
+            "First experience of teamwork and customer contact"
+          ],
           "photos": []
         }
       ],
@@ -1179,9 +1287,10 @@ window.PF_CONTENT = {
             "PostgreSQL",
             "HTML",
             "CSS",
-            "JS"
+            "JS",
+            "MCD"
           ],
-          "desc": "",
+          "desc": "Second-year BUT project in a team of five: rebuilding Vinted's key features (listings, search, profiles) with the Laravel framework. My own part was mainly the site's front end.",
           "photos": []
         },
         {
@@ -1204,7 +1313,7 @@ window.PF_CONTENT = {
             "GitHub"
           ],
           "link": "https://github.com/FELTRINCyril/CYNIA",
-          "desc": "",
+          "desc": "Third-year BUT project in a pair: migrating the management of the Refuge des Aventuriers, a fictional bar, to Odoo 17. Customers and loyalty, purchasing, stock, cocktail bills of materials and point of sale, plus two apps built with OWL: table ordering by QR code and an automatically generated staff schedule. The project was tracked on GitHub.",
           "photos": []
         },
         {
@@ -1214,8 +1323,9 @@ window.PF_CONTENT = {
           "title": "This portfolio",
           "team": "Solo project",
           "points": [
-            "HTML, CSS and JS site with 3D scenes",
-            "Built with Claude Code and Claude Design"
+            "3D home page: real terrain around Chambéry airfield, with an animated skydive",
+            "3D interactive scenes: canopy, motorcycle, gym, snowboard run, and a continuous zoom from the region into the Kreaddis and IUT neighbourhoods",
+            "French / English, light or dark theme, choice of accent colour, no third-party service"
           ],
           "tags": [
             "HTML",
@@ -1224,7 +1334,7 @@ window.PF_CONTENT = {
             "Three.js",
             "Claude"
           ],
-          "desc": "",
+          "desc": "This site was designed with Claude Design, then built and published with Claude Code. The 3D scenes are generated in code with Three.js from real data: terrain from digital elevation models and OpenStreetMap neighbourhood maps.",
           "photos": []
         }
       ],
@@ -1232,24 +1342,52 @@ window.PF_CONTENT = {
         [
           "ERP",
           [
-            "Odoo",
-            "Dynamics"
+            "Odoo (configuration and development)",
+            "Odoo.sh",
+            "Microsoft Dynamics basics"
           ]
         ],
         [
-          "Dev / Design",
+          "Development",
           [
+            "Python",
+            "XML / QWeb",
             "HTML / CSS / JS",
             "Bootstrap",
-            "XML",
-            "Python"
+            "PHP / Laravel"
           ]
         ],
         [
           "Databases",
           [
-            "MongoDB",
-            "pgAdmin"
+            "PostgreSQL (pgAdmin)",
+            "MongoDB"
+          ]
+        ],
+        [
+          "Methods",
+          [
+            "Needs analysis",
+            "Functional specifications",
+            "Project management"
+          ]
+        ],
+        [
+          "Tools",
+          [
+            "Git / GitHub",
+            "Docker",
+            "Figma",
+            "Notion"
+          ]
+        ],
+        [
+          "AI",
+          [
+            "Claude, Claude Code & Design",
+            "ChatGPT",
+            "Gemini",
+            "Cursor"
           ]
         ],
         [
@@ -1258,22 +1396,6 @@ window.PF_CONTENT = {
             "macOS",
             "Windows",
             "Linux"
-          ]
-        ],
-        [
-          "Tools",
-          [
-            "Figma",
-            "Notion",
-            "Docker"
-          ]
-        ],
-        [
-          "AI",
-          [
-            "Claude, Claude Code & Design",
-            "Gemini",
-            "Cursor"
           ]
         ]
       ],
@@ -1388,7 +1510,7 @@ window.PF_CONTENT = {
               "label": "Suzuki GSX-8S",
               "mode": "moto",
               "partsTitle": "specs",
-              "desc": "Suzuki parallel-twin roadster. Simplified 3D model: click a spec to locate it.",
+              "desc": "My bike: a Suzuki GSX-8S, a 776 cc parallel-twin roadster. I mostly ride in the Aravis and around Lake Annecy; my favourite ride goes up to the Roselend dam, in the Beaufortain. Simplified 3D model: click a spec to locate it.",
               "note": "Manufacturer data.",
               "parts": [
                 [
@@ -1438,7 +1560,7 @@ window.PF_CONTENT = {
               "label": "Piste",
               "mode": "snow",
               "partsTitle": "parts",
-              "desc": "A board riding down a marked piste in linked turns.",
+              "desc": "I've been snowboarding since I was 9, mostly at La Clusaz: mainly on piste, with a bit of off-piste. The scene shows a board carving linked turns down a marked run.",
               "parts": [
                 [
                   "planche",
@@ -1627,7 +1749,7 @@ window.PF_CONTENT = {
               "label": "Gym",
               "mode": "gym",
               "partsTitle": "zones",
-              "desc": "A gym modelled in 3D, organised by zones.",
+              "desc": "I train 3 to 5 times a week, for over a year now, mostly at Basic-Fit. My base is a PPL programme (push, pull, legs), topped up with upper-body and lower-body sessions when I train more than three times. The scene shows a typical gym, organised by zones.",
               "parts": [
                 [
                   "cardio",
