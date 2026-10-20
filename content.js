@@ -5,7 +5,7 @@ window.PF_CONTENT = {
     "email": "cyril@kreaddis.com",
     "linkedin": "https://www.linkedin.com/in/cyril-feltrin/",
     "github": "https://github.com/FELTRINCyril",
-    "cv": "assets/CV_Cyril_Feltrin.pdf",
+    "cv": "assets/CV_Cyril_Feltrin_2026-10.pdf",
     "formspree": "https://formspree.io/f/xbgdegra",
     "attachments": false
   },
