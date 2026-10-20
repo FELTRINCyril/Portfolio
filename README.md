@@ -23,6 +23,8 @@ enregistré par le navigateur pour `localhost:8765` et y afficherait Bobine à l
   `window.PF_CONTENT =` reste du JSON valide. Les panneaux de détail y ont trois champs : `desc`, `missions`
   et `photos` (vides = texte d'attente, grille photo masquée).
 - `index.html` : la page (gabarit et logique) ; elle lit `content.js` (`T` = libellés, `D` = données, `links`).
+  Sous 760 px de large, la mise en page mobile est un bloc à part (`<sc-if isMobile>`) à côté du bloc
+  ordinateur (`<sc-if notMobile>`) : modifier l'un ne change pas l'autre.
 - `support.js` : moteur de rendu de Claude Design (charge React et transforme les `{{ ... }}` en page).
   Fichier généré, ne pas le modifier.
 - `pf3d-v4.js` : toute la 3D, sous forme de deux balises HTML :

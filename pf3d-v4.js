@@ -262,7 +262,15 @@
     get view() { const v = this.getAttribute('view'); return ['orig', 'mirror', 'top', 'chase'].includes(v) ? v : 'orig'; }
     applyTheme() {
       if (!this._mat) return; themeTerrain(this._mat);
-      const ac = toRGB(theme().accent), fg = toRGB(theme().fg); (this._accMats || []).forEach(m => m.color.setRGB(...ac)); (this._fgMats || []).forEach(m => m.color.setRGB(...fg));
+      const ac = toRGB(theme().accent), fg = toRGB(theme().fg);
+      const anim = document.documentElement.classList.contains('pf-recolor');
+      const set = (mats, rgb) => (mats || []).forEach(m => {
+        if (!anim) { m.color.setRGB(...rgb); return; }
+        const a = m.color.toArray(), t0 = performance.now(); cancelAnimationFrame(m.userData.pfRc);
+        const st = () => { const k = Math.min(1, (performance.now() - t0) / 500), e = 1 - Math.pow(1 - k, 3); m.color.setRGB(...a.map((v, i) => v + (rgb[i] - v) * e)); if (k < 1) m.userData.pfRc = requestAnimationFrame(st); };
+        st();
+      });
+      set(this._accMats, ac); set(this._fgMats, fg);
     }
     status(s) { window.dispatchEvent(new CustomEvent('pf-terrain-status', { detail: s })); }
     async buildTerrain() {
@@ -528,10 +536,22 @@
         const c = this.cam; c.position.set(o.tgt.x + o.r * Math.sin(o.ph) * Math.sin(o.th), o.tgt.y + o.r * Math.cos(o.ph), o.tgt.z + o.r * Math.sin(o.ph) * Math.cos(o.th));
         c.lookAt(o.tgt);
         if (this.scene) R.render(this.scene, c);
-        (this.labels || []).forEach(l => {
-          v.copy(l.p).project(c); const vis = !l.off && v.z < 1 && Math.abs(v.x) < 1.1 && Math.abs(v.y) < 1.1;
+        // Small screens: compact labels, and labels that would overlap an already placed one are hidden
+        // (highlighted / live labels placed first)
+        const small = this.W < 560, placed = [];
+        const order = small ? (this.labels || []).slice().sort((a, b) => ((b.fixed || b.key === this.hl) ? 1 : 0) - ((a.fixed || a.key === this.hl) ? 1 : 0)) : (this.labels || []);
+        order.forEach(l => {
+          if (small !== !!l.compact) { l.compact = small; Object.assign(l.el.style, small ? { fontSize: '10px', padding: '3px 5px', letterSpacing: '.02em' } : { fontSize: '', padding: '4px 7px', letterSpacing: '.04em' }); l.w = 0; }
+          v.copy(l.p).project(c); let vis = !l.off && v.z < 1 && Math.abs(v.x) < 1.1 && Math.abs(v.y) < 1.1;
+          const x = (v.x * .5 + .5) * this.W, y = (-v.y * .5 + .5) * this.H;
+          if (vis && small) {
+            if (!l.w) { l.el.style.display = 'block'; l.w = l.el.offsetWidth; l.h = l.el.offsetHeight; }
+            const bx = x - l.w / 2, by = y - l.h * 1.3, pad = 3;
+            if (placed.some(p => bx < p[2] + pad && bx + l.w + pad > p[0] && by < p[3] + pad && by + l.h + pad > p[1])) vis = false;
+            else placed.push([bx, by, bx + l.w, by + l.h]);
+          }
           l.el.style.display = vis ? 'block' : 'none';
-          if (vis) l.el.style.transform = `translate(${(v.x * .5 + .5) * this.W}px, ${(-v.y * .5 + .5) * this.H}px) translate(-50%, -130%)`;
+          if (vis) l.el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -130%)`;
         });
       };
       tick();
@@ -561,7 +581,11 @@
       this.scene = scene; this.recolor();
       if (this._frame) this._frame();
     }
-    view(tgt, r, ph, th, rMin, rMax) { const o = this.orb; o.tgt.set(...tgt); o.r = r; o.ph = ph; o.th = th; this.rMin = rMin; this.rMax = rMax; }
+    view(tgt, r, ph, th, rMin, rMax) {
+      // Portrait phone screens: step back so the whole object fits the narrow width
+      const W = this.clientWidth, H = this.clientHeight, k = W && W < 560 && W / H < .9 ? Math.min(1.45, .9 / (W / H) * .95) : 1;
+      const o = this.orb; o.tgt.set(...tgt); o.r = Math.min(r * k, rMax * 1.2); o.ph = ph; o.th = th; this.rMin = rMin; this.rMax = k > 1 ? rMax * 1.2 : rMax;
+    }
 
     async buildMap(g) {
       const T = this.T; let D = null; try { D = await loadDEM(); } catch (e) {}

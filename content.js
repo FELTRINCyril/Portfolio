@@ -253,7 +253,25 @@ window.PF_CONTENT = {
           "Région",
           "Haute-Savoie"
         ]
-      ]
+      ],
+      "mobile": {
+        "settings": "Réglages",
+        "lang": "Langue",
+        "theme": "Thème",
+        "light": "Clair",
+        "dark": "Sombre",
+        "color": "Couleur",
+        "links": "Liens",
+        "readMore": "Lire la suite",
+        "readLess": "Réduire",
+        "info": "Infos",
+        "show": "Afficher",
+        "hide": "Masquer",
+        "explore3d": "Ouvrir la vue 3D",
+        "scroll": "Découvrir",
+        "cvCard": "Curriculum vitæ",
+        "cvType": "PDF"
+      }
     },
     "en": {
       "nav": {
@@ -498,7 +516,25 @@ window.PF_CONTENT = {
           "Region",
           "Haute-Savoie, France"
         ]
-      ]
+      ],
+      "mobile": {
+        "settings": "Settings",
+        "lang": "Language",
+        "theme": "Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "color": "Colour",
+        "links": "Links",
+        "readMore": "Read more",
+        "readLess": "Show less",
+        "info": "Info",
+        "show": "Show",
+        "hide": "Hide",
+        "explore3d": "Open the 3D view",
+        "scroll": "Discover",
+        "cvCard": "Résumé",
+        "cvType": "PDF"
+      }
     }
   },
   "D": {
